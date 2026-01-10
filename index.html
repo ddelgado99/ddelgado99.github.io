@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Tienda</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .product {
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin: 15px 0;
+      max-width: 300px;
+    }
+    .product img {
+      width: 100%;
+      max-height: 200px;
+      object-fit: contain;
+    }
+    .price {
+      color: green;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Productos</h1>
+<div id="products">Cargando productos...</div>
+
+<script>
+fetch("https://dombet-backend.onrender.com/products")
+  .then(res => {
+    if (!res.ok) throw new Error("Error al cargar productos");
+    return res.json();
+  })
+  .then(data => {
+    const cont = document.getElementById("products");
+    cont.innerHTML = "";
+
+    if (data.length === 0) {
+      cont.innerHTML = "<p>No hay productos disponibles</p>";
+      return;
+    }
+
+    data.forEach(p => {
+      cont.innerHTML += `
+        <div class="product">
+          <h3>${p.name}</h3>
+          <img src="${p.image}" alt="${p.name}">
+          <p>${p.description}</p>
+          <p class="price">Gs. ${p.price}</p>
+        </div>
+      `;
+    });
+  })
+  .catch(err => {
+    document.getElementById("products").innerHTML =
+      "<p>Error cargando productos</p>";
+    console.error(err);
+  });
+</script>
+
+</body>
+</html>
