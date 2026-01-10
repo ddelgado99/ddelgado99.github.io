@@ -73,19 +73,19 @@ app.get("/products", (req, res) => {
 // Crear producto (admin)
 app.post("/products", (req, res) => {
   const p = req.body;
+  // Usar la primera imagen del array para la columna 'image' (singular)
+  const image = (p.images && p.images.length > 0) ? p.images[0] : "";
   
   const sql = `
-    INSERT INTO products (name, description, price, discount, available, images)
-    VALUES (?, ?, ?, ?, ?, ?)
+    INSERT INTO products (name, description, price, image)
+    VALUES (?, ?, ?, ?)
   `;
   
   const values = [
       p.name,
       p.description,
       Number(p.price) || 0,
-      Number(p.discount) || 0,
-      p.available ? 1 : 0,
-      JSON.stringify(p.images || [])
+      image
   ];
 
   db.query(sql, values, (err, result) => {
@@ -98,14 +98,14 @@ app.post("/products", (req, res) => {
 app.put("/products/:id", (req, res) => {
   const { id } = req.params;
   const p = req.body;
-  const sql = `UPDATE products SET name=?, description=?, price=?, discount=?, available=?, images=? WHERE id=?`;
+  const image = (p.images && p.images.length > 0) ? p.images[0] : "";
+  
+  const sql = `UPDATE products SET name=?, description=?, price=?, image=? WHERE id=?`;
   const values = [
       p.name,
       p.description,
       Number(p.price) || 0,
-      Number(p.discount) || 0,
-      p.available ? 1 : 0,
-      JSON.stringify(p.images || []),
+      image,
       id
   ];
   db.query(sql, values, (err) => {
