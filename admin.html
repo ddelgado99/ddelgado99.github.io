@@ -215,6 +215,8 @@ function saveProduct() {
   const method = id ? 'PUT' : 'POST'
   const url = id ? `${API_URL}/${id}` : API_URL
 
+  console.log("Intentando guardar:", data); // Para ver en consola qué se envía
+
   fetch(url, {
     method: method,
     headers: { 'Content-Type': 'application/json' },
@@ -224,7 +226,8 @@ function saveProduct() {
     if (r.ok) {
       location.reload()
     } else {
-      alert("Error al guardar. Verifica que la URL no sea demasiado larga (máx 255 caracteres). Intenta usar una URL más corta.")
+      // Muestra el error real que devuelve Railway/Backend
+      r.text().then(msg => alert("Error del servidor: " + msg))
     }
   })
   .catch(err => alert("Error de conexión con el servidor."))
