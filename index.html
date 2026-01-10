@@ -1,65 +1,271 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Tienda</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-    }
-    .product {
-      border: 1px solid #ddd;
-      padding: 15px;
-      margin: 15px 0;
-      max-width: 300px;
-    }
-    .product img {
-      width: 100%;
-      max-height: 200px;
-      object-fit: contain;
-    }
-    .price {
-      color: green;
-      font-weight: bold;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>DomBet Informática</title>
+
+<style>
+html { zoom: 0.9; }
+body { margin: 0; font-family: Arial, sans-serif; background: white; }
+
+/* HEADER */
+header {
+    background: #0a1a3a;
+    padding: 16px 22px;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    position: relative;
+}
+
+.logo-left { cursor: pointer; line-height: .9; }
+.logo-left .brand { font-size: 48px; font-weight: 900; }
+.logo-left .sub { font-size: 17px; letter-spacing: 8px; }
+
+/* SEARCH */
+.search-box {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 760px;
+}
+.search-wrapper input {
+    width: 100%;
+    padding: 16px 20px 16px 54px;
+    border-radius: 10px;
+    border: none;
+    font-size: 17px;
+}
+.search-icon {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 22px;
+    fill: #999;
+}
+.search-results {
+    position: absolute;
+    top: 65px;
+    width: 100%;
+    background: white;
+    border-radius: 14px;
+    box-shadow: 0 15px 40px rgba(0,0,0,.25);
+    display: none;
+    z-index: 200;
+}
+.result-item {
+    padding: 12px;
+    display: flex;
+    gap: 10px;
+    cursor: pointer;
+}
+.result-item img { width: 50px; height: 50px; object-fit: contain; }
+
+/* PRODUCTS */
+.products {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 22px;
+    padding: 22px;
+}
+.card { cursor: pointer; transition: transform .3s; }
+.card:hover { transform: scale(1.03); }
+.card img { width: 100%; height: 200px; object-fit: contain; }
+.name { font-size: 15px; height: 36px; overflow: hidden; }
+.price { color: #1b8f3a; font-size: 20px; font-weight: bold; }
+
+.btn-hover-cart {
+    background: #0a1a3a;
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 8px;
+    margin-top: 8px;
+    width: 100%;
+    cursor: pointer;
+}
+
+/* DETAIL */
+.detail { display: none; padding: 26px; }
+.detail-wrap {
+    max-width: 1180px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 45px;
+}
+.main-img img {
+    width: 100%;
+    height: 480px;
+    object-fit: contain;
+}
+.qty { display: flex; gap: 10px; margin-top: 10px; }
+.qty-btn {
+    width: 32px;
+    height: 32px;
+    background: #0a1a3a;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+.buy-now {
+    background: #25D366;
+    color: white;
+    border: none;
+    padding: 15px;
+    font-size: 18px;
+    border-radius: 14px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+.btn-add-cart {
+    background: #0a1a3a;
+    color: white;
+    border: none;
+    padding: 15px;
+    font-size: 18px;
+    border-radius: 14px;
+    cursor: pointer;
+}
+</style>
 </head>
+
 <body>
 
-<h1>Productos</h1>
-<div id="products">Cargando productos...</div>
+<header>
+    <div class="logo-left" onclick="goHome()">
+        <div class="brand">DOMBET</div>
+        <div class="sub">Informática</div>
+    </div>
+
+    <div class="search-box">
+        <div class="search-wrapper">
+            <svg class="search-icon" viewBox="0 0 24 24">
+                <path d="M15.5 14h-.8l-.3-.3a6 6 0 1 0-.7.7l.3.3v.8l5 5 1.5-1.5z"/>
+            </svg>
+            <input id="search" placeholder="¿Qué estás buscando?" oninput="renderList()">
+            <div class="search-results" id="searchResults"></div>
+        </div>
+    </div>
+</header>
+
+<div class="products" id="list"></div>
+
+<div class="detail" id="detail">
+    <div class="detail-wrap">
+        <div class="main-img">
+            <img id="detailImg">
+        </div>
+        <div>
+            <h2 id="dName"></h2>
+            <div class="price" id="dPrice"></div>
+            <p id="dDesc"></p>
+
+            <div class="qty">
+                <button class="qty-btn" onclick="changeQty(-1)">−</button>
+                <div id="dQty">1</div>
+                <button class="qty-btn" onclick="changeQty(1)">+</button>
+            </div>
+
+            <div style="margin:10px 0;font-weight:bold">
+                Total: Gs. <span id="total">0</span>
+            </div>
+
+            <button class="btn-add-cart" onclick="addToCart()">Agregar al carrito</button>
+            <button class="buy-now" onclick="buyWhatsApp()">Comprar por WhatsApp</button>
+        </div>
+    </div>
+</div>
 
 <script>
-fetch("https://dombet-backend.onrender.com/products")
-  .then(res => {
-    if (!res.ok) throw new Error("Error al cargar productos");
-    return res.json();
-  })
-  .then(data => {
-    const cont = document.getElementById("products");
-    cont.innerHTML = "";
+let products = [], current = null, qty = 1;
+const API = "https://dombet-backend.onrender.com/products";
 
-    if (data.length === 0) {
-      cont.innerHTML = "<p>No hay productos disponibles</p>";
-      return;
-    }
-
-    data.forEach(p => {
-      cont.innerHTML += `
-        <div class="product">
-          <h3>${p.name}</h3>
-          <img src="${p.image}" alt="${p.name}">
-          <p>${p.description}</p>
-          <p class="price">Gs. ${p.price}</p>
-        </div>
-      `;
-    });
-  })
-  .catch(err => {
-    document.getElementById("products").innerHTML =
-      "<p>Error cargando productos</p>";
-    console.error(err);
+/* LOAD */
+fetch(API)
+  .then(r => r.json())
+  .then(d => {
+    products = d;
+    renderList();
   });
+
+function renderList() {
+    const q = search.value.toLowerCase();
+    list.innerHTML = "";
+    searchResults.innerHTML = "";
+    let found = false;
+
+    products.forEach((p, i) => {
+        if (!(`${p.name} ${p.description}`.toLowerCase().includes(q))) return;
+
+        list.innerHTML += `
+        <div class="card" onclick="openDetail(${i})">
+            <img src="${p.image}">
+            <div class="name">${p.name}</div>
+            <div class="price">Gs. ${Number(p.price).toLocaleString()}</div>
+            <button class="btn-hover-cart" onclick="event.stopPropagation(); openDetail(${i})">
+                Ver producto
+            </button>
+        </div>`;
+
+        if (q) {
+            found = true;
+            searchResults.innerHTML += `
+            <div class="result-item" onclick="openDetail(${i})">
+                <img src="${p.image}">
+                <div>
+                    <div>${p.name}</div>
+                    <div class="price">Gs. ${Number(p.price).toLocaleString()}</div>
+                </div>
+            </div>`;
+        }
+    });
+
+    searchResults.style.display = (q && found) ? "block" : "none";
+}
+
+function openDetail(i) {
+    current = products[i];
+    qty = 1;
+    list.style.display = "none";
+    detail.style.display = "block";
+
+    detailImg.src = current.image;
+    dName.innerText = current.name;
+    dDesc.innerText = current.description;
+    dPrice.innerText = `Gs. ${Number(current.price).toLocaleString()}`;
+    updateTotal();
+}
+
+function changeQty(v) {
+    qty = Math.max(1, qty + v);
+    updateTotal();
+}
+
+function updateTotal() {
+    dQty.innerText = qty;
+    total.innerText = (qty * Number(current.price)).toLocaleString();
+}
+
+function goHome() {
+    detail.style.display = "none";
+    list.style.display = "grid";
+}
+
+function addToCart() {
+    alert("Carrito listo para siguiente paso 😄");
+}
+
+function buyWhatsApp() {
+    const msg = `Hola! Quiero comprar:
+${current.name}
+Cantidad: ${qty}
+Total: Gs. ${(qty * current.price).toLocaleString()}`;
+    window.open("https://wa.me/595985697384?text=" + encodeURIComponent(msg));
+}
 </script>
 
 </body>
