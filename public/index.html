@@ -10,7 +10,7 @@
 <div id="products"></div>
 
 <script>
-fetch("/products")
+fetch("https://dombet-backend.onrender.com/products")
   .then(res => res.json())
   .then(data => {
     const cont = document.getElementById("products");
@@ -29,3 +29,4 @@ fetch("/products")
 
 </body>
 </html>
+
