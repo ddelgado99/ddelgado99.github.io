@@ -119,6 +119,14 @@ header {
 .cart-icon-wrap { position: relative; cursor: pointer; margin-left: 15px; }
 .cart-icon { width: 28px; height: 28px; fill: white; }
 .cart-count { position: absolute; top: -5px; right: -8px; background: #d32f2f; color: white; font-size: 12px; font-weight: bold; padding: 2px 6px; border-radius: 10px; }
+@keyframes heartbeat {
+    0% { transform: scale(1); }
+    15% { transform: scale(1.15); }
+    30% { transform: scale(1); }
+    45% { transform: scale(1.15); }
+    60% { transform: scale(1); }
+}
+.cart-pulse .cart-icon { animation: heartbeat 2s infinite; }
 
 .cart-view { display: none; position: fixed; top: 0; right: 0; height: auto; max-height: 100vh; width: 100%; max-width: 400px; background: white; z-index: 1000; box-shadow: -5px 0 15px rgba(0,0,0,0.1); flex-direction: column; padding: 20px; box-sizing: border-box; transition: transform 0.3s; }
 .cart-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 15px; }
@@ -464,6 +472,9 @@ header {
     <div class="cart-footer" style="border-top: 1px solid #eee; padding-top: 15px;">
         <div class="total" style="display:flex; justify-content:space-between; margin-bottom:15px;"><span>Total:</span> <span id="cartTotal">Gs. 0</span></div>
         <button class="buy-now" style="width:100%; margin:0;" onclick="checkout()">Comprar Carrito por WhatsApp</button>
+        <div style="text-align:center; margin-top:10px;">
+            <span style="color:#d32f2f; cursor:pointer; font-size:14px; text-decoration:underline;" onclick="emptyCart()">Vaciar Carrito</span>
+        </div>
     </div>
 </div>
 
@@ -614,7 +625,11 @@ function addToListCart(i) {
     openCart();
 }
 function updateCartCount() {
-    document.getElementById('cartCount').innerText = cart.reduce((acc, item) => acc + item.qty, 0);
+    const count = cart.reduce((acc, item) => acc + item.qty, 0);
+    document.getElementById('cartCount').innerText = count;
+    const wrap = document.querySelector('.cart-icon-wrap');
+    if(count > 0) wrap.classList.add('cart-pulse');
+    else wrap.classList.remove('cart-pulse');
 }
 function toggleCart() {
     const cv = document.getElementById('cartView');
@@ -694,7 +709,11 @@ function removeFromCart(index) {
 }
 function checkout() {
     if(cart.length === 0) return alert("El carrito está vacío");
-    let msg = "Holaaa! Quiero comprar lo siguiente:\n\n";
+    
+    const name = prompt("Por favor, ingresá tu nombre para el pedido:");
+    if(!name) return;
+
+    let msg = `Hola! Soy ${name}. Quiero comprar lo siguiente:\n\n`;
     let total = 0;
     cart.forEach(item => {
         const subtotal = item.qty * item.finalPrice;
@@ -703,6 +722,15 @@ function checkout() {
     });
     msg += `\n*TOTAL: Gs. ${total.toLocaleString()}*`;
     window.open("https://wa.me/595985697384?text="+encodeURIComponent(msg));
+}
+
+function emptyCart() {
+    if(confirm("¿Estás seguro de que querés vaciar el carrito?")) {
+        cart = [];
+        saveCart();
+        updateCartCount();
+        renderCartItems();
+    }
 }
 
 function saveCart(){ localStorage.setItem('cart', JSON.stringify(cart)); }
