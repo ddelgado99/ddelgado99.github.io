@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>DomBet Admin</title>
+<title>DOMBET ADMIN</title>
 <style>
 /* Estilos base heredados de index.html para consistencia */
 html{zoom:.9}
@@ -150,7 +150,7 @@ function render() {
   const list = document.getElementById('list')
   list.innerHTML = products.map((p, i) => `
     <tr>
-      <td><img src="${p.image}" class="prod-img"></td>
+      <td><img src="${p.image}" class="prod-img" onerror="this.src='https://via.placeholder.com/60?text=Sin+Img'"></td>
       <td><strong>${p.name}</strong></td>
       <td style="color:#666; font-size:14px;">${p.description ? p.description.substring(0, 50) + '...' : ''}</td>
       <td style="font-weight:bold; color:#0a1a3a;">Gs. ${Number(p.price).toLocaleString()}</td>
@@ -203,7 +203,7 @@ function saveProduct() {
   const id = pId.value
   const data = {
     name: pName.value,
-    image: pImg.value,
+    image: pImg.value.trim(),
     price: Number(pPrice.value),
     description: pDesc.value
   }
