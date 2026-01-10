@@ -43,11 +43,28 @@ app.get("/products", (req, res) => {
   db.query("SELECT * FROM products", (err, results) => {
     if (err) return res.status(500).json(err);
     
-    // Parsear images de string a JSON array para que el frontend funcione
-    const products = results.map(p => ({
-      ...p,
-      images: typeof p.images === 'string' ? JSON.parse(p.images) : p.images
-    }));
+    // Adaptar los datos de la DB al formato que espera el frontend
+    const products = results.map(p => {
+      // 1. Manejo de imágenes: soporta columna 'image' (singular) o 'images' (JSON array)
+      let imgs = [];
+      if (p.image) {
+        imgs = [p.image]; // Si viene de la columna 'image' (tu caso actual)
+      } else if (p.images) {
+        try {
+          imgs = typeof p.images === 'string' ? JSON.parse(p.images) : p.images;
+        } catch (e) { imgs = []; }
+      }
+
+      // 2. Manejo de disponibilidad: si no existe la columna, asumimos disponible (1)
+      const isAvailable = (p.available !== undefined && p.available !== null) ? p.available : 1;
+
+      return {
+        ...p,
+        images: Array.isArray(imgs) ? imgs : [],
+        available: isAvailable,
+        discount: p.discount || 0
+      };
+    });
     
     res.json(products);
   });
