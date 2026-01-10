@@ -748,33 +748,3 @@ Total: Gs. ${(qty*f).toLocaleString()}`;
 
 </body>
 </html>
-        msg += `* ${item.name} (x${item.qty}) - Gs. ${subtotal.toLocaleString()}\n`;
-    });
-    msg += `\n*TOTAL: Gs. ${total.toLocaleString()}*`;
-    window.open("https://wa.me/595985697384?text="+encodeURIComponent(msg));
-}
-
-function emptyCart() {
-    if(confirm("¿Estás seguro de que querés vaciar el carrito?")) {
-        cart = [];
-        saveCart();
-        updateCartCount();
-        renderCartItems();
-    }
-}
-
-function saveCart(){ localStorage.setItem('cart', JSON.stringify(cart)); }
-
-/* WHATSAPP */
-function buyWhatsApp(){
-    const f=Math.round(current.price-(current.price*(current.discount||0)/100));
-    const msg=`Hola! Me gustaría comprar lo siguiente:
-${current.name}
-Cantidad: ${qty}
-Total: Gs. ${(qty*f).toLocaleString()}`;
-    window.open("https://wa.me/595985697384?text="+encodeURIComponent(msg));
-}
-</script>
-
-</body>
-</html>
