@@ -113,7 +113,8 @@ textarea.form-control { resize: vertical; min-height: 100px; }
     
     <div class="form-group">
       <label>URL de Imagen</label>
-      <input type="text" class="form-control" id="pImg" placeholder="https://...">
+      <input type="text" class="form-control" id="pImg" placeholder="https://..." oninput="updatePreview()">
+      <img id="preview" src="" style="display:none; width: 100px; height: 100px; object-fit: contain; margin-top: 10px; border: 1px solid #ddd; border-radius: 4px;">
     </div>
 
     <div class="form-group">
@@ -172,6 +173,7 @@ const pName = document.getElementById('pName')
 const pImg = document.getElementById('pImg')
 const pPrice = document.getElementById('pPrice')
 const pDesc = document.getElementById('pDesc')
+const preview = document.getElementById('preview')
 
 function openModal() {
   // Resetear formulario
@@ -181,6 +183,7 @@ function openModal() {
   pPrice.value = ''
   pDesc.value = ''
   modalTitle.innerText = "Nuevo Producto"
+  updatePreview()
   modal.style.display = 'flex'
 }
 
@@ -196,6 +199,7 @@ function editProduct(index) {
   pPrice.value = p.price
   pDesc.value = p.description
   modalTitle.innerText = "Editar Producto"
+  updatePreview()
   modal.style.display = 'flex'
 }
 
@@ -208,26 +212,22 @@ function saveProduct() {
     description: pDesc.value
   }
 
-  if (id) {
-    // Actualizar existente
-    fetch(`${API_URL}/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    }).then(() => {
-      location.reload() 
-    })
-  } else {
-    // Crear nuevo
-    fetch(API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    }).then(() => {
+  const method = id ? 'PUT' : 'POST'
+  const url = id ? `${API_URL}/${id}` : API_URL
+
+  fetch(url, {
+    method: method,
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  })
+  .then(r => {
+    if (r.ok) {
       location.reload()
-    })
-  }
-  closeModal()
+    } else {
+      alert("Error al guardar. Verifica que la URL no sea demasiado larga (máx 255 caracteres). Intenta usar una URL más corta.")
+    }
+  })
+  .catch(err => alert("Error de conexión con el servidor."))
 }
 
 function deleteProduct(id) {
@@ -237,6 +237,17 @@ function deleteProduct(id) {
     }).then(() => {
       location.reload()
     })
+  }
+}
+
+function updatePreview() {
+  const url = pImg.value.trim()
+  if (url) {
+    preview.src = url
+    preview.style.display = 'block'
+    preview.onerror = () => preview.style.display = 'none'
+  } else {
+    preview.style.display = 'none'
   }
 }
 
