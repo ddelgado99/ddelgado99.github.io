@@ -55,26 +55,29 @@ header{background:#0a1a3a;padding:16px 22px;color:#fff;display:flex;align-items:
 /* Estilos del buscador */
 .search-container {
   flex: 1;
-  max-width: 700px;
+  max-width: 600px;
   margin: 0 auto; /* Centra en el espacio disponible */
   position: relative;
   display: flex;
+  background: #fff;
+  border-radius: 30px; /* Bordes redondeados elegantes */
+  padding: 2px;
 }
 .search-input {
   width: 100%;
   padding: 12px 20px;
-  border-radius: 8px 0 0 8px; /* Bordes redondeados pero rectangulares */
+  border-radius: 30px;
   border: none;
   outline: none;
   font-size: 16px;
+  background: transparent;
 }
 .search-btn {
-  background: #ff6600; /* Color de acento estilo tienda (naranja/rojo) */
+  background: transparent;
   border: none;
-  padding: 0 25px;
-  border-radius: 0 8px 8px 0;
+  padding: 0 20px;
   cursor: pointer;
-  color: #fff;
+  color: #888; /* Lupa gris */
   font-size: 20px;
   display: flex;
   align-items: center;
@@ -233,7 +236,7 @@ header{background:#0a1a3a;padding:16px 22px;color:#fff;display:flex;align-items:
   <div class="detail-container">
     <!-- Columna Izquierda: Imagen -->
     <div class="detail-left">
-      <img id="dImg" style="width:100%; max-width:500px; object-fit:contain;">
+      <img id="dImg" style="width:100%; max-width:500px; object-fit:contain;" onerror="this.src='https://via.placeholder.com/500?text=Sin+Imagen'">
     </div>
     
     <!-- Columna Derecha: Info -->
@@ -283,7 +286,7 @@ function renderList(){
   products.forEach((p,i)=>{
     list.innerHTML+=`
       <div class="card" onclick="openDetail(${i})">
-        <img src="${p.image}">
+        <img src="${p.image}" onerror="this.src='https://via.placeholder.com/300?text=Sin+Imagen'">
         <div class="name">${p.name}</div>
         <div class="price">Gs. ${Number(p.price).toLocaleString()}</div>
         <button class="btn-hover-cart"
@@ -354,7 +357,7 @@ searchInput.addEventListener('input', (e) => {
       const idx = products.indexOf(p)
       return `
         <div class="search-item" onclick="openDetail(${idx}); searchResults.style.display='none'; searchInput.value=''">
-          <img src="${p.image}">
+          <img src="${p.image}" onerror="this.src='https://via.placeholder.com/50?text=...'">
           <div>${p.name}</div>
         </div>
       `
