@@ -1,65 +1,118 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Tienda</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-    }
-    .product {
-      border: 1px solid #ddd;
-      padding: 15px;
-      margin: 15px 0;
-      max-width: 300px;
-    }
-    .product img {
-      width: 100%;
-      max-height: 200px;
-      object-fit: contain;
-    }
-    .price {
-      color: green;
-      font-weight: bold;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>DomBet Informática</title>
+
+<style>
+html{zoom:.9}
+body{margin:0;font-family:Arial,sans-serif;background:#fff}
+header{background:#0a1a3a;padding:16px 22px;color:#fff;display:flex;align-items:center;gap:25px}
+.logo-left{cursor:pointer}
+.brand{font-size:48px;font-weight:900}
+.sub{font-size:17px;letter-spacing:8px}
+
+.products{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:22px;padding:22px}
+.card{cursor:pointer;border:1px solid #eee;border-radius:12px;padding:12px;transition:.3s}
+.card:hover{transform:scale(1.03)}
+.card img{width:100%;height:180px;object-fit:contain}
+
+.name{font-size:15px;color:#333;height:36px;overflow:hidden}
+.price{color:#1b8f3a;font-size:20px;font-weight:bold}
+
+.btn-hover-cart{
+  background:#0a1a3a;color:#fff;border:none;
+  padding:10px;border-radius:8px;
+  width:100%;margin-top:10px;
+  cursor:pointer
+}
+
+.detail{display:none;padding:30px}
+.detail img{width:100%;max-height:400px;object-fit:contain}
+
+.buy-now{
+  background:#25D366;color:#fff;border:none;
+  padding:15px;font-size:18px;border-radius:14px;
+  width:100%;margin-top:15px;cursor:pointer
+}
+</style>
 </head>
+
 <body>
 
-<h1>Productos</h1>
-<div id="products">Cargando productos...</div>
+<header>
+  <div class="logo-left" onclick="goHome()">
+    <div class="brand">DOMBET</div>
+    <div class="sub">Informática</div>
+  </div>
+</header>
+
+<div class="products" id="list"></div>
+
+<div class="detail" id="detail">
+  <h2 id="dName"></h2>
+  <img id="dImg">
+  <p id="dDesc"></p>
+  <div class="price" id="dPrice"></div>
+  <button class="buy-now" onclick="buyWhatsApp()">Comprar por WhatsApp</button>
+</div>
 
 <script>
+let products=[]
+let current=null
+
 fetch("https://dombet-backend.onrender.com/products")
-  .then(res => {
-    if (!res.ok) throw new Error("Error al cargar productos");
-    return res.json();
-  })
-  .then(data => {
-    const cont = document.getElementById("products");
-    cont.innerHTML = "";
+.then(r=>r.json())
+.then(d=>{
+  products=d
+  renderList()
+})
 
-    if (data.length === 0) {
-      cont.innerHTML = "<p>No hay productos disponibles</p>";
-      return;
-    }
+function renderList(){
+  list.innerHTML=""
+  detail.style.display="none"
+  list.style.display="grid"
 
-    data.forEach(p => {
-      cont.innerHTML += `
-        <div class="product">
-          <h3>${p.name}</h3>
-          <img src="${p.image}" alt="${p.name}">
-          <p>${p.description}</p>
-          <p class="price">Gs. ${p.price}</p>
-        </div>
-      `;
-    });
+  products.forEach((p,i)=>{
+    list.innerHTML+=`
+      <div class="card" onclick="openDetail(${i})">
+        <img src="${p.image}">
+        <div class="name">${p.name}</div>
+        <div class="price">Gs. ${Number(p.price).toLocaleString()}</div>
+        <button class="btn-hover-cart"
+          onclick="event.stopPropagation(); buyQuick(${i})">
+          Comprar
+        </button>
+      </div>
+    `
   })
-  .catch(err => {
-    document.getElementById("products").innerHTML =
-      "<p>Error cargando productos</p>";
-    console.error(err);
-  });
+}
+
+function openDetail(i){
+  current=products[i]
+  list.style.display="none"
+  detail.style.display="block"
+
+  dName.innerText=current.name
+  dImg.src=current.image
+  dDesc.innerText=current.description
+  dPrice.innerText="Gs. "+Number(current.price).toLocaleString()
+}
+
+function goHome(){
+  renderList()
+}
+
+function buyQuick(i){
+  const p=products[i]
+  const msg=`Hola! Quiero comprar:\n${p.name}\nPrecio: Gs. ${p.price}`
+  window.open("https://wa.me/595985697384?text="+encodeURIComponent(msg))
+}
+
+function buyWhatsApp(){
+  const msg=`Hola! Quiero comprar:\n${current.name}\nPrecio: Gs. ${current.price}`
+  window.open("https://wa.me/595985697384?text="+encodeURIComponent(msg))
+}
 </script>
 
 </body>
