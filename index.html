@@ -7,7 +7,7 @@
 <style>
 html{zoom:.9}
 body{margin:0;font-family:Arial,sans-serif;background:#fff}
-header{background:#0a1a3a;padding:16px 22px;color:#fff;display:flex;align-items:center;gap:25px}
+header{background:#0a1a3a;padding:16px 22px;color:#fff;display:flex;align-items:center;gap:25px;position:relative}
 
 /* Modificaciones para el logo */
 .logo-left{
@@ -54,19 +54,19 @@ header{background:#0a1a3a;padding:16px 22px;color:#fff;display:flex;align-items:
 
 /* Estilos del buscador */
 .search-container {
-  flex: 1;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
   max-width: 600px;
-  margin: 0 auto; /* Centra en el espacio disponible */
-  position: relative;
   display: flex;
   background: #fff;
-  border-radius: 30px; /* Bordes redondeados elegantes */
-  padding: 2px;
+  border-radius: 8px; /* Rectangular con bordes redondeados */
 }
 .search-input {
   width: 100%;
   padding: 12px 20px;
-  border-radius: 30px;
+  border-radius: 8px 0 0 8px;
   border: none;
   outline: none;
   font-size: 16px;
@@ -77,8 +77,7 @@ header{background:#0a1a3a;padding:16px 22px;color:#fff;display:flex;align-items:
   border: none;
   padding: 0 20px;
   cursor: pointer;
-  color: #888; /* Lupa gris */
-  font-size: 20px;
+  border-radius: 0 8px 8px 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -225,7 +224,11 @@ header{background:#0a1a3a;padding:16px 22px;color:#fff;display:flex;align-items:
   </div>
   <div class="search-container" id="searchContainer">
     <input type="text" class="search-input" id="searchInput" placeholder="Buscar productos...">
-    <button class="search-btn">🔍</button>
+    <button class="search-btn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+    </button>
     <div class="search-results" id="searchResults"></div>
   </div>
 </header>
