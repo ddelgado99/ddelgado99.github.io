@@ -51,6 +51,58 @@ header{background:#0a1a3a;padding:16px 22px;color:#fff;display:flex;align-items:
   padding:15px;font-size:18px;border-radius:14px;
   width:100%;margin-top:15px;cursor:pointer
 }
+
+/* Estilos del buscador */
+.search-container {
+  flex: 1;
+  max-width: 600px;
+  margin: 0 auto; /* Centra en el espacio disponible */
+  position: relative;
+}
+.search-input {
+  width: 100%;
+  padding: 12px 20px;
+  border-radius: 30px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+.search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  z-index: 100;
+  max-height: 400px;
+  overflow-y: auto;
+  display: none;
+  margin-top: 8px;
+}
+.search-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+  color: #333;
+  transition: .2s;
+}
+.search-item:hover {
+  background: #f5f5f5;
+}
+.search-item img {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  margin-right: 15px;
+}
+.search-item:last-child {
+  border-bottom: none;
+}
 </style>
 </head>
 
@@ -63,6 +115,10 @@ header{background:#0a1a3a;padding:16px 22px;color:#fff;display:flex;align-items:
     <div class="sub">
       <span>I</span><span>n</span><span>f</span><span>o</span><span>r</span><span>m</span><span>á</span><span>t</span><span>i</span><span>c</span><span>a</span>
     </div>
+  </div>
+  <div class="search-container" id="searchContainer">
+    <input type="text" class="search-input" id="searchInput" placeholder="Buscar productos...">
+    <div class="search-results" id="searchResults"></div>
   </div>
 </header>
 
@@ -132,6 +188,42 @@ function buyWhatsApp(){
   const msg=`Hola! Quiero comprar:\n${current.name}\nPrecio: Gs. ${current.price}`
   window.open("https://wa.me/595985697384?text="+encodeURIComponent(msg))
 }
+
+// Lógica del buscador
+const searchInput = document.getElementById('searchInput')
+const searchResults = document.getElementById('searchResults')
+const searchContainer = document.getElementById('searchContainer')
+
+searchInput.addEventListener('input', (e) => {
+  const term = e.target.value.toLowerCase().trim()
+  if (!term) {
+    searchResults.style.display = 'none'
+    return
+  }
+  
+  const filtered = products.filter(p => p.name.toLowerCase().includes(term))
+  
+  if (filtered.length > 0) {
+    searchResults.innerHTML = filtered.map(p => {
+      const idx = products.indexOf(p)
+      return `
+        <div class="search-item" onclick="openDetail(${idx}); searchResults.style.display='none'; searchInput.value=''">
+          <img src="${p.image}">
+          <div>${p.name}</div>
+        </div>
+      `
+    }).join('')
+    searchResults.style.display = 'block'
+  } else {
+    searchResults.style.display = 'none'
+  }
+})
+
+window.addEventListener('click', (e) => {
+  if (!searchContainer.contains(e.target)) {
+    searchResults.style.display = 'none'
+  }
+})
 </script>
 
 </body>
