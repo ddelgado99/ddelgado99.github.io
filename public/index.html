@@ -2,15 +2,31 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>DomBet Informática</title>
+<title>DOMBET INFORMATICA</title>
 
 <style>
 html{zoom:.9}
 body{margin:0;font-family:Arial,sans-serif;background:#fff}
 header{background:#0a1a3a;padding:16px 22px;color:#fff;display:flex;align-items:center;gap:25px}
-.logo-left{cursor:pointer}
-.brand{font-size:48px;font-weight:900}
-.sub{font-size:17px;letter-spacing:8px}
+
+/* Modificaciones para el logo */
+.logo-left{
+  cursor:pointer;
+  display: flex;
+  flex-direction: column;
+  /* El contenedor tomará el ancho del elemento más ancho (DOMBET) */
+}
+.brand{
+  font-size:48px;
+  font-weight:900;
+  line-height: 1; /* Ajuste para reducir espacio vertical */
+}
+.sub{
+  font-size:17px;
+  display: flex;
+  justify-content: space-between; /* Distribuye las letras uniformemente */
+  width: 100%; /* Asegura que ocupe todo el ancho del contenedor */
+}
 
 .products{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:22px;padding:22px}
 .card{cursor:pointer;border:1px solid #eee;border-radius:12px;padding:12px;transition:.3s}
@@ -43,7 +59,10 @@ header{background:#0a1a3a;padding:16px 22px;color:#fff;display:flex;align-items:
 <header>
   <div class="logo-left" onclick="goHome()">
     <div class="brand">DOMBET</div>
-    <div class="sub">Informática</div>
+    <!-- Se separan las letras para lograr la alineación perfecta con flexbox -->
+    <div class="sub">
+      <span>I</span><span>n</span><span>f</span><span>o</span><span>r</span><span>m</span><span>á</span><span>t</span><span>i</span><span>c</span><span>a</span>
+    </div>
   </div>
 </header>
 
@@ -81,7 +100,7 @@ function renderList(){
         <div class="price">Gs. ${Number(p.price).toLocaleString()}</div>
         <button class="btn-hover-cart"
           onclick="event.stopPropagation(); buyQuick(${i})">
-          Comprar
+          Añadir a carrito
         </button>
       </div>
     `
