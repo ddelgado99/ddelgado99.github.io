@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin</title>
+</head>
+<body>
+
+<h1>Admin Productos</h1>
+
+<input id="name" placeholder="Nombre"><br>
+<input id="price" placeholder="Precio"><br>
+<button onclick="guardar()">Guardar</button>
+
+<script>
+function guardar() {
+  fetch("/products", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      name: name.value,
+      description: "",
+      price: price.value,
+      discount: 0,
+      available: true,
+      images: []
+    })
+  })
+  .then(res => res.json())
+  .then(() => alert("Guardado"));
+}
+</script>
+
+</body>
+</html>
