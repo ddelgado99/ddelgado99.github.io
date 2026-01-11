@@ -253,37 +253,36 @@ header{
   }
 }
 
-/* GALERIA CON MINIATURAS A LA IZQUIERDA */
+/* GALERIA */
 .gallery{
   flex: 1.5; 
   width: 100%;
   position: relative;
   display: flex;
-  flex-direction: column; /* Movil: Vertical (foto arriba, thumbs abajo) */
+  flex-direction: column;
   gap: 15px;
 }
 
 @media (min-width: 768px) {
-  .gallery {
-    flex-direction: row; /* PC: Horizontal (thumbs izq, foto der) */
-  }
+  .gallery { flex-direction: row; }
 }
 
-/* CONTENEDOR MINIATURAS */
+/* MINIATURAS (OCULTAS EN MOVIL EN VISTA PRINCIPAL) */
 .thumbs{
-  display:flex;
+  display:none; /* Oculto por defecto en movil */
   gap:10px;
   justify-content: center; 
   overflow-x: auto; 
-  order: 2; /* Movil: Abajo */
+  order: 2;
 }
 
 @media (min-width: 768px) {
   .thumbs {
-    flex-direction: column; /* PC: Vertical */
-    order: 1; /* PC: Izquierda (antes que la imagen) */
+    display: flex; /* Visible en PC */
+    flex-direction: column;
+    order: 1;
     justify-content: flex-start;
-    width: 80px; /* Ancho fijo columna */
+    width: 80px;
     overflow-y: auto;
     overflow-x: hidden;
     max-height: 600px;
@@ -308,35 +307,41 @@ header{
   display: flex; align-items: center; justify-content: center;
   cursor: zoom-in;
   background: #fff;
-  order: 1; /* Movil: Arriba */
+  order: 1;
+  touch-action: pan-y; /* Permite scroll vertical pero captura horizontal */
 }
 
 @media (min-width: 768px) { 
   .main-img { 
     height: 600px; 
-    order: 2; /* PC: Derecha (despues de thumbs) */
+    order: 2; 
   } 
 }
 
-.main-img img{max-width:100%; max-height:100%; object-fit:contain;}
+.main-img img{max-width:100%; max-height:100%; object-fit:contain; pointer-events: none;}
 
-/* FLECHAS ESTILO NISSEI (SOLO FLECHA NEGRA) */
+/* FLECHAS (OCULTAS EN MOVIL, VISIBLES EN PC) */
 .arrow{
   position:absolute;
   top:50%;
   transform:translateY(-50%);
-  background: none; /* SIN FONDO */
-  color: #000; /* FLECHA NEGRA */
+  background: none;
+  color: #000;
   border:none;
-  font-size: 40px; /* Mas grande */
-  font-weight: 300; /* Fina */
+  font-size: 40px;
+  font-weight: 300;
   width: 50px; height: 60px;
   cursor:pointer;
   z-index: 2;
-  display: flex; align-items: center; justify-content: center;
+  display: none; /* Oculto en movil */
+  align-items: center; justify-content: center;
   transition: opacity 0.2s;
   padding: 0;
 }
+@media (min-width: 768px) {
+  .arrow { display: flex; } /* Visible en PC */
+}
+
 .arrow:hover { opacity: 0.6; }
 .arrow.left{left: 0;}
 .arrow.right{right: 0;}
@@ -517,19 +522,21 @@ header{
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background-color: #ffffff; /* FONDO BLANCO */
+  background-color: #ffffff;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  touch-action: pan-y;
 }
 
 .lightbox-content {
   margin: auto;
   display: block;
-  max-width: 90%;
-  max-height: 90vh;
+  max-width: 95%;
+  max-height: 75vh; /* Dejar espacio para thumbs abajo */
   object-fit: contain;
   animation: zoom 0.3s;
+  pointer-events: none; /* Para que el swipe funcione en el contenedor */
 }
 
 @keyframes zoom {
@@ -537,12 +544,12 @@ header{
   to {transform:scale(1); opacity: 1;}
 }
 
-/* CONTROLES LIGHTBOX (NEGROS) */
+/* CONTROLES LIGHTBOX */
 .close-lightbox {
   position: absolute;
   top: 20px;
   right: 30px;
-  color: #333; /* X Negra */
+  color: #333;
   font-size: 50px;
   font-weight: 300;
   transition: 0.3s;
@@ -550,7 +557,6 @@ header{
   z-index: 3001;
   line-height: 1;
 }
-.close-lightbox:hover { color: #000; }
 
 .lb-arrow {
   cursor: pointer;
@@ -558,18 +564,48 @@ header{
   top: 50%;
   transform: translateY(-50%);
   width: 60px; height: 60px;
-  background: none; /* Sin fondo */
-  color: #333; /* Flecha Negra */
+  background: none;
+  color: #333;
   font-weight: 300;
   font-size: 50px;
   transition: 0.3s ease;
   user-select: none;
-  display: flex; align-items: center; justify-content: center;
+  display: none; /* Oculto en movil (usa swipe) */
+  align-items: center; justify-content: center;
   z-index: 3002;
 }
-.lb-arrow:hover { opacity: 0.6; }
+@media (min-width: 768px) {
+  .lb-arrow { display: flex; }
+}
 .lb-prev { left: 20px; }
 .lb-next { right: 20px; }
+
+/* MINIATURAS EN LIGHTBOX (SOLO VISIBLES AQUI EN MOVIL) */
+.lightbox-thumbs {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  overflow-x: auto;
+  width: 100%;
+  justify-content: center;
+  padding: 10px;
+  background: #fff;
+  position: absolute;
+  bottom: 20px;
+  z-index: 3002;
+}
+.lightbox-thumbs img {
+  width: 60px; height: 60px;
+  object-fit: contain;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  opacity: 0.6;
+}
+.lightbox-thumbs img.active {
+  border-color: #0a1a3a;
+  opacity: 1;
+  border-width: 2px;
+}
 
 </style>
 </head>
@@ -616,7 +652,7 @@ header{
   <div class="detail-box">
     <div class="gallery">
       <div class="thumbs" id="thumbs"></div>
-      <div class="main-img" onclick="openLightbox()">
+      <div class="main-img" id="mainImgContainer" onclick="openLightbox()">
         <button class="arrow left" onclick="prevImg(); event.stopPropagation()">‹</button>
         <img id="mainImg">
         <button class="arrow right" onclick="nextImg(); event.stopPropagation()">›</button>
@@ -677,6 +713,7 @@ header{
   <a class="lb-arrow lb-prev" onclick="changeLightboxImg(-1, event)">&#10094;</a>
   <img class="lightbox-content" id="lightboxImg">
   <a class="lb-arrow lb-next" onclick="changeLightboxImg(1, event)">&#10095;</a>
+  <div class="lightbox-thumbs" id="lightboxThumbs"></div>
 </div>
 
 <script>
@@ -774,6 +811,7 @@ function setImg(i){
   const lb = document.getElementById('lightbox');
   if(lb.style.display === 'flex') {
     document.getElementById('lightboxImg').src = imgs[i];
+    updateLightboxThumbs();
   }
 }
 
@@ -823,6 +861,13 @@ function saveCart(){
   localStorage.setItem('dombet_cart', JSON.stringify(cart));
 }
 
+function removeFromCart(index, event){
+  if(event) event.stopPropagation();
+  cart.splice(index, 1);
+  saveCart();
+  updateCartUI();
+}
+
 function updateCartUI(){
   cartCount.innerText = cart.reduce((acc, item) => acc + item.qty, 0);
   cartItems.innerHTML = "";
@@ -842,7 +887,7 @@ function updateCartUI(){
             <div class="cart-item-price">Gs. ${Number(item.product.price).toLocaleString()}</div>
             <div class="cart-item-qty">Cant: ${item.qty} | Sub: Gs. ${Number(itemTotal).toLocaleString()}</div>
           </div>
-          <button class="btn-trash" onclick="removeFromCart(${index})">
+          <button class="btn-trash" onclick="removeFromCart(${index}, event)">
             <svg viewBox="0 0 24 24"><path d="M9 3v1H4v2h1v13a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6h1V4h-5V3H9M7 6h10v13H7V6m2 2v9h2V8H9m4 0v9h2V8h-2Z"/></svg>
           </button>
         </div>
@@ -851,12 +896,6 @@ function updateCartUI(){
   }
   
   cartTotalDisplay.innerText = "Gs. " + Number(total).toLocaleString();
-}
-
-function removeFromCart(index){
-  cart.splice(index, 1);
-  saveCart();
-  updateCartUI();
 }
 
 function toggleCart(forceState){
@@ -932,9 +971,25 @@ document.addEventListener('click', function(e) {
 function openLightbox() {
   const lb = document.getElementById('lightbox');
   const lbImg = document.getElementById('lightboxImg');
+  const lbThumbs = document.getElementById('lightboxThumbs');
+  
   lb.style.display = 'flex';
   lbImg.src = imgs[imgIndex];
+  
+  // Render thumbs in lightbox
+  lbThumbs.innerHTML = "";
+  imgs.forEach((img, idx) => {
+    lbThumbs.innerHTML += `<img src="${img}" class="${idx===imgIndex?'active':''}" onclick="setImg(${idx})">`;
+  });
+  
   document.body.style.overflow = 'hidden';
+}
+
+function updateLightboxThumbs() {
+  const lbThumbs = document.getElementById('lightboxThumbs');
+  if(lbThumbs.children.length > 0) {
+    [...lbThumbs.children].forEach((t,i)=>t.classList.toggle('active',i===imgIndex));
+  }
 }
 
 function closeLightbox() {
@@ -956,6 +1011,29 @@ document.addEventListener('keydown', function(e) {
     if(e.key === 'ArrowRight') changeLightboxImg(1);
   }
 });
+
+/* SWIPE LOGIC */
+let touchStartX = 0;
+let touchEndX = 0;
+
+function handleTouchStart(e) {
+  touchStartX = e.changedTouches[0].screenX;
+}
+
+function handleTouchEnd(e, callbackNext, callbackPrev) {
+  touchEndX = e.changedTouches[0].screenX;
+  if (touchStartX - touchEndX > 50) callbackNext();
+  if (touchEndX - touchStartX > 50) callbackPrev();
+}
+
+const mainImgContainer = document.getElementById('mainImgContainer');
+mainImgContainer.addEventListener('touchstart', handleTouchStart);
+mainImgContainer.addEventListener('touchend', e => handleTouchEnd(e, nextImg, prevImg));
+
+const lightbox = document.getElementById('lightbox');
+lightbox.addEventListener('touchstart', handleTouchStart);
+lightbox.addEventListener('touchend', e => handleTouchEnd(e, () => changeLightboxImg(1), () => changeLightboxImg(-1)));
+
 </script>
 
 </body>
