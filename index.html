@@ -6,10 +6,67 @@
 
 <style>
 body{margin:0;font-family:Arial,sans-serif;background:#f5f5f5}
-header{background:#0a1a3a;color:#fff;padding:16px 24px;display:flex;align-items:center;gap:30px}
+
+/* ===== HEADER ===== */
+header{
+  background:#0a1a3a;
+  color:#fff;
+  padding:16px 24px;
+  display:flex;
+  align-items:center;
+  position:relative;
+}
 .brand{font-size:42px;font-weight:900;cursor:pointer}
 .sub{font-size:14px;letter-spacing:4px}
 
+/* buscador */
+.search-box{
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  width:520px;
+}
+.search-box input{
+  width:100%;
+  padding:12px 44px 12px 18px;
+  border-radius:10px;
+  border:none;
+  outline:none;
+  font-size:15px;
+}
+.search-box svg{
+  position:absolute;
+  right:14px;
+  top:50%;
+  transform:translateY(-50%);
+  fill:#777;
+}
+.search-results{
+  position:absolute;
+  top:110%;
+  width:100%;
+  background:#fff;
+  border-radius:12px;
+  box-shadow:0 6px 20px rgba(0,0,0,.15);
+  overflow:hidden;
+  display:none;
+  z-index:200;
+}
+.search-item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:10px 14px;
+  cursor:pointer;
+}
+.search-item:hover{background:#f2f2f2}
+.search-item img{
+  width:40px;
+  height:40px;
+  object-fit:contain;
+}
+
+/* ===== LISTADO ===== */
 .products{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
@@ -36,7 +93,6 @@ header{background:#0a1a3a;color:#fff;padding:16px 24px;display:flex;align-items:
   color:#fff;
   border:none;
   border-radius:8px;
-  cursor:pointer;
 }
 
 /* ===== DETALLE ===== */
@@ -57,16 +113,18 @@ header{background:#0a1a3a;color:#fff;padding:16px 24px;display:flex;align-items:
 .main-img{
   width:100%;
   height:420px;
-  overflow:hidden;
   position:relative;
+  overflow:hidden;
+  cursor:zoom-in;
 }
+.main-img.zoom{cursor:zoom-out}
 .main-img img{
   width:100%;
   height:100%;
   object-fit:contain;
   transition:transform .25s ease;
 }
-.main-img:hover img{transform:scale(1.6)}
+.main-img.zoom img{transform:scale(1.8)}
 
 .arrow{
   position:absolute;
@@ -95,29 +153,15 @@ header{background:#0a1a3a;color:#fff;padding:16px 24px;display:flex;align-items:
   border:2px solid transparent;
   border-radius:8px;
   cursor:pointer;
-  transition:.2s;
 }
-.thumbs img.active{
-  border-color:#0a1a3a;
-}
+.thumbs img.active{border-color:#0a1a3a}
 
 /* info */
 .info{flex:1;min-width:300px}
 .info h2{margin:0;font-size:26px}
 .info .price{font-size:32px;margin:15px 0}
-.info p{color:#555;line-height:1.5}
-
-.btn-whats{
-  background:#25D366;
-  font-size:18px;
-  margin-top:15px;
-}
-.back{
-  margin-bottom:15px;
-  cursor:pointer;
-  color:#0a1a3a;
-  font-weight:bold
-}
+.info p{color:#555}
+.back{cursor:pointer;color:#0a1a3a;font-weight:bold}
 </style>
 </head>
 
@@ -128,6 +172,14 @@ header{background:#0a1a3a;color:#fff;padding:16px 24px;display:flex;align-items:
     <div class="brand">DOMBET</div>
     <div class="sub">INFORMÁTICA</div>
   </div>
+
+  <div class="search-box">
+    <input id="searchInput" placeholder="Buscar productos">
+    <svg width="20" height="20" viewBox="0 0 24 24">
+      <path d="M10 2a8 8 0 105.293 14.293l4.707 4.707 1.414-1.414-4.707-4.707A8 8 0 0010 2zm0 2a6 6 0 110 12 6 6 0 010-12z"/>
+    </svg>
+    <div class="search-results" id="searchResults"></div>
+  </div>
 </header>
 
 <div class="products" id="list"></div>
@@ -137,10 +189,10 @@ header{background:#0a1a3a;color:#fff;padding:16px 24px;display:flex;align-items:
   <div class="detail-box">
 
     <div class="gallery">
-      <div class="main-img">
-        <button class="arrow left" id="prevBtn" onclick="prevImg()">‹</button>
+      <div class="main-img" id="zoomBox" onclick="toggleZoom()">
+        <button class="arrow left" onclick="event.stopPropagation();prevImg()">‹</button>
         <img id="mainImg">
-        <button class="arrow right" id="nextBtn" onclick="nextImg()">›</button>
+        <button class="arrow right" onclick="event.stopPropagation();nextImg()">›</button>
       </div>
       <div class="thumbs" id="thumbs"></div>
     </div>
@@ -149,14 +201,13 @@ header{background:#0a1a3a;color:#fff;padding:16px 24px;display:flex;align-items:
       <h2 id="dName"></h2>
       <div class="price" id="dPrice"></div>
       <p id="dDesc"></p>
-      <button class="btn btn-whats" onclick="buyWhats()">Comprar por WhatsApp</button>
     </div>
 
   </div>
 </div>
 
 <script>
-let products=[],current=null,imgs=[],imgIndex=0
+let products=[],current=null,imgs=[],imgIndex=0,zoom=false
 
 fetch("https://dombet-backend.onrender.com/products")
 .then(r=>r.json())
@@ -169,7 +220,7 @@ function renderList(){
   products.forEach((p,i)=>{
     list.innerHTML+=`
       <div class="card" onclick="openDetail(${i})">
-        <img src="${p.image_main || 'https://via.placeholder.com/300'}">
+        <img src="${p.image_main}">
         <div class="name">${p.name}</div>
         <div class="price">Gs. ${Number(p.price).toLocaleString()}</div>
         <button class="btn">Ver producto</button>
@@ -179,14 +230,11 @@ function renderList(){
 
 function openDetail(i){
   current=products[i]
-  imgs=[
-    current.image_main,
-    current.image_thumb1,
-    current.image_thumb2,
-    current.image_thumb3
-  ].filter(Boolean)
-
+  imgs=[current.image_main,current.image_thumb1,current.image_thumb2,current.image_thumb3].filter(Boolean)
   imgIndex=0
+  zoom=false
+  zoomBox.classList.remove('zoom')
+
   list.style.display="none"
   detail.style.display="block"
 
@@ -197,42 +245,42 @@ function openDetail(i){
 
   thumbs.innerHTML=""
   imgs.forEach((img,idx)=>{
-    thumbs.innerHTML+=`
-      <img src="${img}" class="${idx===0?'active':''}" onclick="setImg(${idx})">
-    `
+    thumbs.innerHTML+=`<img src="${img}" class="${idx==0?'active':''}" onclick="setImg(${idx})">`
   })
-
-  prevBtn.style.display = nextBtn.style.display = imgs.length>1 ? 'block':'none'
 }
 
+function toggleZoom(){
+  zoom=!zoom
+  zoomBox.classList.toggle('zoom',zoom)
+}
 function setImg(i){
   imgIndex=i
+  zoom=false
+  zoomBox.classList.remove('zoom')
   mainImg.src=imgs[i]
   updateThumbs()
 }
-
-function prevImg(){
-  imgIndex=(imgIndex-1+imgs.length)%imgs.length
-  mainImg.src=imgs[imgIndex]
-  updateThumbs()
-}
-
-function nextImg(){
-  imgIndex=(imgIndex+1)%imgs.length
-  mainImg.src=imgs[imgIndex]
-  updateThumbs()
-}
-
+function prevImg(){setImg((imgIndex-1+imgs.length)%imgs.length)}
+function nextImg(){setImg((imgIndex+1)%imgs.length)}
 function updateThumbs(){
   [...thumbs.children].forEach((t,i)=>t.classList.toggle('active',i===imgIndex))
 }
-
-function buyWhats(){
-  const msg=`Hola! Quiero comprar:\n${current.name}\nPrecio: Gs. ${current.price}`
-  window.open("https://wa.me/595985697384?text="+encodeURIComponent(msg))
-}
-
 function goHome(){renderList()}
+
+/* buscador predictivo */
+searchInput.oninput=e=>{
+  const t=e.target.value.toLowerCase()
+  if(!t){searchResults.style.display='none';return}
+  const f=products.filter(p=>p.name.toLowerCase().includes(t))
+  searchResults.innerHTML=f.map(p=>{
+    const i=products.indexOf(p)
+    return `<div class="search-item" onclick="openDetail(${i});searchResults.style.display='none'">
+      <img src="${p.image_main}">
+      <div>${p.name}</div>
+    </div>`
+  }).join('')
+  searchResults.style.display='block'
+}
 </script>
 
 </body>
