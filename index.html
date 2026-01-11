@@ -58,14 +58,13 @@ header{
   margin-top: 2px;
 }
 
-/* CAMBIO: Z-Index extremo para asegurar que siempre sea clicable */
 .header-right {
   display: flex;
   align-items: center;
   gap: 15px;
   order: 2;
   position: relative;
-  z-index: 9999; 
+  z-index: 1002; 
 }
 
 .social-link {
@@ -79,7 +78,7 @@ header{
 .social-link:hover { transform: scale(1.1); opacity: 0.8; }
 .social-link svg { width: 22px; height: 22px; fill: currentColor; }
 
-/* CAMBIO: Convertido a botón para mejor respuesta táctil */
+/* BOTÓN DEL CARRITO */
 .cart-trigger {
   position: relative;
   cursor: pointer;
@@ -89,8 +88,14 @@ header{
   background: none;
   border: none;
   outline: none;
+  z-index: 1003;
 }
-.cart-trigger svg { width: 28px; height: 28px; fill: white; }
+/* IMPORTANTE: Esto evita que el clic se pierda en el icono */
+.cart-trigger svg { 
+  width: 28px; height: 28px; fill: white; 
+  pointer-events: none; 
+}
+
 .cart-count {
   position: absolute;
   top: -2px;
@@ -105,6 +110,7 @@ header{
   display: flex;
   align-items: center;
   justify-content: center;
+  pointer-events: none; /* El contador tampoco bloquea el clic */
 }
 
 .search-container {
@@ -585,7 +591,7 @@ header{
   width: 90%;
   max-width: 360px;
   background: #fff;
-  z-index: 2000;
+  z-index: 11000; /* Z-INDEX EXTREMO PARA QUE SIEMPRE SE VEA */
   box-shadow: 0 10px 40px rgba(0,0,0,0.2);
   border-radius: 8px;
   transform: translateY(-10px);
@@ -596,8 +602,7 @@ header{
   max-height: 80vh;
   display: flex;
   flex-direction: column;
-  /* CAMBIO: Borde eliminado */
-  border: none;
+  border: none; /* SIN BORDE */
 }
 
 .cart-panel.open {
@@ -779,8 +784,7 @@ header{
       <svg viewBox="0 0 24 24"><path d="M12.5,2.5C12.5,2.5 12.5,6.5 12.5,6.5C14.5,6.5 16.5,7.5 17.5,9.5C17.5,9.5 17.5,6.5 17.5,6.5C16.5,4.5 14.5,2.5 12.5,2.5M12.5,10.5C12.5,10.5 12.5,18.5 12.5,18.5C12.5,20.5 10.5,21.5 9.5,21.5C7.5,21.5 6.5,19.5 6.5,17.5C6.5,15.5 8.5,14.5 9.5,14.5C9.5,14.5 9.5,11.5 9.5,11.5C6.5,11.5 3.5,14.5 3.5,17.5C3.5,21.5 6.5,24.5 9.5,24.5C14.5,24.5 15.5,20.5 15.5,17.5C15.5,17.5 15.5,10.5 15.5,10.5C17.5,11.5 18.5,13.5 19.5,15.5C19.5,15.5 22.5,15.5 22.5,15.5C21.5,11.5 18.5,9.5 15.5,8.5C15.5,8.5 15.5,2.5 15.5,2.5C14.5,2.5 13.5,2.5 12.5,2.5Z" transform="translate(0 -2)"/></svg>
     </a>
 
-    <!-- CAMBIO: onclick="toggleCart(event)" para pasar el evento -->
-    <button class="cart-trigger" onclick="toggleCart(event)">
+    <button class="cart-trigger" onclick="toggleCart(event)" type="button">
       <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
       <div class="cart-count" id="cartCount">0</div>
     </button>
