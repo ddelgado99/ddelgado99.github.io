@@ -223,7 +223,30 @@ let products=[],current=null,imgs=[],imgIndex=0,qty=1
 
 fetch("https://dombet-backend.onrender.com/products")
 .then(r=>r.json())
-.then(d=>{products=d;renderList()})
+.then(d=>{
+  products=d;
+  // VERIFICAR URL AL CARGAR (Para F5/Refrescar)
+  const params = new URLSearchParams(window.location.search);
+  const pIndex = params.get('p');
+  
+  if(pIndex !== null && products[pIndex]){
+    openDetail(parseInt(pIndex), false); // false = no guardar historial de nuevo
+  } else {
+    renderList();
+  }
+})
+
+// DETECTAR BOTÓN ATRÁS DEL NAVEGADOR
+window.onpopstate = function(event) {
+  const params = new URLSearchParams(window.location.search);
+  const pIndex = params.get('p');
+  
+  if(pIndex !== null && products[pIndex]){
+    openDetail(parseInt(pIndex), false);
+  } else {
+    renderList();
+  }
+};
 
 function renderList(){
   list.innerHTML=""
@@ -240,8 +263,15 @@ function renderList(){
   })
 }
 
-function openDetail(i){
+// Modificado para aceptar parámetro de historial
+function openDetail(i, pushHistory = true){
   current=products[i]
+  
+  // GUARDAR EN HISTORIAL
+  if(pushHistory){
+    history.pushState({index: i}, '', '?p='+i);
+  }
+
   imgs=[current.image_main,current.image_thumb1,current.image_thumb2,current.image_thumb3].filter(Boolean)
   imgIndex=0
   qty=1
@@ -272,7 +302,12 @@ function buyWhats(){
     `Hola! Quiero comprar:\n${current.name}\nCantidad: ${qty}`
   ))
 }
-function goHome(){renderList()}
+
+// Modificado para limpiar la URL
+function goHome(){
+  history.pushState(null, '', window.location.pathname);
+  renderList();
+}
 
 /* BUSCADOR */
 searchInput.oninput=e=>{
