@@ -48,6 +48,8 @@ header{
   flex-direction: column;
   width: max-content;
   animation: elegantBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  position: relative;
+  z-index: 1002; /* Asegura que el logo esté sobre el buscador en pantallas muy estrechas */
 }
 .brand{
   font-size:28px;
@@ -143,12 +145,31 @@ header{
 }
 .search-btn svg { fill: #666; width: 20px; height: 20px; }
 
+/* MEDIA QUERY PARA ESCRITORIO (PC) */
 @media (min-width: 768px) {
-  header { padding: 15px 40px; flex-wrap: nowrap; gap: 40px; }
+  header { 
+    padding: 15px 40px; 
+    flex-wrap: nowrap; 
+    gap: 0; 
+    position: sticky;
+  }
+  
   .brand { font-size: 36px; }
   .sub { font-size: 12.5px; } 
-  .search-container { order: 1; width: auto; max-width: 600px; margin: 0 auto; }
-  .header-right { order: 2; gap: 25px; }
+  
+  /* Buscador centrado absolutamente */
+  .search-container { 
+    order: unset; /* Resetear orden flex */
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 40%;
+    max-width: 600px;
+    margin: 0;
+  }
+  
+  .header-right { order: unset; gap: 25px; }
 }
 
 .search-results{
@@ -502,21 +523,21 @@ header{
   }
 }
 
+/* TÍTULO EN DETALLE (MODIFICADO) */
 .detail-title {
   font-size: 20px;
   font-weight: 700;
   color: #333;
-  margin: 10px 0 15px 0;
+  margin: 0 0 15px 0; /* Margen ajustado */
   line-height: 1.2;
   width: 100%;
-  padding-bottom: 15px;
+  padding-bottom: 10px;
   border-bottom: 1px solid #eee;
 }
 
 @media (min-width: 768px) {
   .detail-title {
     font-size: 32px;
-    margin-top: 15px;
     margin-bottom: 20px;
   }
 }
@@ -978,7 +999,7 @@ header{
 
 <div class="detail" id="detail">
   <div class="detail-box">
-    <h1 class="detail-title" id="dName"></h1>
+    <!-- TÍTULO ELIMINADO DE AQUÍ -->
 
     <div class="detail-columns">
       <div class="gallery">
@@ -991,6 +1012,9 @@ header{
       </div>
 
       <div class="info">
+        <!-- TÍTULO MOVIDO AQUÍ -->
+        <h1 class="detail-title" id="dName"></h1>
+
         <div class="info-header">
           <div class="detail-prices">
             <span class="detail-old" id="dOldPrice"></span>
