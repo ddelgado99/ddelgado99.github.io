@@ -58,25 +58,15 @@ header{
   margin-top: 2px;
 }
 
+/* Z-Index extremo para asegurar que siempre sea clicable */
 .header-right {
   display: flex;
   align-items: center;
   gap: 15px;
   order: 2;
   position: relative;
-  z-index: 1002; 
+  z-index: 9999; 
 }
-
-.social-link {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  text-decoration: none;
-  transition: transform 0.2s, opacity 0.2s;
-}
-.social-link:hover { transform: scale(1.1); opacity: 0.8; }
-.social-link svg { width: 22px; height: 22px; fill: currentColor; }
 
 /* BOTÓN DEL CARRITO */
 .cart-trigger {
@@ -110,7 +100,7 @@ header{
   display: flex;
   align-items: center;
   justify-content: center;
-  pointer-events: none; /* El contador tampoco bloquea el clic */
+  pointer-events: none;
 }
 
 .search-container {
@@ -158,7 +148,6 @@ header{
   .sub { font-size: 12.5px; } 
   .search-container { order: 1; width: auto; max-width: 600px; margin: 0 auto; }
   .header-right { order: 2; gap: 25px; }
-  .social-link svg { width: 24px; height: 24px; }
 }
 
 .search-results{
@@ -197,8 +186,6 @@ header{
   border-bottom: 1px solid #eee;
   max-width: 1400px;
   margin: 0 auto;
-  position: relative;  /* AÑADIR */
-  z-index: 1;          /* AÑADIR */
 }
 
 .sort-container {
@@ -779,13 +766,7 @@ header{
   </div>
 
   <div class="header-right">
-    <a href="https://instagram.com/TU_USUARIO" target="_blank" class="social-link">
-      <svg viewBox="0 0 24 24"><path d="M7.8,2H16.2C19.4,2 22,4.6 22,7.8V16.2A5.8,5.8 0 0,1 16.2,22H7.8C4.6,22 2,19.4 2,16.2V7.8A5.8,5.8 0 0,1 7.8,2M7.6,4A3.6,3.6 0 0,0 4,7.6V16.4C4,18.39 5.61,20 7.6,20H16.4A3.6,3.6 0 0,0 20,16.4V7.6C20,5.61 18.39,4 16.4,4H7.6M17.25,5.5A1.25,1.25 0 0,1 18.5,6.75A1.25,1.25 0 0,1 17.25,8A1.25,1.25 0 0,1 16,6.75A1.25,1.25 0 0,1 17.25,5.5M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9Z" /></svg>
-    </a>
-    <a href="https://tiktok.com/@TU_USUARIO" target="_blank" class="social-link">
-      <svg viewBox="0 0 24 24"><path d="M12.5,2.5C12.5,2.5 12.5,6.5 12.5,6.5C14.5,6.5 16.5,7.5 17.5,9.5C17.5,9.5 17.5,6.5 17.5,6.5C16.5,4.5 14.5,2.5 12.5,2.5M12.5,10.5C12.5,10.5 12.5,18.5 12.5,18.5C12.5,20.5 10.5,21.5 9.5,21.5C7.5,21.5 6.5,19.5 6.5,17.5C6.5,15.5 8.5,14.5 9.5,14.5C9.5,14.5 9.5,11.5 9.5,11.5C6.5,11.5 3.5,14.5 3.5,17.5C3.5,21.5 6.5,24.5 9.5,24.5C14.5,24.5 15.5,20.5 15.5,17.5C15.5,17.5 15.5,10.5 15.5,10.5C17.5,11.5 18.5,13.5 19.5,15.5C19.5,15.5 22.5,15.5 22.5,15.5C21.5,11.5 18.5,9.5 15.5,8.5C15.5,8.5 15.5,2.5 15.5,2.5C14.5,2.5 13.5,2.5 12.5,2.5Z" transform="translate(0 -2)"/></svg>
-    </a>
-
+    <!-- CAMBIO: onclick="toggleCart(event)" para pasar el evento -->
     <button class="cart-trigger" onclick="toggleCart(event)" type="button">
       <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
       <div class="cart-count" id="cartCount">0</div>
@@ -1137,18 +1118,13 @@ function updateCartUI(){
 
 function toggleCart(e){
   const panel = document.getElementById('cartPanel');
-  
   if(typeof e === 'boolean'){
     if(e) panel.classList.add('open');
     else panel.classList.remove('open');
-    return;
+  } else {
+    if(e && e.stopPropagation) e.stopPropagation();
+    panel.classList.toggle('open');
   }
-  
-  if(e) {
-    e.preventDefault();
-    e.stopPropagation();
-  }
-  panel.classList.toggle('open');
 }
 
 document.addEventListener('click', function(e) {
@@ -1287,4 +1263,3 @@ lightbox.addEventListener('touchend', e => handleTouchEnd(e, () => changeLightbo
 
 </body>
 </html>
-
