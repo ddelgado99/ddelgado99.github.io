@@ -30,6 +30,38 @@ body {
   overflow: hidden;
 }
 
+/* ===== PANTALLA DE LOGIN (NUEVO) ===== */
+#loginScreen {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: var(--primary);
+  z-index: 20000;
+  display: flex; justify-content: center; align-items: center;
+  transition: opacity 0.3s;
+}
+
+.login-card {
+  background: var(--white);
+  padding: 40px;
+  border-radius: 12px;
+  width: 90%; max-width: 350px;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
+
+.login-title { font-size: 24px; font-weight: 900; color: var(--primary); margin-bottom: 20px; letter-spacing: 1px; }
+.login-input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 6px; outline: none; font-size: 15px; }
+.login-input:focus { border-color: var(--primary); }
+.btn-login { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 15px; }
+.btn-login:hover { background: #152c5b; }
+.login-error { color: var(--accent); font-size: 13px; margin-top: 10px; display: none; }
+
+/* ===== CONTENIDO ADMIN (Oculto por defecto) ===== */
+#adminContent {
+  display: none; /* Se activa con JS */
+  flex-direction: column;
+  height: 100%;
+}
+
 /* ===== HEADER ADMIN ===== */
 header {
   background: var(--primary);
@@ -44,105 +76,52 @@ header {
   gap: 20px;
 }
 
-.header-left {
-  display: flex;
-  align-items: center;
-  gap: 25px;
-  flex: 1;
-}
+.header-left { display: flex; align-items: center; gap: 25px; flex: 1; }
+.brand { font-size: 20px; font-weight: 900; letter-spacing: 1px; white-space: nowrap; }
 
-.brand {
-  font-size: 20px;
-  font-weight: 900;
-  letter-spacing: 1px;
-  white-space: nowrap;
-}
-
-/* BUSCADOR MODERNO RECTANGULAR */
+/* BUSCADOR RECTANGULAR */
 .admin-search-box {
   display: flex;
-  background: var(--white);
+  background: rgba(255,255,255,0.1);
   border-radius: 4px;
   overflow: hidden;
   width: 100%;
-  max-width: 280px;
+  max-width: 300px;
   height: 36px;
-  border: 1px solid transparent;
-  transition: 0.2s;
-}
-
-.admin-search-box:focus-within {
-  box-shadow: 0 0 0 2px rgba(255,255,255,0.2);
-}
-
-.admin-search-box input {
-  flex-grow: 1;
-  border: none;
-  padding: 0 10px;
-  font-size: 14px;
-  outline: none;
-  color: #333;
-  min-width: 0;
-}
-
-.admin-search-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 10px;
-  color: #666;
-  background: #fff;
-}
-
-/* BOTÓN IR A TIENDA */
-.btn-store {
-  background: rgba(255,255,255,0.1);
-  color: white;
-  text-decoration: none;
-  padding: 8px 15px;
-  border-radius: 4px;
-  font-size: 13px;
-  font-weight: 600;
   border: 1px solid rgba(255,255,255,0.2);
   transition: 0.2s;
-  white-space: nowrap;
-  display: flex;
-  align-items: center;
-  gap: 6px;
 }
-.btn-store:hover { background: rgba(255,255,255,0.2); }
+.admin-search-box:focus-within { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.5); }
+.admin-search-box input {
+  flex-grow: 1; border: none; padding: 0 10px; font-size: 14px; outline: none;
+  color: white; background: transparent; min-width: 0;
+}
+.admin-search-box input::placeholder { color: rgba(255,255,255,0.6); }
+.admin-search-icon { display: flex; align-items: center; padding: 0 10px; color: rgba(255,255,255,0.6); }
 
-/* ===== LAYOUT PRINCIPAL ===== */
-.main-container {
-  display: flex;
-  flex: 1;
-  overflow: hidden;
+.header-actions { display: flex; gap: 10px; }
+
+.btn-header {
+  background: rgba(255,255,255,0.1); color: var(--white); text-decoration: none;
+  padding: 8px 15px; border-radius: 4px; font-size: 13px; font-weight: 700;
+  transition: 0.2s; white-space: nowrap; display: flex; align-items: center; gap: 6px; border: none; cursor: pointer;
 }
+.btn-header:hover { background: rgba(255,255,255,0.2); }
+.btn-logout { background: var(--accent); }
+.btn-logout:hover { background: #b71c1c; }
+
+/* ===== LAYOUT ===== */
+.main-container { display: flex; flex: 1; overflow: hidden; }
 
 /* LISTA (IZQUIERDA) */
-.product-list {
-  flex: 1;
-  overflow-y: auto;
-  padding: 20px;
-  border-right: 1px solid var(--border);
-}
+.product-list { flex: 1; overflow-y: auto; padding: 20px; border-right: 1px solid var(--border); }
 
 .product-item {
-  background: var(--white);
-  padding: 12px;
-  border-radius: 8px;
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  border: 1px solid var(--border);
+  background: var(--white); padding: 12px; border-radius: 8px; margin-bottom: 10px;
+  display: flex; align-items: center; gap: 15px; border: 1px solid var(--border);
   transition: transform 0.2s, box-shadow 0.2s;
 }
-.product-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-  border-color: var(--primary);
-}
+.product-item:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); border-color: var(--primary); }
 
 .p-img { width: 45px; height: 45px; object-fit: contain; border: 1px solid #eee; border-radius: 4px; background: #fff; }
 .p-info { flex: 1; min-width: 0; }
@@ -158,24 +137,23 @@ header {
 
 /* FORMULARIO (DERECHA) */
 .editor-panel {
-  width: 350px;
-  background: var(--white);
-  padding: 20px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  box-shadow: -2px 0 10px rgba(0,0,0,0.05);
+  width: 400px;
+  background: var(--white); padding: 20px; overflow-y: auto;
+  display: flex; flex-direction: column; box-shadow: -2px 0 10px rgba(0,0,0,0.05);
 }
 
 .form-header { font-size: 18px; font-weight: 700; margin-bottom: 20px; color: var(--primary); border-bottom: 1px solid #eee; padding-bottom: 10px; }
-
-.form-group { margin-bottom: 15px; }
-.form-label { display: block; font-size: 12px; font-weight: 700; color: #555; margin-bottom: 5px; text-transform: uppercase; }
-.form-input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; outline: none; transition: 0.2s; }
+.form-group { margin-bottom: 12px; }
+.form-label { display: block; font-size: 11px; font-weight: 700; color: #555; margin-bottom: 4px; text-transform: uppercase; }
+.form-input { width: 100%; padding: 8px 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px; outline: none; transition: 0.2s; }
 .form-input:focus { border-color: var(--primary); }
-.form-textarea { resize: vertical; min-height: 80px; font-family: inherit; }
+.form-textarea { resize: vertical; min-height: 70px; font-family: inherit; }
 
-.btn-save { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 4px; font-weight: 700; cursor: pointer; margin-top: 10px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.thumbs-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 5px; }
+.thumbs-grid .form-input { font-size: 11px; padding: 6px; }
+
+.btn-save { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 4px; font-weight: 700; cursor: pointer; margin-top: 15px; }
 .btn-save:hover { background: #152c5b; }
 .btn-clear { width: 100%; padding: 10px; background: transparent; color: #666; border: 1px solid #ddd; border-radius: 4px; font-weight: 600; cursor: pointer; margin-top: 10px; }
 .btn-clear:hover { background: #f5f5f5; }
@@ -192,89 +170,135 @@ header {
 </head>
 <body>
 
-<!-- HEADER -->
-<header>
-  <div class="header-left">
-    <div class="brand">DOMBET ADMIN</div>
-    
-    <!-- BUSCADOR -->
-    <div class="admin-search-box">
-      <input id="adminSearch" placeholder="Buscar producto..." oninput="filterAdminList()" autocomplete="off">
-      <div class="admin-search-icon">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+<!-- PANTALLA DE LOGIN -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-title">DOMBET ADMIN</div>
+    <input type="text" id="loginUser" class="login-input" placeholder="Usuario">
+    <input type="password" id="loginPass" class="login-input" placeholder="Contraseña">
+    <button class="btn-login" onclick="doLogin()">ENTRAR</button>
+    <div class="login-error" id="loginError">Credenciales incorrectas</div>
+  </div>
+</div>
+
+<!-- CONTENIDO DEL ADMIN (Protegido) -->
+<div id="adminContent">
+  <header>
+    <div class="header-left">
+      <div class="brand">DOMBET ADMIN</div>
+      <div class="admin-search-box">
+        <div class="admin-search-icon">🔍</div>
+        <input id="adminSearch" placeholder="Buscar producto..." oninput="filterAdminList()" autocomplete="off">
       </div>
     </div>
+    <div class="header-actions">
+      <a href="index.html" class="btn-header">IR A TIENDA ↗</a>
+      <button onclick="doLogout()" class="btn-header btn-logout">SALIR</button>
+    </div>
+  </header>
+
+  <div class="main-container">
+    <!-- LISTA -->
+    <div class="product-list" id="adminList"></div>
+
+    <!-- EDITOR -->
+    <div class="editor-panel">
+      <div class="form-header" id="formTitle">Nuevo Producto</div>
+      <input type="hidden" id="prodId">
+      
+      <div class="form-group">
+        <label class="form-label">Nombre del Producto</label>
+        <input class="form-input" id="prodName" placeholder="Ej: Laptop HP...">
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Precio (Gs)</label>
+          <input class="form-input" id="prodPrice" type="number" placeholder="0">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Descuento (%)</label>
+          <input class="form-input" id="prodDiscount" type="number" placeholder="0">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Imagen Principal (URL)</label>
+        <input class="form-input" id="prodImg" placeholder="https://...">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Imágenes Extra (Opcional)</label>
+        <div class="thumbs-grid">
+          <input class="form-input" id="prodThumb1" placeholder="Thumb 1 URL">
+          <input class="form-input" id="prodThumb2" placeholder="Thumb 2 URL">
+          <input class="form-input" id="prodThumb3" placeholder="Thumb 3 URL">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Descripción</label>
+        <textarea class="form-input form-textarea" id="prodDesc" placeholder="Detalles técnicos..."></textarea>
+      </div>
+
+      <button class="btn-save" onclick="saveProduct()">GUARDAR CAMBIOS</button>
+      <button class="btn-clear" onclick="resetForm()">LIMPIAR / NUEVO</button>
+    </div>
   </div>
-
-  <a href="index.html" class="btn-store">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 12h3v8h6v-6h2v6h6v-8h3L12 2z"/></svg>
-    IR A TIENDA
-  </a>
-</header>
-
-<!-- CONTENIDO PRINCIPAL -->
-<div class="main-container">
-  
-  <!-- LISTA DE PRODUCTOS -->
-  <div class="product-list" id="adminList">
-    <!-- Se llena con JS -->
-  </div>
-
-  <!-- PANEL DE EDICIÓN -->
-  <div class="editor-panel">
-    <div class="form-header" id="formTitle">Nuevo Producto</div>
-    <input type="hidden" id="prodId">
-    
-    <div class="form-group">
-      <label class="form-label">Nombre</label>
-      <input class="form-input" id="prodName" placeholder="Ej: Laptop HP...">
-    </div>
-    
-    <div class="form-group">
-      <label class="form-label">Precio (Gs)</label>
-      <input class="form-input" id="prodPrice" type="number" placeholder="0">
-    </div>
-
-    <div class="form-group">
-      <label class="form-label">Descuento (%)</label>
-      <input class="form-input" id="prodDiscount" type="number" placeholder="0">
-    </div>
-
-    <div class="form-group">
-      <label class="form-label">Imagen URL</label>
-      <input class="form-input" id="prodImg" placeholder="https://...">
-    </div>
-
-    <div class="form-group">
-      <label class="form-label">Descripción</label>
-      <textarea class="form-input form-textarea" id="prodDesc" placeholder="Detalles técnicos..."></textarea>
-    </div>
-
-    <button class="btn-save" onclick="saveProduct()">GUARDAR</button>
-    <button class="btn-clear" onclick="resetForm()">LIMPIAR</button>
-  </div>
-
 </div>
 
 <script>
-// === SEGURIDAD AL CARGAR ===
-// Esto se ejecuta inmediatamente al abrir admin.html
-(function() {
-  const pass = prompt("Contraseña de Administrador:");
-  if(pass !== "admin123") { // CAMBIA ESTO POR TU CONTRASEÑA
-    window.location.href = "index.html"; // Si falla, te manda a la tienda
-  }
-})();
+// ===== SISTEMA DE LOGIN =====
+const SESSION_KEY = 'dombet_admin_session';
 
+// Verificar sesión al cargar
+window.onload = function() {
+  if(localStorage.getItem(SESSION_KEY) === 'active') {
+    showAdminPanel();
+  }
+};
+
+function doLogin() {
+  const user = document.getElementById('loginUser').value;
+  const pass = document.getElementById('loginPass').value;
+  const errorMsg = document.getElementById('loginError');
+
+  if(user === 'admin' && pass === '3lma3stro') {
+    localStorage.setItem(SESSION_KEY, 'active');
+    showAdminPanel();
+    errorMsg.style.display = 'none';
+  } else {
+    errorMsg.style.display = 'block';
+  }
+}
+
+function doLogout() {
+  localStorage.removeItem(SESSION_KEY);
+  location.reload(); // Recarga para volver al login
+}
+
+function showAdminPanel() {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('adminContent').style.display = 'flex';
+  loadProducts(); // Cargar datos solo si está logueado
+}
+
+// Permitir login con Enter
+document.getElementById('loginPass').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') doLogin();
+});
+
+// ===== LÓGICA DEL ADMIN =====
 let products = [];
 
-// CARGAR PRODUCTOS
-fetch("https://dombet-backend.onrender.com/products")
-.then(r => r.json())
-.then(d => {
-  products = d;
-  renderAdminList();
-});
+function loadProducts() {
+  fetch("https://dombet-backend.onrender.com/products")
+  .then(r => r.json())
+  .then(d => {
+    products = d;
+    renderAdminList();
+  });
+}
 
 function formatCurrency(value) {
   return Number(value).toLocaleString('es-PY');
@@ -312,6 +336,9 @@ function resetForm() {
   document.getElementById('prodPrice').value = "";
   document.getElementById('prodDiscount').value = "";
   document.getElementById('prodImg').value = "";
+  document.getElementById('prodThumb1').value = "";
+  document.getElementById('prodThumb2').value = "";
+  document.getElementById('prodThumb3').value = "";
   document.getElementById('prodDesc').value = "";
   document.getElementById('formTitle').innerText = "Nuevo Producto";
 }
@@ -324,6 +351,9 @@ function editProduct(id) {
   document.getElementById('prodPrice').value = p.price;
   document.getElementById('prodDiscount').value = p.discount;
   document.getElementById('prodImg').value = p.image_main;
+  document.getElementById('prodThumb1').value = p.image_thumb1 || "";
+  document.getElementById('prodThumb2').value = p.image_thumb2 || "";
+  document.getElementById('prodThumb3').value = p.image_thumb3 || "";
   document.getElementById('prodDesc').value = p.description;
   document.getElementById('formTitle').innerText = "Editar Producto";
 }
@@ -335,6 +365,9 @@ function saveProduct() {
     price: document.getElementById('prodPrice').value,
     discount: document.getElementById('prodDiscount').value,
     image_main: document.getElementById('prodImg').value,
+    image_thumb1: document.getElementById('prodThumb1').value,
+    image_thumb2: document.getElementById('prodThumb2').value,
+    image_thumb3: document.getElementById('prodThumb3').value,
     description: document.getElementById('prodDesc').value
   };
 
@@ -350,7 +383,7 @@ function saveProduct() {
   .then(() => {
     alert("Guardado correctamente");
     resetForm();
-    location.reload();
+    loadProducts(); // Recargar lista sin recargar página
   })
   .catch(e => alert("Error: " + e));
 }
@@ -359,8 +392,7 @@ function deleteProduct(id) {
   if(!confirm("¿Seguro que quieres eliminar este producto?")) return;
   fetch(`https://dombet-backend.onrender.com/products/${id}`, { method: 'DELETE' })
   .then(() => {
-    alert("Eliminado");
-    location.reload();
+    loadProducts(); // Recargar lista sin recargar página
   });
 }
 </script>
