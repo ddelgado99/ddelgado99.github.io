@@ -30,39 +30,7 @@ body {
   overflow: hidden;
 }
 
-/* ===== PANTALLA DE LOGIN (NUEVO) ===== */
-#loginScreen {
-  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-  background: var(--primary);
-  z-index: 20000;
-  display: flex; justify-content: center; align-items: center;
-  transition: opacity 0.3s;
-}
-
-.login-card {
-  background: var(--white);
-  padding: 40px;
-  border-radius: 12px;
-  width: 90%; max-width: 350px;
-  text-align: center;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-}
-
-.login-title { font-size: 24px; font-weight: 900; color: var(--primary); margin-bottom: 20px; letter-spacing: 1px; }
-.login-input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 6px; outline: none; font-size: 15px; }
-.login-input:focus { border-color: var(--primary); }
-.btn-login { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 15px; }
-.btn-login:hover { background: #152c5b; }
-.login-error { color: var(--accent); font-size: 13px; margin-top: 10px; display: none; }
-
-/* ===== CONTENIDO ADMIN (Oculto por defecto) ===== */
-#adminContent {
-  display: none; /* Se activa con JS */
-  flex-direction: column;
-  height: 100%;
-}
-
-/* ===== HEADER ADMIN ===== */
+/* ===== HEADER ===== */
 header {
   background: var(--primary);
   color: var(--white);
@@ -99,16 +67,12 @@ header {
 .admin-search-box input::placeholder { color: rgba(255,255,255,0.6); }
 .admin-search-icon { display: flex; align-items: center; padding: 0 10px; color: rgba(255,255,255,0.6); }
 
-.header-actions { display: flex; gap: 10px; }
-
-.btn-header {
-  background: rgba(255,255,255,0.1); color: var(--white); text-decoration: none;
+.btn-store {
+  background: var(--white); color: var(--primary); text-decoration: none;
   padding: 8px 15px; border-radius: 4px; font-size: 13px; font-weight: 700;
-  transition: 0.2s; white-space: nowrap; display: flex; align-items: center; gap: 6px; border: none; cursor: pointer;
+  transition: 0.2s; white-space: nowrap; display: flex; align-items: center; gap: 6px;
 }
-.btn-header:hover { background: rgba(255,255,255,0.2); }
-.btn-logout { background: var(--accent); }
-.btn-logout:hover { background: #b71c1c; }
+.btn-store:hover { background: #e0e0e0; }
 
 /* ===== LAYOUT ===== */
 .main-container { display: flex; flex: 1; overflow: hidden; }
@@ -137,7 +101,7 @@ header {
 
 /* FORMULARIO (DERECHA) */
 .editor-panel {
-  width: 400px;
+  width: 400px; /* Un poco más ancho para acomodar las imágenes */
   background: var(--white); padding: 20px; overflow-y: auto;
   display: flex; flex-direction: column; box-shadow: -2px 0 10px rgba(0,0,0,0.05);
 }
@@ -149,7 +113,10 @@ header {
 .form-input:focus { border-color: var(--primary); }
 .form-textarea { resize: vertical; min-height: 70px; font-family: inherit; }
 
+/* GRID PARA PRECIOS Y DESCUENTO */
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+/* GRID PARA IMAGENES EXTRA */
 .thumbs-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 5px; }
 .thumbs-grid .form-input { font-size: 11px; padding: 6px; }
 
@@ -170,135 +137,86 @@ header {
 </head>
 <body>
 
-<!-- PANTALLA DE LOGIN -->
-<div id="loginScreen">
-  <div class="login-card">
-    <div class="login-title">DOMBET ADMIN</div>
-    <input type="text" id="loginUser" class="login-input" placeholder="Usuario">
-    <input type="password" id="loginPass" class="login-input" placeholder="Contraseña">
-    <button class="btn-login" onclick="doLogin()">ENTRAR</button>
-    <div class="login-error" id="loginError">Credenciales incorrectas</div>
-  </div>
-</div>
-
-<!-- CONTENIDO DEL ADMIN (Protegido) -->
-<div id="adminContent">
-  <header>
-    <div class="header-left">
-      <div class="brand">DOMBET ADMIN</div>
-      <div class="admin-search-box">
-        <div class="admin-search-icon">🔍</div>
-        <input id="adminSearch" placeholder="Buscar producto..." oninput="filterAdminList()" autocomplete="off">
-      </div>
-    </div>
-    <div class="header-actions">
-      <a href="index.html" class="btn-header">IR A TIENDA ↗</a>
-      <button onclick="doLogout()" class="btn-header btn-logout">SALIR</button>
-    </div>
-  </header>
-
-  <div class="main-container">
-    <!-- LISTA -->
-    <div class="product-list" id="adminList"></div>
-
-    <!-- EDITOR -->
-    <div class="editor-panel">
-      <div class="form-header" id="formTitle">Nuevo Producto</div>
-      <input type="hidden" id="prodId">
-      
-      <div class="form-group">
-        <label class="form-label">Nombre del Producto</label>
-        <input class="form-input" id="prodName" placeholder="Ej: Laptop HP...">
-      </div>
-      
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Precio (Gs)</label>
-          <input class="form-input" id="prodPrice" type="number" placeholder="0">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Descuento (%)</label>
-          <input class="form-input" id="prodDiscount" type="number" placeholder="0">
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">Imagen Principal (URL)</label>
-        <input class="form-input" id="prodImg" placeholder="https://...">
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">Imágenes Extra (Opcional)</label>
-        <div class="thumbs-grid">
-          <input class="form-input" id="prodThumb1" placeholder="Thumb 1 URL">
-          <input class="form-input" id="prodThumb2" placeholder="Thumb 2 URL">
-          <input class="form-input" id="prodThumb3" placeholder="Thumb 3 URL">
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">Descripción</label>
-        <textarea class="form-input form-textarea" id="prodDesc" placeholder="Detalles técnicos..."></textarea>
-      </div>
-
-      <button class="btn-save" onclick="saveProduct()">GUARDAR CAMBIOS</button>
-      <button class="btn-clear" onclick="resetForm()">LIMPIAR / NUEVO</button>
+<!-- HEADER -->
+<header>
+  <div class="header-left">
+    <div class="brand">DOMBET ADMIN</div>
+    <div class="admin-search-box">
+      <div class="admin-search-icon">🔍</div>
+      <input id="adminSearch" placeholder="Buscar producto..." oninput="filterAdminList()" autocomplete="off">
     </div>
   </div>
+  <a href="index.html" class="btn-store">IR A TIENDA ↗</a>
+</header>
+
+<!-- CONTENIDO -->
+<div class="main-container">
+  
+  <!-- LISTA -->
+  <div class="product-list" id="adminList"></div>
+
+  <!-- EDITOR -->
+  <div class="editor-panel">
+    <div class="form-header" id="formTitle">Nuevo Producto</div>
+    <input type="hidden" id="prodId">
+    
+    <div class="form-group">
+      <label class="form-label">Nombre del Producto</label>
+      <input class="form-input" id="prodName" placeholder="Ej: Laptop HP...">
+    </div>
+    
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Precio (Gs)</label>
+        <input class="form-input" id="prodPrice" type="number" placeholder="0">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Descuento (%)</label>
+        <input class="form-input" id="prodDiscount" type="number" placeholder="0">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Imagen Principal (URL)</label>
+      <input class="form-input" id="prodImg" placeholder="https://...">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Imágenes Extra (Opcional)</label>
+      <div class="thumbs-grid">
+        <input class="form-input" id="prodThumb1" placeholder="Thumb 1 URL">
+        <input class="form-input" id="prodThumb2" placeholder="Thumb 2 URL">
+        <input class="form-input" id="prodThumb3" placeholder="Thumb 3 URL">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Descripción</label>
+      <textarea class="form-input form-textarea" id="prodDesc" placeholder="Detalles técnicos..."></textarea>
+    </div>
+
+    <button class="btn-save" onclick="saveProduct()">GUARDAR CAMBIOS</button>
+    <button class="btn-clear" onclick="resetForm()">LIMPIAR / NUEVO</button>
+  </div>
+
 </div>
 
 <script>
-// ===== SISTEMA DE LOGIN =====
-const SESSION_KEY = 'dombet_admin_session';
+// SEGURIDAD
+(function() {
+  const pass = prompt("Contraseña de Administrador:");
+  if(pass !== "admin123") window.location.href = "index.html";
+})();
 
-// Verificar sesión al cargar
-window.onload = function() {
-  if(localStorage.getItem(SESSION_KEY) === 'active') {
-    showAdminPanel();
-  }
-};
-
-function doLogin() {
-  const user = document.getElementById('loginUser').value;
-  const pass = document.getElementById('loginPass').value;
-  const errorMsg = document.getElementById('loginError');
-
-  if(user === 'admin' && pass === '3lma3stro') {
-    localStorage.setItem(SESSION_KEY, 'active');
-    showAdminPanel();
-    errorMsg.style.display = 'none';
-  } else {
-    errorMsg.style.display = 'block';
-  }
-}
-
-function doLogout() {
-  localStorage.removeItem(SESSION_KEY);
-  location.reload(); // Recarga para volver al login
-}
-
-function showAdminPanel() {
-  document.getElementById('loginScreen').style.display = 'none';
-  document.getElementById('adminContent').style.display = 'flex';
-  loadProducts(); // Cargar datos solo si está logueado
-}
-
-// Permitir login con Enter
-document.getElementById('loginPass').addEventListener('keypress', function (e) {
-    if (e.key === 'Enter') doLogin();
-});
-
-// ===== LÓGICA DEL ADMIN =====
 let products = [];
 
-function loadProducts() {
-  fetch("https://dombet-backend.onrender.com/products")
-  .then(r => r.json())
-  .then(d => {
-    products = d;
-    renderAdminList();
-  });
-}
+// CARGAR DATOS
+fetch("https://dombet-backend.onrender.com/products")
+.then(r => r.json())
+.then(d => {
+  products = d;
+  renderAdminList();
+});
 
 function formatCurrency(value) {
   return Number(value).toLocaleString('es-PY');
@@ -383,7 +301,7 @@ function saveProduct() {
   .then(() => {
     alert("Guardado correctamente");
     resetForm();
-    loadProducts(); // Recargar lista sin recargar página
+    location.reload();
   })
   .catch(e => alert("Error: " + e));
 }
@@ -392,7 +310,8 @@ function deleteProduct(id) {
   if(!confirm("¿Seguro que quieres eliminar este producto?")) return;
   fetch(`https://dombet-backend.onrender.com/products/${id}`, { method: 'DELETE' })
   .then(() => {
-    loadProducts(); // Recargar lista sin recargar página
+    alert("Eliminado");
+    location.reload();
   });
 }
 </script>
