@@ -33,19 +33,78 @@ header{
   gap: 10px;
 }
 
+/* LOGO ALINEADO */
 .logo{
   cursor:pointer; 
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
+  width: max-content; /* El ancho se adapta al contenido */
 }
-.brand{font-size:24px;font-weight:900;line-height:1; letter-spacing: -1px;}
-.sub{font-size:10px;letter-spacing:3px; opacity: 0.8;}
+.brand{
+  font-size:26px;
+  font-weight:900;
+  line-height:1; 
+  letter-spacing: 1px;
+}
+.sub{
+  font-size:10.5px; /* Tamaño ajustado */
+  font-weight: 500;
+  opacity: 0.9;
+  text-align: justify; /* Justificar texto */
+  text-align-last: justify; /* Forzar justificación de la última línea */
+  width: 100%; /* Ocupar todo el ancho del contenedor (definido por .brand) */
+}
 
-/* ===== BUSCADOR RECTANGULAR ===== */
+/* GRUPO DERECHA (REDES + CARRITO) */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  order: 2; /* En movil va a la derecha */
+}
+
+/* REDES SOCIALES */
+.social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-decoration: none;
+  transition: transform 0.2s, opacity 0.2s;
+}
+.social-link:hover { transform: scale(1.1); opacity: 0.8; }
+.social-link svg { width: 22px; height: 22px; fill: currentColor; }
+
+/* CARRITO ICONO */
+.cart-trigger {
+  position: relative;
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+}
+.cart-trigger svg { width: 28px; height: 28px; fill: white; }
+.cart-count {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  background: #d32f2f;
+  color: white;
+  font-size: 11px;
+  font-weight: bold;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* BUSCADOR */
 .search-container {
   flex-grow: 1;
-  order: 3;
+  order: 3; /* En movil baja al final */
   width: 100%;
   position: relative;
 }
@@ -53,7 +112,7 @@ header{
 .search-box{
   display: flex;
   background: #e0e0e0;
-  border-radius: 8px; /* Rectangular con bordes redondeados */
+  border-radius: 8px;
   overflow: hidden;
   border: 1px solid #ccc;
   width: 100%;
@@ -81,37 +140,19 @@ header{
 }
 .search-btn svg { fill: #555; width: 20px; height: 20px; }
 
-/* CARRITO ICONO */
-.cart-trigger {
-  position: relative;
-  cursor: pointer;
-  padding: 5px;
-  order: 2;
-}
-.cart-trigger svg { width: 28px; height: 28px; fill: white; }
-.cart-count {
-  position: absolute;
-  top: -2px;
-  right: -2px;
-  background: #d32f2f;
-  color: white;
-  font-size: 11px;
-  font-weight: bold;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* MEDIA QUERY PC */
+/* MEDIA QUERY PC (Minimo 768px) */
 @media (min-width: 768px) {
-  header { padding: 15px 30px; flex-wrap: nowrap; gap: 20px; }
-  .brand { font-size: 32px; }
-  .sub { font-size: 12px; }
-  .search-container { order: 0; width: auto; max-width: 600px; margin: 0 auto; }
-  .cart-trigger { order: 0; }
+  header { padding: 15px 30px; flex-wrap: nowrap; gap: 30px; }
+  
+  .brand { font-size: 34px; }
+  .sub { font-size: 13.5px; } /* Ajuste fino para PC */
+
+  /* Buscador al centro (orden 2) */
+  .search-container { order: 1; width: auto; max-width: 500px; margin: 0 auto; }
+  
+  /* Redes y Carrito a la derecha (orden 3) */
+  .header-right { order: 2; gap: 20px; }
+  .social-link svg { width: 24px; height: 24px; }
 }
 
 /* PREDICCIONES BUSCADOR */
@@ -267,12 +308,11 @@ header{
   line-height: 1.4;
 }
 
-/* ===== CONTROLES CANTIDAD (ELEGANTES) ===== */
 .qty-section { margin-bottom: 20px; }
 .qty-controls { display: flex; align-items: center; gap: 8px; }
 .qty-btn {
-  width: 32px; height: 32px; /* Más pequeños */
-  background: #0a1a3a; /* Azul Marino */
+  width: 32px; height: 32px;
+  background: #0a1a3a;
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -300,10 +340,10 @@ header{
 .btn-add-cart { background: #0a1a3a; color: white; }
 .btn-whats { background: #25D366; color: white; }
 
-/* ===== CARRITO FLOTANTE (GROW) ===== */
+/* ===== CARRITO FLOTANTE ===== */
 .cart-panel {
   position: fixed;
-  top: 70px; /* Debajo del header aprox */
+  top: 70px;
   right: 15px;
   width: 90%;
   max-width: 360px;
@@ -311,16 +351,12 @@ header{
   z-index: 2000;
   box-shadow: 0 10px 40px rgba(0,0,0,0.2);
   border-radius: 12px;
-  
-  /* Animación y estado inicial */
   transform: translateY(-10px);
   opacity: 0;
   pointer-events: none;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  
-  /* Altura dinámica */
   height: auto;
-  max-height: 80vh; /* Tope para que no se salga de pantalla */
+  max-height: 80vh;
   display: flex;
   flex-direction: column;
 }
@@ -343,9 +379,9 @@ header{
 
 .cart-items {
   flex: 1;
-  overflow-y: auto; /* Scroll si hay muchos items */
+  overflow-y: auto;
   padding: 15px;
-  min-height: 100px; /* Altura mínima para que no se vea feo vacío */
+  min-height: 100px;
 }
 .cart-empty-msg { text-align: center; color: #888; margin-top: 20px; font-size: 14px; }
 
@@ -380,18 +416,37 @@ header{
 
 <!-- HEADER -->
 <header>
+  <!-- LOGO -->
   <div class="logo" onclick="goHome()">
     <div class="brand">DOMBET</div>
     <div class="sub">INFORMÁTICA</div>
   </div>
 
-  <div class="cart-trigger" onclick="toggleCart()">
-    <svg viewBox="0 0 24 24">
-      <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
-    </svg>
-    <div class="cart-count" id="cartCount">0</div>
+  <!-- GRUPO DERECHA: REDES + CARRITO -->
+  <div class="header-right">
+    <!-- Instagram -->
+    <a href="https://instagram.com/TU_USUARIO" target="_blank" class="social-link">
+      <svg viewBox="0 0 24 24">
+        <path d="M7.8,2H16.2C19.4,2 22,4.6 22,7.8V16.2A5.8,5.8 0 0,1 16.2,22H7.8C4.6,22 2,19.4 2,16.2V7.8A5.8,5.8 0 0,1 7.8,2M7.6,4A3.6,3.6 0 0,0 4,7.6V16.4C4,18.39 5.61,20 7.6,20H16.4A3.6,3.6 0 0,0 20,16.4V7.6C20,5.61 18.39,4 16.4,4H7.6M17.25,5.5A1.25,1.25 0 0,1 18.5,6.75A1.25,1.25 0 0,1 17.25,8A1.25,1.25 0 0,1 16,6.75A1.25,1.25 0 0,1 17.25,5.5M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9Z" />
+      </svg>
+    </a>
+    <!-- TikTok -->
+    <a href="https://tiktok.com/@TU_USUARIO" target="_blank" class="social-link">
+      <svg viewBox="0 0 24 24">
+        <path d="M12.5,2.5C12.5,2.5 12.5,6.5 12.5,6.5C14.5,6.5 16.5,7.5 17.5,9.5C17.5,9.5 17.5,6.5 17.5,6.5C16.5,4.5 14.5,2.5 12.5,2.5M12.5,10.5C12.5,10.5 12.5,18.5 12.5,18.5C12.5,20.5 10.5,21.5 9.5,21.5C7.5,21.5 6.5,19.5 6.5,17.5C6.5,15.5 8.5,14.5 9.5,14.5C9.5,14.5 9.5,11.5 9.5,11.5C6.5,11.5 3.5,14.5 3.5,17.5C3.5,21.5 6.5,24.5 9.5,24.5C14.5,24.5 15.5,20.5 15.5,17.5C15.5,17.5 15.5,10.5 15.5,10.5C17.5,11.5 18.5,13.5 19.5,15.5C19.5,15.5 22.5,15.5 22.5,15.5C21.5,11.5 18.5,9.5 15.5,8.5C15.5,8.5 15.5,2.5 15.5,2.5C14.5,2.5 13.5,2.5 12.5,2.5Z" transform="translate(0 -2)"/>
+      </svg>
+    </a>
+
+    <!-- Carrito -->
+    <div class="cart-trigger" onclick="toggleCart()">
+      <svg viewBox="0 0 24 24">
+        <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
+      </svg>
+      <div class="cart-count" id="cartCount">0</div>
+    </div>
   </div>
 
+  <!-- BUSCADOR -->
   <div class="search-container">
     <div class="search-box">
       <input id="searchInput" placeholder="Buscar productos..." autocomplete="off">
@@ -633,7 +688,6 @@ document.addEventListener('click', function(e) {
   const trigger = document.querySelector('.cart-trigger');
   const addBtn = document.querySelector('.btn-add-cart');
   
-  // Si el panel está abierto Y el click NO fue en el panel Y NO fue en el icono Y NO fue en el botón añadir
   if(panel.classList.contains('open') && 
      !panel.contains(e.target) && 
      !trigger.contains(e.target) &&
