@@ -263,7 +263,7 @@ header{
   padding: 20px 0;
   overflow: hidden;
   border-bottom: 1px solid #eee;
-  display: none;
+  display: none; /* Se controla con JS */
   user-select: none;
 }
 
@@ -1089,6 +1089,10 @@ fetch("https://dombet-backend.onrender.com/products")
 .then(r=>r.json())
 .then(d=>{
   products=d;
+  // 1. Inicializar ofertas primero para tener los datos listos
+  initOffers(); 
+  
+  // 2. Verificar URL para decidir qué mostrar
   const params = new URLSearchParams(window.location.search);
   const pIndex = params.get('p');
   if(pIndex !== null && products[pIndex]){
@@ -1096,7 +1100,6 @@ fetch("https://dombet-backend.onrender.com/products")
   } else {
     renderList();
   }
-  initOffers(); // Iniciar carrusel de ofertas
 });
 
 window.onpopstate = function(event) {
@@ -1106,11 +1109,6 @@ window.onpopstate = function(event) {
     openDetail(parseInt(pIndex), false);
   } else {
     renderList();
-    // Restaurar ofertas si volvemos al inicio
-    const offersSection = document.getElementById('offersSection');
-    if(offersSection && products.some(p => p.discount > 0)) {
-      offersSection.style.display = 'block';
-    }
   }
 };
 
@@ -1126,8 +1124,14 @@ function renderList(){
   
   // MOSTRAR CARRUSEL SOLO EN EL LISTADO
   const offersSection = document.getElementById('offersSection');
-  if(offersSection && discountProducts.length > 0) {
-    offersSection.style.display = 'block';
+  if(offersSection) {
+    if(discountProducts.length > 0) {
+        offersSection.style.display = 'block';
+        // Recalcular dimensiones por si acaso
+        updateCarouselBatch();
+    } else {
+        offersSection.style.display = 'none';
+    }
   }
 
   products.forEach((p,i)=>{
@@ -1170,13 +1174,10 @@ function initOffers() {
   const trackContainer = document.getElementById('offersContainer');
   const track = document.getElementById('offersTrack');
 
+  // Si no hay productos, no hacemos nada más
   if (discountProducts.length === 0) {
-    section.style.display = 'none';
     return;
   }
-
-  // Nota: No forzamos display block aquí, dejamos que renderList lo haga
-  updateCarouselBatch();
 
   // Event Listeners para arrastrar (Touch y Mouse)
   trackContainer.addEventListener('touchstart', touchStart);
@@ -1196,6 +1197,7 @@ function initOffers() {
 
 function updateCarouselBatch() {
   const track = document.getElementById('offersTrack');
+  if(!track || discountProducts.length === 0) return;
   
   // 1. Obtener todos los productos con descuento
   let itemsToRender = [...discountProducts];
@@ -1248,6 +1250,8 @@ function animateCarousel() {
 
 // Función clave para el bucle infinito sin saltos
 function checkBoundary() {
+  if (trackWidth === 0) return; // Evitar errores si no se ha calculado el ancho
+
   // Si nos pasamos a la izquierda (más allá del ancho del set original)
   if (carouselPos <= -trackWidth) {
     carouselPos += trackWidth;
