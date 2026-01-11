@@ -127,7 +127,10 @@ header {
 .p-img { width: 45px; height: 45px; object-fit: contain; border: 1px solid #eee; border-radius: 4px; background: #fff; }
 .p-info { flex: 1; min-width: 0; }
 .p-name { font-weight: 700; font-size: 14px; color: #333; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.p-price { font-size: 13px; color: var(--success); font-weight: 600; }
+.p-price-container { display: flex; flex-direction: column; gap: 2px; }
+.p-price-original { font-size: 11px; color: #999; text-decoration: line-through; }
+.p-price-final { font-size: 13px; color: var(--success); font-weight: 600; }
+.p-price-normal { font-size: 13px; color: var(--primary); font-weight: 600; }
 .p-actions { display: flex; gap: 8px; }
 
 .btn-icon { width: 32px; height: 32px; border-radius: 6px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
@@ -153,6 +156,9 @@ header {
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .thumbs-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 5px; }
 .thumbs-grid .form-input { font-size: 11px; padding: 6px; }
+
+.price-preview { font-size: 11px; color: #666; margin-top: 4px; font-weight: 600; }
+.price-preview span { color: var(--success); }
 
 .btn-save { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 4px; font-weight: 700; cursor: pointer; margin-top: 15px; }
 .btn-save:hover { background: #152c5b; }
@@ -217,11 +223,12 @@ header {
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">Precio (Gs)</label>
-          <input class="form-input" id="prodPrice" type="number" placeholder="0">
+          <input class="form-input" id="prodPrice" type="text" placeholder="0" oninput="formatPriceInput(this)">
+          <div class="price-preview" id="pricePreview"></div>
         </div>
         <div class="form-group">
           <label class="form-label">Descuento (%)</label>
-          <input class="form-input" id="prodDiscount" type="number" placeholder="0">
+          <input class="form-input" id="prodDiscount" type="number" placeholder="0" oninput="updatePricePreview()">
         </div>
       </div>
 
@@ -307,16 +314,65 @@ function formatCurrency(value) {
   return Number(value).toLocaleString('es-PY');
 }
 
+function formatPriceInput(input) {
+  // Eliminar todo lo que no sea número
+  let value = input.value.replace(/\D/g, '');
+  
+  // Formatear con separadores de miles
+  if (value) {
+    value = Number(value).toLocaleString('es-PY');
+  }
+  
+  input.value = value;
+  updatePricePreview();
+}
+
+function updatePricePreview() {
+  const priceInput = document.getElementById('prodPrice').value.replace(/\./g, '');
+  const discountInput = document.getElementById('prodDiscount').value;
+  const previewDiv = document.getElementById('pricePreview');
+  
+  const price = Number(priceInput) || 0;
+  const discount = Number(discountInput) || 0;
+  
+  if (price > 0) {
+    if (discount > 0) {
+      const finalPrice = price - (price * (discount / 100));
+      previewDiv.innerHTML = `Final: <span>Gs. ${formatCurrency(finalPrice)}</span> (-${discount}%)`;
+    } else {
+      previewDiv.innerHTML = `Final: <span>Gs. ${formatCurrency(price)}</span>`;
+    }
+  } else {
+    previewDiv.innerHTML = '';
+  }
+}
+
 function renderAdminList(items = products) {
   const container = document.getElementById('adminList');
   container.innerHTML = "";
   items.forEach(p => {
+    const price = Number(p.price);
+    const discount = Number(p.discount || 0);
+    let priceHtml = '';
+
+    if (discount > 0) {
+      const finalPrice = price - (price * (discount / 100));
+      priceHtml = `
+        <div class="p-price-container">
+          <span class="p-price-original">Gs. ${formatCurrency(price)}</span>
+          <span class="p-price-final">Gs. ${formatCurrency(finalPrice)} (-${discount}%)</span>
+        </div>
+      `;
+    } else {
+      priceHtml = `<div class="p-price-normal">Gs. ${formatCurrency(price)}</div>`;
+    }
+
     container.innerHTML += `
       <div class="product-item">
         <img src="${p.image_main}" class="p-img">
         <div class="p-info">
           <div class="p-name">${p.name}</div>
-          <div class="p-price">Gs. ${formatCurrency(p.price)}</div>
+          ${priceHtml}
         </div>
         <div class="p-actions">
           <button class="btn-icon btn-edit" onclick="editProduct(${p.id})">✎</button>
@@ -344,6 +400,7 @@ function resetForm() {
   document.getElementById('prodThumb3').value = "";
   document.getElementById('prodDesc').value = "";
   document.getElementById('formTitle').innerText = "Nuevo Producto";
+  document.getElementById('pricePreview').innerHTML = "";
 }
 
 function editProduct(id) {
@@ -351,7 +408,8 @@ function editProduct(id) {
   if(!p) return;
   document.getElementById('prodId').value = p.id;
   document.getElementById('prodName').value = p.name;
-  document.getElementById('prodPrice').value = p.price;
+  // Formatear precio al cargar en el input
+  document.getElementById('prodPrice').value = Number(p.price).toLocaleString('es-PY');
   document.getElementById('prodDiscount').value = p.discount;
   document.getElementById('prodImg').value = p.image_main;
   document.getElementById('prodThumb1').value = p.image_thumb1 || "";
@@ -359,13 +417,17 @@ function editProduct(id) {
   document.getElementById('prodThumb3').value = p.image_thumb3 || "";
   document.getElementById('prodDesc').value = p.description;
   document.getElementById('formTitle').innerText = "Editar Producto";
+  updatePricePreview();
 }
 
 function saveProduct() {
   const id = document.getElementById('prodId').value;
+  // Limpiar puntos del precio antes de enviar
+  const rawPrice = document.getElementById('prodPrice').value.replace(/\./g, '');
+  
   const data = {
     name: document.getElementById('prodName').value,
-    price: document.getElementById('prodPrice').value,
+    price: rawPrice,
     discount: document.getElementById('prodDiscount').value,
     image_main: document.getElementById('prodImg').value,
     image_thumb1: document.getElementById('prodThumb1').value,
