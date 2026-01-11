@@ -871,7 +871,7 @@ header{
   text-transform: uppercase;
 }
 
-/* ===== LIGHTBOX ===== */
+/* ===== LIGHTBOX (CENTRO ESTÉTICO) ===== */
 .lightbox {
   display: none;
   position: fixed;
@@ -887,21 +887,28 @@ header{
   justify-content: center;
   align-items: center;
   touch-action: pan-y;
+  
+  /* CLAVE: Padding izquierdo igual al ancho de la barra lateral (90px) 
+     para que el contenido se centre en el espacio restante */
+  padding-left: 90px; 
+}
+
+/* En móvil quitamos ese padding porque la barra va abajo */
+@media (max-width: 767px) {
+  .lightbox {
+    padding-left: 0;
+    padding-bottom: 90px; /* Espacio para barra inferior */
+  }
 }
 
 .lightbox-content {
-  margin: auto;
+  margin: auto; /* Centrado automático en el espacio disponible */
   display: block;
-  max-width: 85%; /* Reducido un poco para dar espacio a los thumbs a la izq */
+  max-width: 90%;
   max-height: 90vh;
   object-fit: contain;
   animation: zoom 0.3s;
   transition: transform 0.3s ease;
-  margin-left: 100px; /* Espacio para la barra lateral */
-}
-
-@media (max-width: 767px) {
-  .lightbox-content { margin-left: 0; max-width: 95%; }
 }
 
 @keyframes zoom {
@@ -939,7 +946,9 @@ header{
   z-index: 12002;
 }
 @media (min-width: 768px) { .lb-arrow { display: flex; } }
-.lb-prev { left: 100px; } /* Ajustado por la barra lateral */
+
+/* Ajustamos la flecha izquierda para que no se monte sobre la barra lateral */
+.lb-prev { left: 110px; } /* 90px barra + 20px margen */
 .lb-next { right: 20px; }
 
 /* ESTILOS MINIATURAS LIGHTBOX (VERTICAL A LA IZQUIERDA) */
@@ -962,7 +971,7 @@ header{
   border-right: 1px solid #eee;
 }
 
-/* En móvil, las miniaturas vuelven abajo para aprovechar espacio */
+/* En móvil, las miniaturas vuelven abajo */
 @media (max-width: 767px) {
   .lightbox-thumbs {
     flex-direction: row;
@@ -974,7 +983,7 @@ header{
     border-top: 1px solid #eee;
     justify-content: flex-start;
   }
-  .lb-prev { left: 10px; }
+  .lb-prev { left: 10px; } /* Reset flecha en móvil */
 }
 
 .lightbox-thumbs img {
