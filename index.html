@@ -230,7 +230,7 @@ header{
   }
 }
 
-/* ESTILOS DE LA TARJETA (SOLO HOVER INTENSO) */
+/* ESTILOS DE LA TARJETA (SOLO HOVER ELEGANTE) */
 .card{
   background:#fff;
   border-radius:8px;
@@ -242,15 +242,14 @@ header{
   border: 1px solid #eee; 
   position: relative;
   
-  /* TRANSICIÓN DE HOVER CON EFECTO RESORTE FUERTE */
-  /* El último valor (1.5) controla el rebote. Cuanto más alto, más rebota. */
-  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.5), box-shadow 0.3s ease;
+  /* TRANSICIÓN DE HOVER CON EFECTO RESORTE SUAVE */
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
 }
 
-/* Efecto al pasar el mouse: Se levanta MUCHO y rebota */
+/* Efecto al pasar el mouse: Elevación elegante (-6px) */
 .card:hover { 
-  box-shadow: 0 15px 30px rgba(0,0,0,0.2); /* Sombra más fuerte */
-  transform: translateY(-10px) scale(1.05); /* Sube más y crece más */
+  box-shadow: 0 12px 24px rgba(0,0,0,0.15); 
+  transform: translateY(-6px) scale(1.04); 
   z-index: 10;
 }
 
