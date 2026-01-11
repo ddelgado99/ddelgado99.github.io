@@ -197,6 +197,8 @@ header{
   border-bottom: 1px solid #eee;
   max-width: 1400px;
   margin: 0 auto;
+  position: relative;  /* AÑADIR */
+  z-index: 1;          /* AÑADIR */
 }
 
 .sort-container {
@@ -1135,13 +1137,18 @@ function updateCartUI(){
 
 function toggleCart(e){
   const panel = document.getElementById('cartPanel');
+  
   if(typeof e === 'boolean'){
     if(e) panel.classList.add('open');
     else panel.classList.remove('open');
-  } else {
-    if(e && e.stopPropagation) e.stopPropagation();
-    panel.classList.toggle('open');
+    return;
   }
+  
+  if(e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+  panel.classList.toggle('open');
 }
 
 document.addEventListener('click', function(e) {
@@ -1280,3 +1287,4 @@ lightbox.addEventListener('touchend', e => handleTouchEnd(e, () => changeLightbo
 
 </body>
 </html>
+
