@@ -12,7 +12,7 @@
 body{
   margin:0;
   font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background:#f4f4f4; /* Fondo gris muy suave estilo Nissei */
+  background:#f4f4f4;
   overflow-x: hidden;
   padding-bottom: 80px;
   color: #333;
@@ -110,7 +110,7 @@ header{
 .search-box{
   display: flex;
   background: #fff;
-  border-radius: 4px; /* Bordes más rectos estilo e-commerce pro */
+  border-radius: 4px;
   overflow: hidden;
   border: none;
   width: 100%;
@@ -230,14 +230,14 @@ header{
   .btn-list-add svg { width: 14px; height: 14px; }
 }
 
-/* ===== DETALLE ESTILO NISSEI ===== */
-.detail{display:none;padding:0;} /* Full width background if needed */
+/* ===== DETALLE ===== */
+.detail{display:none;padding:0;}
 .detail-box{
-  max-width:1400px; /* Ancho amplio */
+  max-width:1400px;
   margin: 20px auto;
   background:#fff;
   padding: 20px;
-  border-radius: 8px; /* Bordes sutiles */
+  border-radius: 8px;
   display:flex;
   flex-direction: column;
   gap:30px;
@@ -248,64 +248,100 @@ header{
   .detail-box { 
     padding: 40px; 
     flex-direction: row; 
-    align-items: flex-start; /* Alineación superior importante */
+    align-items: flex-start;
     gap: 50px;
   }
 }
 
-/* COLUMNA IZQUIERDA: GALERIA */
+/* GALERIA CON MINIATURAS A LA IZQUIERDA */
 .gallery{
   flex: 1.5; 
   width: 100%;
   position: relative;
+  display: flex;
+  flex-direction: column; /* Movil: Vertical (foto arriba, thumbs abajo) */
+  gap: 15px;
 }
 
-.main-img{
-  width:100%;
-  height:350px;
-  position:relative;
-  /* Sin bordes para look limpio */
-  display: flex; align-items: center; justify-content: center;
-  cursor: zoom-in;
-  background: #fff;
+@media (min-width: 768px) {
+  .gallery {
+    flex-direction: row; /* PC: Horizontal (thumbs izq, foto der) */
+  }
 }
 
-@media (min-width: 768px) { 
-  .main-img { height: 600px; } /* Imagen grande protagonista */
+/* CONTENEDOR MINIATURAS */
+.thumbs{
+  display:flex;
+  gap:10px;
+  justify-content: center; 
+  overflow-x: auto; 
+  order: 2; /* Movil: Abajo */
 }
 
-.main-img img{max-width:100%; max-height:100%; object-fit:contain;}
-
-/* FLECHAS NEGRAS CON BLANCO (SOLICITADO) */
-.arrow{
-  position:absolute;
-  top:50%;
-  transform:translateY(-50%);
-  background: rgba(0,0,0,0.7); /* Fondo Negro semi-transparente */
-  color: #fff; /* Icono Blanco */
-  border:none;
-  font-size: 24px;
-  width: 45px; height: 45px;
-  cursor:pointer;
-  border-radius: 50%; /* Redondas */
-  z-index: 2;
-  display: flex; align-items: center; justify-content: center;
-  transition: background 0.2s;
+@media (min-width: 768px) {
+  .thumbs {
+    flex-direction: column; /* PC: Vertical */
+    order: 1; /* PC: Izquierda (antes que la imagen) */
+    justify-content: flex-start;
+    width: 80px; /* Ancho fijo columna */
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 600px;
+  }
 }
-.arrow:hover { background: rgba(0,0,0,0.9); }
-.arrow.left{left: 10px;}
-.arrow.right{right: 10px;}
 
-.thumbs{display:flex;gap:10px;margin-top:20px; justify-content: center; overflow-x: auto; padding-bottom: 5px;}
 .thumbs img{
   width:70px;height:70px;object-fit:contain;
   border:1px solid #eee;
   border-radius:4px;
   cursor: pointer;
+  flex-shrink: 0;
 }
 .thumbs img.active{border-color:#0a1a3a; border-width: 2px;}
 
-/* COLUMNA DERECHA: INFO */
+/* IMAGEN PRINCIPAL */
+.main-img{
+  flex: 1;
+  width:100%;
+  height:350px;
+  position:relative;
+  display: flex; align-items: center; justify-content: center;
+  cursor: zoom-in;
+  background: #fff;
+  order: 1; /* Movil: Arriba */
+}
+
+@media (min-width: 768px) { 
+  .main-img { 
+    height: 600px; 
+    order: 2; /* PC: Derecha (despues de thumbs) */
+  } 
+}
+
+.main-img img{max-width:100%; max-height:100%; object-fit:contain;}
+
+/* FLECHAS ESTILO NISSEI (SOLO FLECHA NEGRA) */
+.arrow{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  background: none; /* SIN FONDO */
+  color: #000; /* FLECHA NEGRA */
+  border:none;
+  font-size: 40px; /* Mas grande */
+  font-weight: 300; /* Fina */
+  width: 50px; height: 60px;
+  cursor:pointer;
+  z-index: 2;
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity 0.2s;
+  padding: 0;
+}
+.arrow:hover { opacity: 0.6; }
+.arrow.left{left: 0;}
+.arrow.right{right: 0;}
+
+/* INFO */
 .info{
   flex:1; 
   width: 100%;
@@ -326,28 +362,11 @@ header{
   .info h2 { font-size: 32px; margin-bottom: 25px; }
 }
 
-.detail-prices { 
-  margin-bottom: 25px; 
-  padding-bottom: 20px; 
-  border-bottom: 1px solid #eee; 
-}
-.detail-old { 
-  color: #999; 
-  text-decoration: line-through; 
-  font-size: 16px; 
-  display: block;
-  margin-bottom: 5px;
-}
-.detail-curr { 
-  color: #d32f2f; /* Rojo precio */
-  font-size: 32px; 
-  font-weight: 700; 
-  display: block; 
-}
+.detail-prices { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #eee; }
+.detail-old { color: #999; text-decoration: line-through; font-size: 16px; display: block; margin-bottom: 5px;}
+.detail-curr { color: #d32f2f; font-size: 32px; font-weight: 700; display: block; }
 
-@media (min-width: 768px) { 
-  .detail-curr { font-size: 40px; }
-}
+@media (min-width: 768px) { .detail-curr { font-size: 40px; } }
 
 .label-title { font-weight: 700; font-size: 14px; color: #333; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
 .desc-text { color: #666; line-height: 1.6; margin-bottom: 25px; font-size: 15px; }
@@ -386,7 +405,7 @@ header{
   width: 100%;
   padding: 16px;
   border: none;
-  border-radius: 4px; /* Botones más cuadrados estilo Nissei */
+  border-radius: 4px;
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
@@ -398,10 +417,7 @@ header{
 .btn-add-cart { background: #0a1a3a; color: white; transition: background 0.2s; }
 .btn-add-cart:hover { background: #152c5b; }
 
-.btn-whats { 
-  background: #25D366; 
-  color: white; 
-}
+.btn-whats { background: #25D366; color: white; }
 .btn-whats svg { width: 26px; height: 26px; fill: white; }
 
 /* ===== CARRITO FLOTANTE ===== */
@@ -490,7 +506,7 @@ header{
   border: none; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 14px;
 }
 
-/* ===== LIGHTBOX ===== */
+/* ===== LIGHTBOX (FONDO BLANCO) ===== */
 .lightbox {
   display: none;
   position: fixed;
@@ -501,7 +517,7 @@ header{
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background-color: rgba(0, 0, 0, 0.95);
+  background-color: #ffffff; /* FONDO BLANCO */
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -510,8 +526,8 @@ header{
 .lightbox-content {
   margin: auto;
   display: block;
-  max-width: 95%;
-  max-height: 95vh;
+  max-width: 90%;
+  max-height: 90vh;
   object-fit: contain;
   animation: zoom 0.3s;
 }
@@ -521,37 +537,37 @@ header{
   to {transform:scale(1); opacity: 1;}
 }
 
+/* CONTROLES LIGHTBOX (NEGROS) */
 .close-lightbox {
   position: absolute;
   top: 20px;
   right: 30px;
-  color: #fff;
-  font-size: 45px;
-  font-weight: bold;
+  color: #333; /* X Negra */
+  font-size: 50px;
+  font-weight: 300;
   transition: 0.3s;
   cursor: pointer;
   z-index: 3001;
   line-height: 1;
 }
+.close-lightbox:hover { color: #000; }
 
-/* FLECHAS LIGHTBOX (NEGRAS CON BLANCO) */
 .lb-arrow {
   cursor: pointer;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   width: 60px; height: 60px;
-  background: rgba(0,0,0,0.7); /* Fondo Negro */
-  color: white; /* Flecha Blanca */
-  font-weight: bold;
-  font-size: 30px;
+  background: none; /* Sin fondo */
+  color: #333; /* Flecha Negra */
+  font-weight: 300;
+  font-size: 50px;
   transition: 0.3s ease;
-  border-radius: 50%;
   user-select: none;
   display: flex; align-items: center; justify-content: center;
   z-index: 3002;
 }
-.lb-arrow:hover { background-color: rgba(255,255,255,0.2); }
+.lb-arrow:hover { opacity: 0.6; }
 .lb-prev { left: 20px; }
 .lb-next { right: 20px; }
 
@@ -599,12 +615,12 @@ header{
 <div class="detail" id="detail">
   <div class="detail-box">
     <div class="gallery">
+      <div class="thumbs" id="thumbs"></div>
       <div class="main-img" onclick="openLightbox()">
         <button class="arrow left" onclick="prevImg(); event.stopPropagation()">‹</button>
         <img id="mainImg">
         <button class="arrow right" onclick="nextImg(); event.stopPropagation()">›</button>
       </div>
-      <div class="thumbs" id="thumbs"></div>
     </div>
 
     <div class="info">
