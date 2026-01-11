@@ -244,13 +244,14 @@ header{
   cursor: pointer;
 }
 
-/* ===== SECCIÓN DE OFERTAS (CARRUSEL INFINITO) ===== */
+/* ===== SECCIÓN DE OFERTAS (CARRUSEL INTERACTIVO) ===== */
 .offers-section {
   background: #f9f9f9;
   padding: 20px 0;
   overflow: hidden;
   border-bottom: 1px solid #eee;
   display: none;
+  user-select: none; /* Evita seleccionar texto al arrastrar */
 }
 
 .offers-header {
@@ -275,25 +276,19 @@ header{
   width: 100%;
   overflow: hidden;
   position: relative;
+  cursor: grab; /* Icono de manito */
+}
+.offers-track-container:active {
+  cursor: grabbing;
 }
 
-/* Pista que se mueve */
+/* Pista que se mueve (Controlada por JS ahora) */
 .offers-track {
   display: flex;
   gap: 15px;
   width: max-content;
-  /* Animación de 20 segundos por vuelta */
-  animation: scrollCarousel 20s linear infinite; 
   padding: 0 15px;
-}
-
-.offers-track:hover {
-  animation-play-state: paused;
-}
-
-@keyframes scrollCarousel {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); } /* Se mueve hasta la mitad (donde empieza el duplicado) */
+  will-change: transform; /* Optimización de rendimiento */
 }
 
 /* Tarjeta de Oferta */
@@ -307,12 +302,7 @@ header{
   flex-shrink: 0;
   cursor: pointer;
   position: relative;
-  transition: transform 0.3s ease;
-}
-
-.offer-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  /* Quitamos la transición aquí para que el arrastre sea instantáneo */
 }
 
 .offer-card img {
@@ -320,6 +310,7 @@ header{
   height: 120px;
   object-fit: contain;
   margin-bottom: 8px;
+  pointer-events: none; /* Evita arrastrar la imagen fantasma */
 }
 
 .offer-name {
@@ -963,7 +954,7 @@ header{
   <div class="offers-header">
     <h3 class="offers-title">OFERTAS DESTACADAS</h3>
   </div>
-  <div class="offers-track-container">
+  <div class="offers-track-container" id="offersContainer">
     <div class="offers-track" id="offersTrack">
       <!-- Las ofertas se inyectan aquí con JS -->
     </div>
@@ -1061,6 +1052,17 @@ let cart = [];
 let discountProducts = [];
 let animationLoopCount = 0;
 
+// Variables para la animación JS
+let carouselPos = 0;
+let carouselSpeed = 0.5; // Velocidad de desplazamiento
+let isDragging = false;
+let startX = 0;
+let currentTranslate = 0;
+let prevTranslate = 0;
+let animationId;
+let trackWidth = 0;
+let itemWidth = 0;
+
 // Cargar carrito guardado
 const savedCart = localStorage.getItem('dombet_cart');
 if(savedCart){
@@ -1141,10 +1143,11 @@ function renderList(){
   })
 }
 
-/* ===== LÓGICA DEL CARRUSEL DE OFERTAS (5 ITEMS, CAMBIO CADA 5 VUELTAS) ===== */
+/* ===== LÓGICA DEL CARRUSEL DE OFERTAS (JS ANIMATION) ===== */
 function initOffers() {
   discountProducts = products.filter(p => p.discount > 0);
   const section = document.getElementById('offersSection');
+  const trackContainer = document.getElementById('offersContainer');
   const track = document.getElementById('offersTrack');
 
   if (discountProducts.length === 0) {
@@ -1155,27 +1158,30 @@ function initOffers() {
   section.style.display = 'block';
   updateCarouselBatch();
 
-  // Escuchar cada vez que termina una vuelta de la animación
-  track.addEventListener('animationiteration', () => {
-    animationLoopCount++;
-    // Cada 5 vueltas, cambiamos los productos
-    if (animationLoopCount % 5 === 0) {
-      updateCarouselBatch();
-    }
+  // Event Listeners para arrastrar (Touch y Mouse)
+  trackContainer.addEventListener('touchstart', touchStart);
+  trackContainer.addEventListener('touchmove', touchMove);
+  trackContainer.addEventListener('touchend', touchEnd);
+  
+  trackContainer.addEventListener('mousedown', touchStart);
+  trackContainer.addEventListener('mousemove', touchMove);
+  trackContainer.addEventListener('mouseup', touchEnd);
+  trackContainer.addEventListener('mouseleave', () => {
+    if(isDragging) touchEnd();
   });
+
+  // Iniciar animación
+  animationId = requestAnimationFrame(animateCarousel);
 }
 
 function updateCarouselBatch() {
   const track = document.getElementById('offersTrack');
   
-  // Seleccionar 5 productos al azar (o menos si no hay suficientes)
+  // Seleccionar 5 productos al azar
   let shuffled = discountProducts.sort(() => 0.5 - Math.random());
   let selected = shuffled.slice(0, 5);
 
-  // Generar HTML
   let content = '';
-  
-  // Función auxiliar para crear tarjeta
   const createCard = (p) => {
     const originalIndex = products.indexOf(p);
     const price = Number(p.price);
@@ -1194,12 +1200,71 @@ function updateCarouselBatch() {
     `;
   };
 
-  // Duplicamos el contenido para el efecto de scroll infinito
-  // (Original + Copia) para que la animación CSS funcione
+  // Duplicar contenido para scroll infinito
   selected.forEach(p => content += createCard(p));
-  selected.forEach(p => content += createCard(p)); // Duplicado
+  selected.forEach(p => content += createCard(p)); 
 
   track.innerHTML = content;
+  
+  // Recalcular dimensiones una vez renderizado
+  setTimeout(() => {
+    const firstCard = track.children[0];
+    if(firstCard) {
+      // Ancho de tarjeta + gap (15px)
+      itemWidth = firstCard.offsetWidth + 15; 
+      // Ancho total de la mitad del contenido (un set de items)
+      trackWidth = itemWidth * selected.length;
+    }
+  }, 100);
+}
+
+function animateCarousel() {
+  if (!isDragging) {
+    carouselPos -= carouselSpeed;
+    // Si se pasa de la mitad (el set duplicado), resetear a 0
+    if (Math.abs(carouselPos) >= trackWidth && trackWidth > 0) {
+      carouselPos = 0;
+      animationLoopCount++;
+      // Cada 5 vueltas completas, cambiar productos
+      if (animationLoopCount % 5 === 0) {
+        updateCarouselBatch();
+      }
+    }
+    setSliderPosition();
+  }
+  animationId = requestAnimationFrame(animateCarousel);
+}
+
+function setSliderPosition() {
+  const track = document.getElementById('offersTrack');
+  if(track) track.style.transform = `translateX(${carouselPos}px)`;
+}
+
+// --- Funciones de Arrastre ---
+function touchStart(index) {
+  isDragging = true;
+  startX = getPositionX(index);
+  // Guardar posición actual para calcular delta
+  prevTranslate = carouselPos;
+  // Cancelar animación momentáneamente (opcional, pero animateCarousel ya chequea isDragging)
+}
+
+function touchMove(index) {
+  if (isDragging) {
+    const currentPosition = getPositionX(index);
+    const diff = currentPosition - startX;
+    carouselPos = prevTranslate + diff;
+    setSliderPosition();
+  }
+}
+
+function touchEnd() {
+  isDragging = false;
+  // Al soltar, la animación continúa desde la nueva 'carouselPos'
+}
+
+function getPositionX(event) {
+  return event.type.includes('mouse') ? event.pageX : event.touches[0].clientX;
 }
 
 function sortProducts(order) {
