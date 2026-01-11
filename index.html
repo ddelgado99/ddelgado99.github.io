@@ -177,26 +177,39 @@ header{
 .search-item img{width:40px;height:40px;object-fit:contain}
 .search-item div { color: #000; font-weight: 500; font-size: 14px; }
 
-/* ===== HERO SECTION ===== */
+/* ===== HERO SECTION (COMPACTO) ===== */
 .hero-section {
-  background: linear-gradient(135deg, #0a1a3a 0%, #152c5b 100%);
-  color: white;
-  padding: 15px 15px; 
+  background: #051025;
+  padding: 8px 0;
   text-align: center;
-  margin-bottom: 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
 .hero-title {
-  font-size: 18px; 
-  font-weight: 800;
+  font-size: 11px;
+  font-weight: 700;
   margin: 0;
-  letter-spacing: 0.5px;
+  letter-spacing: 3px;
   text-transform: uppercase; 
+  color: #e0e7ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.hero-title::before, .hero-title::after {
+  content: "";
+  display: block;
+  width: 30px;
+  height: 1px;
+  background: rgba(255,255,255,0.2);
 }
 
 @media (min-width: 768px) {
-  .hero-section { padding: 20px; }
-  .hero-title { font-size: 24px; }
+  .hero-section { padding: 10px 0; }
+  .hero-title { font-size: 13px; letter-spacing: 4px; }
+  .hero-title::before, .hero-title::after { width: 50px; }
 }
 
 /* ===== BARRA DE FILTROS ===== */
@@ -250,7 +263,7 @@ header{
   padding: 20px 0;
   overflow: hidden;
   border-bottom: 1px solid #eee;
-  display: none;
+  display: none; /* Oculto por defecto */
   user-select: none;
 }
 
@@ -277,7 +290,7 @@ header{
   overflow: hidden;
   position: relative;
   cursor: grab;
-  touch-action: pan-y; /* Permite scroll vertical pero controlamos horizontal */
+  touch-action: pan-y; 
 }
 .offers-track-container:active {
   cursor: grabbing;
@@ -930,7 +943,7 @@ header{
   </div>
 </header>
 
-<!-- HERO SECTION -->
+<!-- HERO SECTION (NUEVO DISEÑO COMPACTO) -->
 <div class="hero-section">
   <div class="hero-content">
     <h2 class="hero-title">TECNOLOGÍA AL ALCANCE DE TODOS</h2>
@@ -1076,6 +1089,10 @@ fetch("https://dombet-backend.onrender.com/products")
 .then(r=>r.json())
 .then(d=>{
   products=d;
+  // 1. Inicializar ofertas primero para tener los datos listos
+  initOffers(); 
+  
+  // 2. Verificar URL para decidir qué mostrar
   const params = new URLSearchParams(window.location.search);
   const pIndex = params.get('p');
   if(pIndex !== null && products[pIndex]){
@@ -1083,7 +1100,6 @@ fetch("https://dombet-backend.onrender.com/products")
   } else {
     renderList();
   }
-  initOffers(); // Iniciar carrusel de ofertas
 });
 
 window.onpopstate = function(event) {
@@ -1093,11 +1109,6 @@ window.onpopstate = function(event) {
     openDetail(parseInt(pIndex), false);
   } else {
     renderList();
-    // Restaurar ofertas si volvemos al inicio
-    const offersSection = document.getElementById('offersSection');
-    if(offersSection && products.some(p => p.discount > 0)) {
-      offersSection.style.display = 'block';
-    }
   }
 };
 
@@ -1110,6 +1121,13 @@ function renderList(){
   detail.style.display="none";
   list.style.display="grid";
   window.scrollTo(0,0);
+  
+  // MOSTRAR CARRUSEL SOLO EN EL LISTADO
+  const offersSection = document.getElementById('offersSection');
+  if(offersSection && discountProducts.length > 0) {
+    offersSection.style.display = 'block';
+  }
+
   products.forEach((p,i)=>{
     const price = Number(p.price);
     const discount = Number(p.discount || 0);
@@ -1155,7 +1173,7 @@ function initOffers() {
     return;
   }
 
-  section.style.display = 'block';
+  // Nota: No forzamos display block aquí, dejamos que renderList lo haga
   updateCarouselBatch();
 
   // Event Listeners para arrastrar (Touch y Mouse)
@@ -1200,9 +1218,10 @@ function updateCarouselBatch() {
     `;
   };
 
-  // Duplicar contenido para scroll infinito
-  selected.forEach(p => content += createCard(p));
-  selected.forEach(p => content += createCard(p)); 
+  // Repetir 4 veces para cubrir pantallas anchas y evitar espacios en blanco
+  for(let i=0; i<4; i++) {
+    selected.forEach(p => content += createCard(p));
+  }
 
   track.innerHTML = content;
   
@@ -1212,9 +1231,8 @@ function updateCarouselBatch() {
     if(firstCard) {
       // Ancho de tarjeta + gap (15px)
       itemWidth = firstCard.offsetWidth + 15; 
-      // Ancho total de la mitad del contenido (un set de items)
-      // Usamos scrollWidth / 2 para mayor precisión
-      trackWidth = track.scrollWidth / 2;
+      // Ancho total de UN set de items (total / 4)
+      trackWidth = track.scrollWidth / 4;
     }
   }, 100);
 }
@@ -1265,6 +1283,11 @@ function touchStart(event) {
 
 function touchMove(event) {
   if (isDragging) {
+    // Prevenir scroll vertical en móviles mientras se arrastra el carrusel
+    if(event.type === 'touchmove') {
+       // Opcional: solo prevenir si el movimiento es mayormente horizontal
+    }
+    
     const currentPosition = getPositionX(event);
     const diff = currentPosition - startX;
     carouselPos = prevTranslate + diff;
@@ -1303,7 +1326,12 @@ function openDetail(i, pushHistory = true){
   
   list.style.display="none";
   detail.style.display="block";
-  document.getElementById('offersSection').style.display = 'none';
+  
+  // OCULTAR CARRUSEL EN DETALLE
+  const offersSection = document.getElementById('offersSection');
+  if(offersSection) {
+    offersSection.style.display = 'none';
+  }
 
   dName.innerText=current.name;
   dDesc.innerText=current.description||"Sin descripción detallada.";
