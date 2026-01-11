@@ -248,9 +248,9 @@ header{
 .offers-section {
   background: #f9f9f9;
   padding: 20px 0;
-  overflow: hidden; /* Oculta lo que se sale de la pantalla */
+  overflow: hidden;
   border-bottom: 1px solid #eee;
-  display: none; /* Se muestra solo si hay ofertas */
+  display: none;
 }
 
 .offers-header {
@@ -281,12 +281,12 @@ header{
 .offers-track {
   display: flex;
   gap: 15px;
-  width: max-content; /* El ancho se ajusta al contenido */
-  animation: scrollCarousel 30s linear infinite; /* Animación continua */
+  width: max-content;
+  /* Animación de 20 segundos por vuelta */
+  animation: scrollCarousel 20s linear infinite; 
   padding: 0 15px;
 }
 
-/* Pausar animación al pasar el mouse */
 .offers-track:hover {
   animation-play-state: paused;
 }
@@ -296,14 +296,14 @@ header{
   100% { transform: translateX(-50%); } /* Se mueve hasta la mitad (donde empieza el duplicado) */
 }
 
-/* Tarjeta de Oferta (Más compacta) */
+/* Tarjeta de Oferta */
 .offer-card {
   background: #fff;
   border-radius: 8px;
   padding: 10px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   border: 1px solid #eee;
-  width: 180px; /* Ancho fijo para el carrusel */
+  width: 180px;
   flex-shrink: 0;
   cursor: pointer;
   position: relative;
@@ -375,7 +375,7 @@ header{
   }
 }
 
-/* ESTILOS DE LA TARJETA (ENTRADA + HOVER) */
+/* ESTILOS DE LA TARJETA */
 .card{
   background:#fff;
   border-radius:8px;
@@ -387,15 +387,10 @@ header{
   border: 1px solid #eee; 
   position: relative;
   height: 100%;
-  
-  /* 1. ANIMACIÓN DE ENTRADA */
   animation: elegantBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-
-  /* 2. TRANSICIÓN DE HOVER */
   transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
 }
 
-/* Efecto al pasar el mouse: Elevación sutil (-4px) */
 .card:hover { 
   box-shadow: 0 12px 24px rgba(0,0,0,0.15); 
   transform: translateY(-4px) scale(1.03); 
@@ -410,7 +405,6 @@ header{
 }
 @media (min-width: 768px) { .card img { height: 180px; padding: 15px; } }
 
-/* NOMBRE CORREGIDO */
 .name{
   font-size:13px;
   height: auto; 
@@ -1064,6 +1058,8 @@ header{
 <script>
 let products=[], current=null, imgs=[], imgIndex=0, qty=1;
 let cart = [];
+let discountProducts = [];
+let animationLoopCount = 0;
 
 // Cargar carrito guardado
 const savedCart = localStorage.getItem('dombet_cart');
@@ -1085,7 +1081,7 @@ fetch("https://dombet-backend.onrender.com/products")
   } else {
     renderList();
   }
-  renderOffers(); // Renderizar ofertas después de cargar productos
+  initOffers(); // Iniciar carrusel de ofertas
 });
 
 window.onpopstate = function(event) {
@@ -1095,6 +1091,11 @@ window.onpopstate = function(event) {
     openDetail(parseInt(pIndex), false);
   } else {
     renderList();
+    // Restaurar ofertas si volvemos al inicio
+    const offersSection = document.getElementById('offersSection');
+    if(offersSection && products.some(p => p.discount > 0)) {
+      offersSection.style.display = 'block';
+    }
   }
 };
 
@@ -1140,27 +1141,46 @@ function renderList(){
   })
 }
 
-/* ===== LÓGICA DEL CARRUSEL DE OFERTAS ===== */
-function renderOffers() {
-  const offers = products.filter(p => p.discount > 0);
-  const track = document.getElementById('offersTrack');
+/* ===== LÓGICA DEL CARRUSEL DE OFERTAS (5 ITEMS, CAMBIO CADA 5 VUELTAS) ===== */
+function initOffers() {
+  discountProducts = products.filter(p => p.discount > 0);
   const section = document.getElementById('offersSection');
+  const track = document.getElementById('offersTrack');
 
-  if (offers.length === 0) {
+  if (discountProducts.length === 0) {
     section.style.display = 'none';
     return;
   }
 
   section.style.display = 'block';
-  track.innerHTML = '';
+  updateCarouselBatch();
 
-  // Función para crear el HTML de una tarjeta de oferta
-  const createOfferCard = (p) => {
+  // Escuchar cada vez que termina una vuelta de la animación
+  track.addEventListener('animationiteration', () => {
+    animationLoopCount++;
+    // Cada 5 vueltas, cambiamos los productos
+    if (animationLoopCount % 5 === 0) {
+      updateCarouselBatch();
+    }
+  });
+}
+
+function updateCarouselBatch() {
+  const track = document.getElementById('offersTrack');
+  
+  // Seleccionar 5 productos al azar (o menos si no hay suficientes)
+  let shuffled = discountProducts.sort(() => 0.5 - Math.random());
+  let selected = shuffled.slice(0, 5);
+
+  // Generar HTML
+  let content = '';
+  
+  // Función auxiliar para crear tarjeta
+  const createCard = (p) => {
     const originalIndex = products.indexOf(p);
     const price = Number(p.price);
     const discount = Number(p.discount);
     const finalPrice = price - (price * (discount / 100));
-
     return `
       <div class="offer-card" onclick="openDetail(${originalIndex})">
         <div class="offer-badge">-${discount}%</div>
@@ -1174,16 +1194,10 @@ function renderOffers() {
     `;
   };
 
-  // Duplicamos los items suficientes veces para asegurar un scroll infinito suave
-  // Si hay pocos items, los repetimos más veces
-  let content = '';
-  const repeatCount = offers.length < 5 ? 4 : 2; 
-
-  for(let i=0; i < repeatCount; i++) {
-    offers.forEach(p => {
-      content += createOfferCard(p);
-    });
-  }
+  // Duplicamos el contenido para el efecto de scroll infinito
+  // (Original + Copia) para que la animación CSS funcione
+  selected.forEach(p => content += createCard(p));
+  selected.forEach(p => content += createCard(p)); // Duplicado
 
   track.innerHTML = content;
 }
@@ -1209,7 +1223,6 @@ function openDetail(i, pushHistory = true){
   
   list.style.display="none";
   detail.style.display="block";
-  // Ocultar ofertas al entrar en detalle
   document.getElementById('offersSection').style.display = 'none';
 
   dName.innerText=current.name;
