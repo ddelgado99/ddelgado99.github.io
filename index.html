@@ -2,7 +2,6 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<!-- VIEWPORT ESENCIAL PARA MOVILES -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>DOMBET INFORMÁTICA</title>
 
@@ -15,16 +14,16 @@ body{
   font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background:#f5f5f5;
   overflow-x: hidden;
-  padding-bottom: 80px; /* Espacio para scroll en movil */
+  padding-bottom: 80px;
 }
 
-/* ===== HEADER RESPONSIVE ===== */
+/* ===== HEADER ===== */
 header{
   background:#0a1a3a;
   color:#fff;
   padding:10px 15px;
   display:flex;
-  flex-wrap: wrap; /* Permite que los elementos bajen en movil */
+  flex-wrap: wrap;
   align-items:center;
   justify-content:space-between;
   position:sticky;
@@ -43,18 +42,18 @@ header{
 .brand{font-size:24px;font-weight:900;line-height:1; letter-spacing: -1px;}
 .sub{font-size:10px;letter-spacing:3px; opacity: 0.8;}
 
-/* CONTENEDOR DEL BUSCADOR */
+/* ===== BUSCADOR RECTANGULAR ===== */
 .search-container {
   flex-grow: 1;
-  order: 3; /* En movil baja al final */
-  width: 100%; /* Ocupa todo el ancho en movil */
+  order: 3;
+  width: 100%;
   position: relative;
 }
 
 .search-box{
   display: flex;
   background: #e0e0e0;
-  border-radius: 30px;
+  border-radius: 8px; /* Rectangular con bordes redondeados */
   overflow: hidden;
   border: 1px solid #ccc;
   width: 100%;
@@ -66,7 +65,7 @@ header{
   border: none;
   background: transparent;
   outline: none;
-  font-size: 16px; /* 16px evita zoom automatico en iPhone */
+  font-size: 16px;
   color: #333;
   min-width: 0;
 }
@@ -87,7 +86,7 @@ header{
   position: relative;
   cursor: pointer;
   padding: 5px;
-  order: 2; /* Se mantiene a la derecha del logo */
+  order: 2;
 }
 .cart-trigger svg { width: 28px; height: 28px; fill: white; }
 .cart-count {
@@ -106,7 +105,7 @@ header{
   justify-content: center;
 }
 
-/* MEDIA QUERY PARA HEADER EN PC (Minimo 768px) */
+/* MEDIA QUERY PC */
 @media (min-width: 768px) {
   header { padding: 15px 30px; flex-wrap: nowrap; gap: 20px; }
   .brand { font-size: 32px; }
@@ -141,17 +140,15 @@ header{
 .search-item img{width:40px;height:40px;object-fit:contain}
 .search-item div { color: #000; font-weight: 500; font-size: 14px; }
 
-/* ===== LISTADO DE PRODUCTOS ===== */
+/* ===== LISTADO ===== */
 .products{
   display:grid;
-  /* Ajuste inteligente: minimo 160px para permitir 2 columnas en moviles grandes, o 1 en pequeños */
   grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); 
   gap:15px;
   padding:15px;
   max-width: 1400px;
   margin: auto;
 }
-
 @media (min-width: 768px) {
   .products { gap: 25px; padding: 30px; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); }
 }
@@ -187,7 +184,7 @@ header{
   cursor: pointer;
 }
 
-/* ===== DETALLE DEL PRODUCTO ===== */
+/* ===== DETALLE ===== */
 .detail{display:none;padding:15px;}
 .detail-box{
   max-width:1100px;
@@ -197,20 +194,18 @@ header{
   border-radius:15px;
   box-shadow: 0 5px 25px rgba(0,0,0,0.05);
   display:flex;
-  flex-direction: column; /* Por defecto columna (movil) */
+  flex-direction: column;
   gap:30px;
 }
-
 @media (min-width: 768px) {
   .detail { padding: 30px 20px; }
   .detail-box { padding: 40px; flex-direction: row; gap: 50px; }
 }
 
-/* GALERIA */
 .gallery{flex:1.2; width: 100%;}
 .main-img{
   width:100%;
-  height:300px; /* Altura movil */
+  height:300px;
   position:relative;
   border: 1px solid #eee;
   border-radius: 10px;
@@ -218,7 +213,6 @@ header{
   display: flex; align-items: center; justify-content: center;
 }
 @media (min-width: 768px) { .main-img { height: 450px; } }
-
 .main-img img{max-width:100%; max-height:100%; object-fit:contain;}
 
 .arrow{
@@ -247,7 +241,6 @@ header{
 }
 .thumbs img.active{border-color:#0a1a3a; border-width: 2px;}
 
-/* INFO */
 .info{flex:1; width: 100%;}
 .info h2{margin:0 0 10px 0;font-size:22px; color: #222; line-height: 1.3;}
 @media (min-width: 768px) { .info h2 { font-size: 28px; } }
@@ -255,9 +248,7 @@ header{
 .detail-prices { margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 15px; }
 .detail-old { color: #d32f2f; text-decoration: line-through; font-size: 16px; margin-right: 10px; }
 .detail-curr { color: #2e7d32; font-size: 28px; font-weight: bold; display: block; margin-top: 5px;}
-@media (min-width: 768px) { 
-  .detail-curr { font-size: 36px; display: inline; margin-top: 0; } 
-}
+@media (min-width: 768px) { .detail-curr { font-size: 36px; display: inline; margin-top: 0; } }
 
 .label-title { font-weight: 800; font-size: 13px; color: #555; margin-bottom: 5px; text-transform: uppercase; }
 .desc-text { color: #666; line-height: 1.6; margin-bottom: 20px; font-size: 14px; }
@@ -276,23 +267,25 @@ header{
   line-height: 1.4;
 }
 
-/* CONTROLES CANTIDAD */
+/* ===== CONTROLES CANTIDAD (ELEGANTES) ===== */
 .qty-section { margin-bottom: 20px; }
-.qty-controls { display: flex; align-items: center; gap: 10px; }
+.qty-controls { display: flex; align-items: center; gap: 8px; }
 .qty-btn {
-  width: 45px; height: 45px; /* Mas grande para dedo */
-  background: #f0f0f0;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 22px;
+  width: 32px; height: 32px; /* Más pequeños */
+  background: #0a1a3a; /* Azul Marino */
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 18px;
   cursor: pointer;
   display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s;
 }
-.qty-val { font-size: 18px; font-weight: bold; width: 40px; text-align: center; }
+.qty-btn:hover { background: #152c5b; }
+.qty-val { font-size: 18px; font-weight: bold; width: 30px; text-align: center; }
 
 .total-section { font-size: 18px; margin-bottom: 20px; font-weight: bold; color: #333; }
 
-/* BOTONES ACCION */
 .btn-add-cart, .btn-whats {
   width: 100%;
   padding: 15px;
@@ -307,54 +300,77 @@ header{
 .btn-add-cart { background: #0a1a3a; color: white; }
 .btn-whats { background: #25D366; color: white; }
 
-/* ===== CARRITO LATERAL ===== */
-.cart-overlay {
-  position: fixed; top:0; left:0; width:100%; height:100%;
-  background: rgba(0,0,0,0.5);
-  z-index: 1999;
-  display: none;
-}
-.cart-sidebar {
+/* ===== CARRITO FLOTANTE (GROW) ===== */
+.cart-panel {
   position: fixed;
-  top: 0;
-  right: 0;
-  width: 85%; /* Ancho relativo para movil */
-  max-width: 380px; /* Tope para PC */
-  height: 100%;
+  top: 70px; /* Debajo del header aprox */
+  right: 15px;
+  width: 90%;
+  max-width: 360px;
   background: #fff;
   z-index: 2000;
-  box-shadow: -5px 0 15px rgba(0,0,0,0.1);
-  transform: translateX(100%);
-  transition: transform 0.3s ease-out;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+  border-radius: 12px;
+  
+  /* Animación y estado inicial */
+  transform: translateY(-10px);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  
+  /* Altura dinámica */
+  height: auto;
+  max-height: 80vh; /* Tope para que no se salga de pantalla */
   display: flex;
   flex-direction: column;
 }
-.cart-sidebar.open { transform: translateX(0); }
+
+.cart-panel.open {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: all;
+}
 
 .cart-header {
   padding: 15px;
   background: #0a1a3a;
   color: white;
+  border-radius: 12px 12px 0 0;
   display: flex; justify-content: space-between; align-items: center;
 }
-.close-cart { background: none; border: none; color: white; font-size: 28px; cursor: pointer; padding: 0 10px; }
+.cart-header h3 { margin: 0; font-size: 16px; }
+.close-cart { background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
 
-.cart-items { flex: 1; overflow-y: auto; padding: 15px; }
+.cart-items {
+  flex: 1;
+  overflow-y: auto; /* Scroll si hay muchos items */
+  padding: 15px;
+  min-height: 100px; /* Altura mínima para que no se vea feo vacío */
+}
+.cart-empty-msg { text-align: center; color: #888; margin-top: 20px; font-size: 14px; }
+
 .cart-item {
   display: flex; gap: 10px; margin-bottom: 15px;
   border-bottom: 1px solid #eee; padding-bottom: 10px;
 }
+.cart-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
 .cart-item img { width: 50px; height: 50px; object-fit: contain; border: 1px solid #eee; border-radius: 6px; }
-.cart-item-info { flex: 1; min-width: 0; } /* min-width 0 ayuda a flexbox con texto largo */
+.cart-item-info { flex: 1; min-width: 0; }
 .cart-item-title { font-size: 13px; font-weight: bold; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .cart-item-price { color: #2e7d32; font-weight: bold; font-size: 14px; }
 .cart-item-qty { font-size: 11px; color: #777; margin-top: 2px; }
 
-.cart-footer { padding: 15px; border-top: 1px solid #eee; background: #f9f9f9; }
+.cart-footer {
+  padding: 15px;
+  border-top: 1px solid #eee;
+  background: #f9f9f9;
+  border-radius: 0 0 12px 12px;
+}
 .cart-total { display: flex; justify-content: space-between; font-size: 16px; font-weight: bold; margin-bottom: 15px; }
 .btn-checkout {
-  width: 100%; padding: 15px; background: #2e7d32; color: white;
-  border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 15px;
+  width: 100%; padding: 12px; background: #2e7d32; color: white;
+  border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 14px;
 }
 
 </style>
@@ -369,7 +385,7 @@ header{
     <div class="sub">INFORMÁTICA</div>
   </div>
 
-  <div class="cart-trigger" onclick="toggleCart(true)">
+  <div class="cart-trigger" onclick="toggleCart()">
     <svg viewBox="0 0 24 24">
       <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
     </svg>
@@ -443,14 +459,15 @@ header{
   </div>
 </div>
 
-<!-- CARRITO SIDEBAR -->
-<div class="cart-overlay" id="cartOverlay" onclick="toggleCart(false)"></div>
-<div class="cart-sidebar" id="cartSidebar">
+<!-- CARRITO FLOTANTE -->
+<div class="cart-panel" id="cartPanel">
   <div class="cart-header">
     <h3>Mi Carrito</h3>
     <button class="close-cart" onclick="toggleCart(false)">×</button>
   </div>
-  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty-msg">Tu carrito está vacío</div>
+  </div>
   <div class="cart-footer">
     <div class="cart-total">
       <span>Total:</span>
@@ -572,21 +589,25 @@ function updateCartUI(){
   cartItems.innerHTML = "";
   let total = 0;
   
-  cart.forEach((item, index) => {
-    const itemTotal = item.product.price * item.qty;
-    total += itemTotal;
-    cartItems.innerHTML += `
-      <div class="cart-item">
-        <img src="${item.product.image_main}">
-        <div class="cart-item-info">
-          <div class="cart-item-title">${item.product.name}</div>
-          <div class="cart-item-price">Gs. ${Number(item.product.price).toLocaleString()}</div>
-          <div class="cart-item-qty">Cant: ${item.qty} | Sub: Gs. ${Number(itemTotal).toLocaleString()}</div>
+  if(cart.length === 0){
+    cartItems.innerHTML = '<div class="cart-empty-msg">Tu carrito está vacío</div>';
+  } else {
+    cart.forEach((item, index) => {
+      const itemTotal = item.product.price * item.qty;
+      total += itemTotal;
+      cartItems.innerHTML += `
+        <div class="cart-item">
+          <img src="${item.product.image_main}">
+          <div class="cart-item-info">
+            <div class="cart-item-title">${item.product.name}</div>
+            <div class="cart-item-price">Gs. ${Number(item.product.price).toLocaleString()}</div>
+            <div class="cart-item-qty">Cant: ${item.qty} | Sub: Gs. ${Number(itemTotal).toLocaleString()}</div>
+          </div>
+          <button onclick="removeFromCart(${index})" style="border:none;background:none;color:red;cursor:pointer;font-size:24px;padding:0 10px;">&times;</button>
         </div>
-        <button onclick="removeFromCart(${index})" style="border:none;background:none;color:red;cursor:pointer;font-size:24px;padding:0 10px;">&times;</button>
-      </div>
-    `;
-  });
+      `;
+    });
+  }
   
   cartTotalDisplay.innerText = "Gs. " + Number(total).toLocaleString();
 }
@@ -596,19 +617,30 @@ function removeFromCart(index){
   updateCartUI();
 }
 
-function toggleCart(show){
-  const sidebar = document.getElementById('cartSidebar');
-  const overlay = document.getElementById('cartOverlay');
-  if(show){
-    sidebar.classList.add('open');
-    overlay.style.display = 'block';
-    document.body.style.overflow = 'hidden'; // Evita scroll fondo
+function toggleCart(forceState){
+  const panel = document.getElementById('cartPanel');
+  if(typeof forceState === 'boolean'){
+    if(forceState) panel.classList.add('open');
+    else panel.classList.remove('open');
   } else {
-    sidebar.classList.remove('open');
-    overlay.style.display = 'none';
-    document.body.style.overflow = '';
+    panel.classList.toggle('open');
   }
 }
+
+// CERRAR CARRITO AL CLICKEAR FUERA
+document.addEventListener('click', function(e) {
+  const panel = document.getElementById('cartPanel');
+  const trigger = document.querySelector('.cart-trigger');
+  const addBtn = document.querySelector('.btn-add-cart');
+  
+  // Si el panel está abierto Y el click NO fue en el panel Y NO fue en el icono Y NO fue en el botón añadir
+  if(panel.classList.contains('open') && 
+     !panel.contains(e.target) && 
+     !trigger.contains(e.target) &&
+     (!addBtn || !addBtn.contains(e.target))) {
+    toggleCart(false);
+  }
+});
 
 function buyWhats(){
   const total = current.price * qty;
