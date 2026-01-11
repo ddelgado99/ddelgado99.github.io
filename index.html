@@ -1,1627 +1,196 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>DOMBET INFORMÁTICA</title>
-
-<style>
-/* ===== RESET Y GENERAL ===== */
-* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-body{
-  margin:0;
-  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background:#ffffff;
-  overflow-x: hidden;
-  padding-bottom: 80px;
-  color: #333;
-}
-
-/* ANIMACIÓN REBOTE (ENTRADA) */
-@keyframes elegantBounce {
-  0% { opacity: 0; transform: scale(0.9); }
-  70% { transform: scale(1.03); }
-  100% { opacity: 1; transform: scale(1); }
-}
-
-/* ===== HEADER ===== */
-header{
-  background:#0a1a3a;
-  color:#fff;
-  padding:10px 15px;
-  display:flex;
-  flex-wrap: wrap;
-  align-items:center;
-  justify-content:space-between;
-  position:sticky;
-  top:0;
-  z-index:1000;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  gap: 10px;
-}
-
-.logo{
-  cursor:pointer; 
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  width: max-content;
-  animation: elegantBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-  position: relative;
-  z-index: 1002; /* Asegura que el logo esté sobre el buscador en pantallas muy estrechas */
-}
-.brand{
-  font-size:28px;
-  font-weight:900;
-  line-height:1; 
-  letter-spacing: 1px;
-  text-align: center;
-}
-.sub{
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  font-size: 10px; 
-  font-weight: 600;
-  opacity: 0.9;
-  margin-top: 2px;
-}
-
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  order: 2;
-  position: relative;
-  z-index: 1002; 
-}
-
-/* ICONO DEL CARRITO */
-.cart-trigger {
-  position: relative;
-  cursor: pointer;
-  padding: 5px;
-  display: flex;
-  align-items: center;
-  background: none;
-  border: none;
-  outline: none;
-}
-.cart-trigger svg { width: 28px; height: 28px; fill: white; pointer-events: none; }
-.cart-count {
-  position: absolute;
-  top: -2px;
-  right: -2px;
-  background: #d32f2f;
-  color: white;
-  font-size: 11px;
-  font-weight: bold;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-}
-
-.search-container {
-  flex-grow: 1;
-  order: 3;
-  width: 100%;
-  position: relative;
-  z-index: 1001;
-}
-
-.search-box{
-  display: flex;
-  background: #f5f5f5;
-  border-radius: 4px;
-  overflow: hidden;
-  border: 1px solid #eee;
-  width: 100%;
-}
-
-.search-box input{
-  flex-grow: 1;
-  padding: 10px 15px;
-  border: none;
-  background: transparent;
-  outline: none;
-  font-size: 15px;
-  color: #333;
-  min-width: 0;
-}
-
-.search-btn {
-  background: transparent;
-  border: none;
-  padding: 0 15px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.search-btn svg { fill: #666; width: 20px; height: 20px; }
-
-/* MEDIA QUERY PARA ESCRITORIO (PC) */
-@media (min-width: 768px) {
-  header { 
-    padding: 15px 40px; 
-    flex-wrap: nowrap; 
-    gap: 0; 
-    position: sticky;
-  }
-  
-  .brand { font-size: 36px; }
-  .sub { font-size: 12.5px; } 
-  
-  /* Buscador centrado absolutamente */
-  .search-container { 
-    order: unset; /* Resetear orden flex */
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 40%;
-    max-width: 600px;
-    margin: 0;
-  }
-  
-  .header-right { order: unset; gap: 25px; }
-}
-
-.search-results{
-  position:absolute;
-  top:100%;
-  left: 0;
-  right: 0;
-  background:#fff;
-  border-radius: 0 0 4px 4px;
-  box-shadow:0 4px 10px rgba(0,0,0,.1);
-  display:none;
-  z-index: 1001;
-  max-height: 300px;
-  overflow-y: auto;
-  border-top: 1px solid #eee;
-}
-.search-item{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:12px;
-  cursor:pointer;
-  border-bottom: 1px solid #eee;
-}
-.search-item:hover{background:#f9f9f9}
-.search-item img{width:40px;height:40px;object-fit:contain}
-.search-item div { color: #000; font-weight: 500; font-size: 14px; }
-
-/* ===== HERO SECTION (COMPACTO) ===== */
-.hero-section {
-  background: #051025;
-  padding: 8px 0;
-  text-align: center;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-}
-
-.hero-title {
-  font-size: 11px;
-  font-weight: 700;
-  margin: 0;
-  letter-spacing: 3px;
-  text-transform: uppercase; 
-  color: #e0e7ff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
-
-.hero-title::before, .hero-title::after {
-  content: "";
-  display: block;
-  width: 30px;
-  height: 1px;
-  background: rgba(255,255,255,0.2);
-}
-
-@media (min-width: 768px) {
-  .hero-section { padding: 10px 0; }
-  .hero-title { font-size: 13px; letter-spacing: 4px; }
-  .hero-title::before, .hero-title::after { width: 50px; }
-}
-
-/* ===== BARRA DE FILTROS ===== */
-.filter-bar {
-  background: #fff;
-  padding: 10px 15px;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  border-bottom: 1px solid #eee;
-  max-width: 1400px;
-  margin: 0 auto;
-  position: sticky;
-  top: 60px; 
-  z-index: 900;
-  gap: 10px;
-}
-
-.sort-label {
-  font-size: 13px;
-  font-weight: 600;
-  color: #555;
-  text-transform: uppercase;
-}
-
-.sort-container {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: #fff;
-  padding: 8px 12px;
-  border-radius: 4px;
-  border: 1px solid #ddd;
-}
-
-.sort-icon { width: 18px; height: 18px; fill: #555; }
-
-.sort-select {
-  border: none;
-  background: transparent;
-  font-size: 14px;
-  color: #333;
-  font-weight: 600;
-  outline: none;
-  cursor: pointer;
-}
-
-/* ===== SECCIÓN DE OFERTAS (CARRUSEL INTERACTIVO) ===== */
-.offers-section {
-  background: #f9f9f9;
-  padding: 20px 0;
-  overflow: hidden;
-  border-bottom: 1px solid #eee;
-  display: none; /* Se controla con JS */
-  user-select: none;
-}
-
-.offers-header {
-  max-width: 1400px;
-  margin: 0 auto 15px auto;
-  padding: 0 15px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.offers-title {
-  font-size: 18px;
-  font-weight: 800;
-  color: #d32f2f;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin: 0;
-}
-
-.offers-track-container {
-  width: 100%;
-  overflow: hidden;
-  position: relative;
-  cursor: grab;
-  touch-action: pan-y; 
-}
-.offers-track-container:active {
-  cursor: grabbing;
-}
-
-/* Pista que se mueve (Controlada por JS) */
-.offers-track {
-  display: flex;
-  gap: 15px;
-  width: max-content;
-  padding: 0 15px;
-  will-change: transform;
-}
-
-/* Tarjeta de Oferta */
-.offer-card {
-  background: #fff;
-  border-radius: 8px;
-  padding: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  border: 1px solid #eee;
-  width: 180px;
-  flex-shrink: 0;
-  cursor: pointer;
-  position: relative;
-}
-
-.offer-card img {
-  width: 100%;
-  height: 120px;
-  object-fit: contain;
-  margin-bottom: 8px;
-  pointer-events: none;
-}
-
-.offer-name {
-  font-size: 12px;
-  font-weight: 600;
-  color: #333;
-  height: 32px;
-  overflow: hidden;
-  margin-bottom: 5px;
-  line-height: 1.3;
-}
-
-.offer-price-box {
-  display: flex;
-  flex-direction: column;
-}
-
-.offer-old { font-size: 10px; text-decoration: line-through; color: #999; }
-.offer-new { font-size: 14px; font-weight: 800; color: #d32f2f; }
-
-.offer-badge {
-  position: absolute;
-  top: 8px; left: 8px;
-  background: #d32f2f; color: white;
-  font-size: 9px; font-weight: bold;
-  padding: 2px 5px; border-radius: 3px;
-  z-index: 2;
-}
-
-@media (min-width: 768px) {
-  .offer-card { width: 220px; }
-  .offer-card img { height: 150px; }
-  .offer-name { font-size: 13px; }
-  .offer-new { font-size: 16px; }
-}
-
-
-/* ===== LISTADO ===== */
-.products{
-  display:grid;
-  grid-template-columns: repeat(2, 1fr); 
-  gap: 10px;
-  padding: 10px;
-  max-width: 1400px;
-  margin: auto;
-}
-
-@media (min-width: 768px) {
-  .products { 
-    gap: 20px; 
-    padding: 40px; 
-    grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); 
-  }
-}
-
-/* ESTILOS DE LA TARJETA */
-.card{
-  background:#fff;
-  border-radius:8px;
-  padding:10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06); 
-  cursor:pointer;
-  display: flex;
-  flex-direction: column;
-  border: 1px solid #eee; 
-  position: relative;
-  height: 100%;
-  animation: elegantBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
-}
-
-.card:hover { 
-  box-shadow: 0 12px 24px rgba(0,0,0,0.15); 
-  transform: translateY(-4px) scale(1.03); 
-  z-index: 10;
-}
-
-.card img{
-  width:100%;
-  height:140px;
-  object-fit:contain; 
-  margin-bottom: 10px;
-}
-@media (min-width: 768px) { .card img { height: 180px; padding: 15px; } }
-
-.name{
-  font-size:13px;
-  height: auto; 
-  min-height: 34px;
-  color: #333; 
-  margin-bottom: 8px; 
-  line-height: 1.3;
-  word-wrap: break-word;
-}
-@media (min-width: 768px) { .name { font-size: 14px; min-height: 38px; } }
-
-.price-container { 
-  display: flex; 
-  flex-direction: row; 
-  align-items: baseline; 
-  gap: 8px; 
-  margin-bottom: 8px; 
-  flex-wrap: wrap;
-}
-
-.old-price { color: #999; text-decoration: line-through; font-size: 11px; }
-
-.current-price { font-size: 15px; font-weight:bold; }
-.price-red { color: #d32f2f; }
-.price-navy { color: #0a1a3a; }
-
-@media (min-width: 768px) { 
-  .old-price { font-size: 13px; }
-  .current-price { font-size: 18px; }
-}
-
-.discount-badge {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  background: #d32f2f;
-  color: white;
-  font-size: 10px;
-  font-weight: bold;
-  padding: 3px 6px;
-  border-radius: 4px;
-  z-index: 10;
-}
-
-.btn-list-add{
-  margin-top:auto;
-  width:100%;
-  padding: 8px 4px;
-  background:#0a1a3a;
-  color:#fff;
-  border:none;
-  border-radius:4px;
-  font-weight: 600;
-  font-size: 11px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  transition: background 0.2s;
-  white-space: nowrap;
-}
-.btn-list-add:hover { background: #152c5b; }
-.btn-list-add svg { width: 14px; height: 14px; fill: white; }
-
-@media (min-width: 768px) {
-  .btn-list-add { padding: 10px; font-size: 13px; gap: 8px; }
-  .btn-list-add svg { width: 16px; height: 16px; }
-}
-
-/* ===== DETALLE ===== */
-.detail{
-  display:none;
-  padding: 0;
-  margin-top: 0;
-}
-.detail-box{
-  max-width:1400px;
-  margin: 0 auto;
-  background:#fff;
-  padding: 10px 15px;
-  border-radius: 0; 
-  display: block;
-}
-
-@media (min-width: 768px) {
-  .detail { padding: 0 40px; } 
-  .detail-box { 
-    padding: 10px 40px; 
-    border-radius: 0; 
-  }
-}
-
-/* TÍTULO EN DETALLE (MODIFICADO) */
-.detail-title {
-  font-size: 20px;
-  font-weight: 700;
-  color: #333;
-  margin: 0 0 15px 0; /* Margen ajustado */
-  line-height: 1.2;
-  width: 100%;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #eee;
-}
-
-@media (min-width: 768px) {
-  .detail-title {
-    font-size: 32px;
-    margin-bottom: 20px;
-  }
-}
-
-.detail-columns {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-@media (min-width: 768px) {
-  .detail-columns {
-    flex-direction: row;
-    align-items: flex-start;
-    gap: 40px;
-  }
-}
-
-/* GALERIA */
-.gallery{
-  flex: 1.2; 
-  width: 100%;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-@media (min-width: 768px) {
-  .gallery { flex-direction: row; }
-}
-
-/* THUMBS */
-.thumbs{
-  display:none; 
-  gap:8px;
-  justify-content: center; 
-  overflow-x: auto; 
-  order: 2;
-}
-
-@media (min-width: 768px) {
-  .thumbs {
-    display: flex; 
-    flex-direction: column;
-    order: 1;
-    justify-content: flex-start;
-    width: 70px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    max-height: 480px;
-  }
-}
-
-.thumbs img{
-  width:60px;height:60px;object-fit:contain;
-  border:1px solid #eee;
-  border-radius:4px;
-  cursor: pointer;
-  flex-shrink: 0;
-}
-.thumbs img.active{border-color:#0a1a3a; border-width: 2px;}
-
-/* MAIN IMG */
-.main-img{
-  flex: 1;
-  width:100%;
-  height: 280px;
-  position:relative;
-  display: flex; align-items: center; justify-content: center;
-  cursor: zoom-in;
-  background: #fff;
-  order: 1;
-  touch-action: pan-y;
-}
-
-@media (min-width: 768px) { 
-  .main-img { height: 480px; order: 2; }
-}
-
-.main-img img{max-width:100%; max-height:100%; object-fit:contain; pointer-events: none;}
-
-.arrow{
-  position:absolute;
-  top:50%;
-  transform:translateY(-50%);
-  background: none;
-  color: #000;
-  border:none;
-  font-size: 40px;
-  font-weight: 300;
-  width: 50px; height: 60px;
-  cursor:pointer;
-  z-index: 2;
-  display: none; 
-  align-items: center; justify-content: center;
-  transition: opacity 0.2s;
-  padding: 0;
-}
-@media (min-width: 768px) { .arrow { display: flex; } }
-.arrow:hover { opacity: 0.6; }
-.arrow.left{left: 0;}
-.arrow.right{right: 0;}
-
-/* ===== INFO COLUMN ===== */
-.info{
-  flex:1; 
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-.info-header { margin-bottom: 10px; }
-
-.detail-prices { padding-bottom: 8px; border-bottom: 1px solid #eee; }
-.detail-old { color: #999; text-decoration: line-through; font-size: 15px; display: block; margin-bottom: 2px;}
-.detail-curr { font-size: 28px; font-weight: 700; display: block; }
-@media (min-width: 768px) { .detail-curr { font-size: 36px; } }
-
-.info-purchase { margin-bottom: 15px; }
-
-.qty-label {
-  font-size: 11px;
-  color: #666;
-  font-weight: 700;
-  text-transform: uppercase;
-  margin-bottom: 4px;
-  text-align: left;
-}
-
-.qty-section { 
-  display: flex; 
-  align-items: center; 
-  gap: 15px; 
-  margin-bottom: 8px;
-}
-
-.qty-controls { 
-  display: inline-flex; 
-  align-items: center; 
-  gap: 0; 
-  background: #f0f0f0;
-  border: 1px solid #ddd;
-  border-radius: 6px; 
-  padding: 2px;
-  width: max-content;
-}
-
-.qty-btn {
-  width: 32px; height: 32px;
-  background: transparent;
-  color: #333;
-  border: none;
-  font-size: 18px;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-}
-.qty-btn:hover { background: rgba(0,0,0,0.05); }
-
-.qty-val { 
-  font-size: 16px; 
-  font-weight: 600; 
-  width: 30px; 
-  text-align: center; 
-  color: #333;
-  border-left: 1px solid #ddd; 
-  border-right: 1px solid #ddd; 
-  height: 20px; 
-  line-height: 20px; 
-}
-
-.total-section { font-size: 15px; font-weight: 700; color: #333; }
-
-.info-actions { margin-bottom: 20px; }
-
-.btn-add-cart, .btn-whats {
-  width: 100%;
-  padding: 14px;
-  border: none;
-  border-radius: 6px;
-  font-size: 15px;
-  font-weight: 700;
-  cursor: pointer;
-  margin-bottom: 10px;
-  display: flex; align-items: center; justify-content: center; gap: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-.btn-add-cart { background: #0a1a3a; color: white; transition: background 0.2s; }
-.btn-add-cart:hover { background: #152c5b; }
-
-.btn-whats { background: #25D366; color: white; }
-.btn-whats svg { width: 24px; height: 24px; fill: white; }
-
-.info-details { 
-  border-top: 1px solid #eee; 
-  padding-top: 15px; 
-}
-
-.label-title { font-weight: 700; font-size: 13px; color: #333; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
-.desc-text { color: #666; line-height: 1.5; margin-bottom: 20px; font-size: 14px; }
-
-/* CAJA DE ENVÍOS MODIFICADA (LIMPIA) */
-.shipping-info {
-  background: transparent;
-  color: #15803d;
-  padding: 10px 0;
-  font-size: 13px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  border: none;
-}
-
-/* ===== CARRITO FLOTANTE Y OVERLAY ===== */
-.cart-overlay {
-  position: fixed;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(0,0,0,0.5);
-  z-index: 9998; /* Justo debajo del panel */
-  display: none;
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-.cart-overlay.open { display: block; opacity: 1; }
-
-.cart-panel {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 85%; /* Ancho en móvil */
-  max-width: 400px;
-  height: 100%;
-  background: #fff;
-  z-index: 9999; /* Por encima de todo */
-  box-shadow: -2px 0 10px rgba(0,0,0,0.1);
-  transform: translateX(100%);
-  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  display: flex;
-  flex-direction: column;
-}
-
-.cart-panel.open { transform: translateX(0); }
-
-.cart-header {
-  padding: 15px;
-  background: #0a1a3a;
-  color: white;
-  display: flex; justify-content: space-between; align-items: center;
-}
-.cart-header h3 { margin: 0; font-size: 18px; }
-.close-cart { background: none; border: none; color: white; font-size: 28px; cursor: pointer; line-height: 1; }
-
-.cart-items {
-  flex: 1;
-  overflow-y: auto;
-  padding: 15px;
-}
-.cart-empty-msg { text-align: center; color: #888; margin-top: 40px; font-size: 15px; }
-
-.cart-item {
-  display: flex; gap: 10px; margin-bottom: 15px;
-  border-bottom: 1px solid #eee; padding-bottom: 10px;
-}
-.cart-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-
-.cart-item img { width: 60px; height: 60px; object-fit: contain; border: 1px solid #eee; border-radius: 4px; }
-.cart-item-info { flex: 1; min-width: 0; }
-.cart-item-title { font-size: 13px; font-weight: bold; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.cart-item-price { color: #2e7d32; font-weight: bold; font-size: 14px; }
-.cart-item-qty { font-size: 12px; color: #777; margin-top: 2px; }
-
-.btn-trash {
-  border: none;
-  background: none;
-  cursor: pointer;
-  padding: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.btn-trash svg {
-  width: 20px;
-  height: 20px;
-  fill: #d32f2f;
-  transition: fill 0.2s;
-}
-.btn-trash:hover svg { fill: #b71c1c; }
-
-.cart-footer {
-  padding: 20px;
-  border-top: 1px solid #eee;
-  background: #f9f9f9;
-}
-.cart-total { display: flex; justify-content: space-between; font-size: 18px; font-weight: bold; margin-bottom: 15px; }
-.btn-checkout {
-  width: 100%; padding: 14px; background: #25D366; color: white;
-  border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 15px;
-  text-transform: uppercase;
-}
-
-/* ===== LIGHTBOX ===== */
-.lightbox {
-  display: none;
-  position: fixed;
-  z-index: 12000;
-  padding-top: 0;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background-color: #ffffff;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  touch-action: pan-y;
-}
-
-.lightbox-content {
-  margin: auto;
-  display: block;
-  max-width: 95%;
-  max-height: 75vh;
-  object-fit: contain;
-  animation: zoom 0.3s;
-  pointer-events: none;
-}
-
-@keyframes zoom {
-  from {transform:scale(0.9); opacity: 0;} 
-  to {transform:scale(1); opacity: 1;}
-}
-
-.close-lightbox {
-  position: absolute;
-  top: 20px;
-  right: 30px;
-  color: #333;
-  font-size: 50px;
-  font-weight: 300;
-  transition: 0.3s;
-  cursor: pointer;
-  z-index: 12001;
-  line-height: 1;
-}
-
-.lb-arrow {
-  cursor: pointer;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 60px; height: 60px;
-  background: none;
-  color: #333;
-  font-weight: 300;
-  font-size: 50px;
-  transition: 0.3s ease;
-  user-select: none;
-  display: none;
-  align-items: center; justify-content: center;
-  z-index: 12002;
-}
-@media (min-width: 768px) { .lb-arrow { display: flex; } }
-.lb-prev { left: 20px; }
-.lb-next { right: 20px; }
-
-.lightbox-thumbs {
-  display: flex;
-  gap: 10px;
-  margin-top: 20px;
-  overflow-x: auto;
-  width: 100%;
-  justify-content: center;
-  padding: 10px;
-  background: #fff;
-  position: absolute;
-  bottom: 20px;
-  z-index: 12002;
-}
-.lightbox-thumbs img {
-  width: 60px; height: 60px;
-  object-fit: contain;
-  border: 1px solid #eee;
-  border-radius: 4px;
-  opacity: 0.6;
-}
-.lightbox-thumbs img.active {
-  border-color: #0a1a3a;
-  opacity: 1;
-  border-width: 2px;
-}
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galería con Miniaturas en Detalle</title>
+    <style>
+        /* Estilos generales de la galería (Lo que ya tenías) */
+        body { font-family: sans-serif; margin: 0; padding: 20px; background: #f0f0f0; }
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+        }
+        .gallery-item {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: transform 0.2s;
+        }
+        .gallery-item:hover { transform: scale(1.05); }
+
+        /* Estilos del Modal (Vista detalle) */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            flex-direction: column; /* Importante para apilar imagen y miniaturas */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 70vh; /* Dejamos espacio para las miniaturas abajo */
+            object-fit: contain;
+            border-radius: 4px;
+        }
+
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        /* --- NUEVO: Estilos para las miniaturas dentro del modal --- */
+        .modal-thumbnails-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            overflow-x: auto; /* Permite scrollear horizontalmente en móvil */
+            max-width: 90%;
+            padding: 10px 0;
+        }
+
+        .modal-thumb {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            cursor: pointer;
+            border-radius: 4px;
+            opacity: 0.6;
+            transition: opacity 0.3s, border 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .modal-thumb:hover, .modal-thumb.active {
+            opacity: 1;
+            border-color: #fff; /* Borde blanco para indicar selección */
+        }
+        
+        /* Ocultar barra de scroll fea pero permitir scroll */
+        .modal-thumbnails-container::-webkit-scrollbar {
+            height: 6px;
+        }
+        .modal-thumbnails-container::-webkit-scrollbar-thumb {
+            background: #555;
+            border-radius: 3px;
+        }
+    </style>
 </head>
-
 <body>
 
-<!-- HEADER -->
-<header>
-  <div class="logo" onclick="goHome()">
-    <div class="brand">DOMBET</div>
-    <div class="sub">
-      <span>I</span><span>N</span><span>F</span><span>O</span><span>R</span><span>M</span><span>Á</span><span>T</span><span>I</span><span>C</span><span>A</span>
+    <!-- Galería Principal -->
+    <div class="gallery-container">
+        <img src="https://picsum.photos/id/101/800/800" class="gallery-item" alt="Imagen 1">
+        <img src="https://picsum.photos/id/102/800/800" class="gallery-item" alt="Imagen 2">
+        <img src="https://picsum.photos/id/103/800/800" class="gallery-item" alt="Imagen 3">
+        <img src="https://picsum.photos/id/104/800/800" class="gallery-item" alt="Imagen 4">
+        <img src="https://picsum.photos/id/106/800/800" class="gallery-item" alt="Imagen 5">
     </div>
-  </div>
 
-  <div class="header-right">
-    <button class="cart-trigger" onclick="toggleCart(true)">
-      <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-      <div class="cart-count" id="cartCount">0</div>
-    </button>
-  </div>
-
-  <div class="search-container">
-    <div class="search-box">
-      <input id="searchInput" placeholder="Buscar productos..." autocomplete="off">
-      <button class="search-btn">
-        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-      </button>
+    <!-- Modal (Vista Detalle) -->
+    <div id="imageModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modalImage">
+        
+        <!-- --- NUEVO: Contenedor vacío donde inyectaremos las miniaturas --- -->
+        <div class="modal-thumbnails-container" id="modalThumbnails"></div>
     </div>
-    <div class="search-results" id="searchResults"></div>
-  </div>
-</header>
 
-<!-- HERO SECTION (NUEVO DISEÑO COMPACTO) -->
-<div class="hero-section">
-  <div class="hero-content">
-    <h2 class="hero-title">TECNOLOGÍA AL ALCANCE DE TODOS</h2>
-  </div>
-</div>
-
-<!-- BARRA DE FILTROS -->
-<div class="filter-bar">
-  <span class="sort-label">Ordenar por:</span>
-  <div class="sort-container">
-    <svg class="sort-icon" viewBox="0 0 24 24"><path d="M3 18h6v-2H3v2zM3 6v2h18V6H3zm0 7h12v-2H3v2z"/></svg>
-    <select class="sort-select" onchange="sortProducts(this.value)">
-      <option value="asc">Menor a Mayor</option>
-      <option value="desc">Mayor a Menor</option>
-    </select>
-  </div>
-</div>
-
-<!-- SECCIÓN DE OFERTAS (CARRUSEL) -->
-<div class="offers-section" id="offersSection">
-  <div class="offers-header">
-    <h3 class="offers-title">OFERTAS DESTACADAS</h3>
-  </div>
-  <div class="offers-track-container" id="offersContainer">
-    <div class="offers-track" id="offersTrack">
-      <!-- Las ofertas se inyectan aquí con JS -->
-    </div>
-  </div>
-</div>
-
-<div class="products" id="list"></div>
-
-<div class="detail" id="detail">
-  <div class="detail-box">
-    <!-- TÍTULO ELIMINADO DE AQUÍ -->
-
-    <div class="detail-columns">
-      <div class="gallery">
-        <div class="thumbs" id="thumbs"></div>
-        <div class="main-img" id="mainImgContainer" onclick="openLightbox()">
-          <button class="arrow left" onclick="prevImg(); event.stopPropagation()">‹</button>
-          <img id="mainImg">
-          <button class="arrow right" onclick="nextImg(); event.stopPropagation()">›</button>
-        </div>
-      </div>
-
-      <div class="info">
-        <!-- TÍTULO MOVIDO AQUÍ -->
-        <h1 class="detail-title" id="dName"></h1>
-
-        <div class="info-header">
-          <div class="detail-prices">
-            <span class="detail-old" id="dOldPrice"></span>
-            <span class="detail-curr" id="dPrice"></span>
-          </div>
-        </div>
-
-        <div class="info-purchase">
-          <div class="qty-label">Cantidad</div>
-          <div class="qty-section">
-            <div class="qty-controls">
-              <button class="qty-btn" onclick="changeQty(-1)">-</button>
-              <div class="qty-val" id="qty">1</div>
-              <button class="qty-btn" onclick="changeQty(1)">+</button>
-            </div>
-            <div class="total-section">TOTAL: <span id="dTotal"></span></div>
-          </div>
-        </div>
-
-        <div class="info-actions">
-          <button class="btn-add-cart" onclick="addToCart()">AÑADIR A CARRITO</button>
-          <button class="btn-whats" onclick="buyWhats()">
-            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-            Comprar por WhatsApp
-          </button>
-        </div>
-
-        <div class="info-details">
-          <div class="label-title">ESPECIFICACIONES TÉCNICAS</div>
-          <p class="desc-text" id="dDesc"></p>
-          <div class="shipping-info">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="#15803d" style="flex-shrink:0"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
-            <span>ENVIOS A TODO EL PARAGUAY A TRAVES DE TRANSPORTADORA</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- OVERLAY Y PANEL DEL CARRITO -->
-<div class="cart-overlay" id="cartOverlay" onclick="toggleCart(false)"></div>
-<div class="cart-panel" id="cartPanel">
-  <div class="cart-header">
-    <h3>Mi Carrito</h3>
-    <button class="close-cart" onclick="toggleCart(false)">×</button>
-  </div>
-  <div class="cart-items" id="cartItems">
-    <div class="cart-empty-msg">Tu carrito está vacío</div>
-  </div>
-  <div class="cart-footer">
-    <div class="cart-total">
-      <span>Total:</span>
-      <span id="cartTotalDisplay">Gs. 0</span>
-    </div>
-    <button class="btn-checkout" onclick="buyCartWhats()">FINALIZAR PEDIDO (WhatsApp)</button>
-  </div>
-</div>
-
-<!-- LIGHTBOX -->
-<div id="lightbox" class="lightbox" onclick="closeLightbox()">
-  <span class="close-lightbox">&times;</span>
-  <a class="lb-arrow lb-prev" onclick="changeLightboxImg(-1, event)">&#10094;</a>
-  <img class="lightbox-content" id="lightboxImg">
-  <a class="lb-arrow lb-next" onclick="changeLightboxImg(1, event)">&#10095;</a>
-  <div class="lightbox-thumbs" id="lightboxThumbs"></div>
-</div>
-
-<script>
-let products=[], current=null, imgs=[], imgIndex=0, qty=1;
-let cart = [];
-let discountProducts = [];
-let animationLoopCount = 0;
-
-// Variables para la animación JS
-let carouselPos = 0;
-let carouselSpeed = 0.3; // Velocidad reducida para elegancia
-let isDragging = false;
-let startX = 0;
-let currentTranslate = 0;
-let prevTranslate = 0;
-let animationId;
-let trackWidth = 0;
-let itemWidth = 0;
-
-// Cargar carrito guardado
-const savedCart = localStorage.getItem('dombet_cart');
-if(savedCart){
-  try {
-    cart = JSON.parse(savedCart);
-    updateCartUI();
-  } catch(e){ console.error("Error cargando carrito", e); }
-}
-
-fetch("https://dombet-backend.onrender.com/products")
-.then(r=>r.json())
-.then(d=>{
-  products=d;
-  // 1. Inicializar ofertas primero para tener los datos listos
-  initOffers(); 
-  
-  // 2. Verificar URL para decidir qué mostrar
-  const params = new URLSearchParams(window.location.search);
-  const pIndex = params.get('p');
-  if(pIndex !== null && products[pIndex]){
-    openDetail(parseInt(pIndex), false);
-  } else {
-    renderList();
-  }
-});
-
-window.onpopstate = function(event) {
-  const params = new URLSearchParams(window.location.search);
-  const pIndex = params.get('p');
-  if(pIndex !== null && products[pIndex]){
-    openDetail(parseInt(pIndex), false);
-  } else {
-    renderList();
-  }
-};
-
-function formatCurrency(value) {
-  return Number(value).toLocaleString('es-PY');
-}
-
-function renderList(){
-  list.innerHTML="";
-  detail.style.display="none";
-  list.style.display="grid";
-  window.scrollTo(0,0);
-  
-  // MOSTRAR CARRUSEL SOLO EN EL LISTADO
-  const offersSection = document.getElementById('offersSection');
-  if(offersSection) {
-    if(discountProducts.length > 0) {
-        offersSection.style.display = 'block';
-        // Recalcular dimensiones por si acaso
-        updateCarouselBatch();
-    } else {
-        offersSection.style.display = 'none';
-    }
-  }
-
-  products.forEach((p,i)=>{
-    const price = Number(p.price);
-    const discount = Number(p.discount || 0);
-    let priceHtml = '';
-    let discountBadge = '';
-
-    if (discount > 0) {
-      const finalPrice = price - (price * (discount / 100));
-      priceHtml = `
-        <span class="old-price">Gs. ${formatCurrency(price)}</span>
-        <span class="current-price price-red">Gs. ${formatCurrency(finalPrice)}</span>
-      `;
-      discountBadge = `<div class="discount-badge">-${discount}%</div>`;
-    } else {
-      priceHtml = `<span class="current-price price-navy">Gs. ${formatCurrency(price)}</span>`;
-    }
-
-    list.innerHTML+=`
-      <div class="card" onclick="openDetail(${i})">
-        ${discountBadge}
-        <img src="${p.image_main}">
-        <div class="name">${p.name}</div>
-        <div class="price-container">
-          ${priceHtml}
-        </div>
-        <button class="btn-list-add" onclick="addToCartFromList(${i}, event)">
-          <svg viewBox="0 0 24 24"><path d="M11 9h2V6h3V4h-3V1h-2v3H8v2h3v3zm-4 9c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2zm-8.9-5h7.45c.75 0 1.41-.41 1.75-1.03l3.86-7.01L19.42 4h-.01l-1.1 2-2.76 5H8.53l-.13-.27L6.16 6l-.95-2-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7l1.1-2z"/></svg>
-          AÑADIR AL CARRITO
-        </button>
-      </div>`
-  })
-}
-
-/* ===== LÓGICA DEL CARRUSEL DE OFERTAS (JS ANIMATION) ===== */
-function initOffers() {
-  discountProducts = products.filter(p => p.discount > 0);
-  const section = document.getElementById('offersSection');
-  const trackContainer = document.getElementById('offersContainer');
-  const track = document.getElementById('offersTrack');
-
-  // Si no hay productos, no hacemos nada más
-  if (discountProducts.length === 0) {
-    return;
-  }
-
-  // Event Listeners para arrastrar (Touch y Mouse)
-  trackContainer.addEventListener('touchstart', touchStart);
-  trackContainer.addEventListener('touchmove', touchMove);
-  trackContainer.addEventListener('touchend', touchEnd);
-  
-  trackContainer.addEventListener('mousedown', touchStart);
-  trackContainer.addEventListener('mousemove', touchMove);
-  trackContainer.addEventListener('mouseup', touchEnd);
-  trackContainer.addEventListener('mouseleave', () => {
-    if(isDragging) touchEnd();
-  });
-
-  // Iniciar animación
-  animationId = requestAnimationFrame(animateCarousel);
-}
-
-function updateCarouselBatch() {
-  const track = document.getElementById('offersTrack');
-  if(!track || discountProducts.length === 0) return;
-  
-  // 1. Obtener todos los productos con descuento
-  let itemsToRender = [...discountProducts];
-
-  // 2. Si hay pocos productos, repetirlos hasta tener suficientes para llenar la pantalla
-  // Esto evita espacios en blanco en monitores anchos
-  while (itemsToRender.length < 10) {
-      itemsToRender = [...itemsToRender, ...discountProducts];
-  }
-
-  let content = '';
-  const createCard = (p) => {
-    const originalIndex = products.indexOf(p);
-    const price = Number(p.price);
-    const discount = Number(p.discount);
-    const finalPrice = price - (price * (discount / 100));
-    return `
-      <div class="offer-card" onclick="openDetail(${originalIndex})">
-        <div class="offer-badge">-${discount}%</div>
-        <img src="${p.image_main}">
-        <div class="offer-name">${p.name}</div>
-        <div class="offer-price-box">
-          <span class="offer-old">Gs. ${formatCurrency(price)}</span>
-          <span class="offer-new">Gs. ${formatCurrency(finalPrice)}</span>
-        </div>
-      </div>
-    `;
-  };
-
-  // 3. Renderizar DOS sets completos (Original + Clon)
-  // Esto es suficiente para el bucle infinito si el set original es lo bastante largo
-  const setHTML = itemsToRender.map(createCard).join('');
-  track.innerHTML = setHTML + setHTML; // [SET A] [SET B (Clon)]
-  
-  // 4. Calcular el punto de reinicio exacto
-  setTimeout(() => {
-    // El ancho total es scrollWidth. El punto de reinicio es exactamente la mitad.
-    trackWidth = track.scrollWidth / 2;
-  }, 100);
-}
-
-function animateCarousel() {
-  if (!isDragging) {
-    carouselPos -= carouselSpeed;
-    checkBoundary(); // Verificar límites en cada frame
-    setSliderPosition();
-  }
-  animationId = requestAnimationFrame(animateCarousel);
-}
-
-// Función clave para el bucle infinito sin saltos
-function checkBoundary() {
-  if (trackWidth === 0) return; // Evitar errores si no se ha calculado el ancho
-
-  // Si nos pasamos a la izquierda (más allá del ancho del set original)
-  if (carouselPos <= -trackWidth) {
-    carouselPos += trackWidth;
-    if(isDragging) prevTranslate += trackWidth; // Ajustar referencia si estamos arrastrando
-  }
-  // Si nos pasamos a la derecha (más allá del inicio)
-  if (carouselPos > 0) {
-    carouselPos -= trackWidth;
-    if(isDragging) prevTranslate -= trackWidth; // Ajustar referencia si estamos arrastrando
-  }
-}
-
-function setSliderPosition() {
-  const track = document.getElementById('offersTrack');
-  if(track) track.style.transform = `translateX(${carouselPos}px)`;
-}
-
-// --- Funciones de Arrastre ---
-function touchStart(event) {
-  isDragging = true;
-  startX = getPositionX(event);
-  prevTranslate = carouselPos;
-}
-
-function touchMove(event) {
-  if (isDragging) {
-    // Prevenir scroll vertical en móviles mientras se arrastra el carrusel
-    if(event.type === 'touchmove') {
-       // Opcional: solo prevenir si el movimiento es mayormente horizontal
-    }
-    
-    const currentPosition = getPositionX(event);
-    const diff = currentPosition - startX;
-    carouselPos = prevTranslate + diff;
-    
-    checkBoundary(); // Verificar límites mientras arrastras para evitar espacios blancos
-    setSliderPosition();
-  }
-}
-
-function touchEnd() {
-  isDragging = false;
-}
-
-function getPositionX(event) {
-  return event.type.includes('mouse') ? event.pageX : event.touches[0].clientX;
-}
-
-function sortProducts(order) {
-  if(!order) return;
-  const getPrice = p => p.discount > 0 ? p.price * (1 - p.discount/100) : p.price;
-  if(order === 'asc') {
-    products.sort((a,b) => getPrice(a) - getPrice(b));
-  } else if(order === 'desc') {
-    products.sort((a,b) => getPrice(b) - getPrice(a));
-  }
-  renderList();
-}
-
-function openDetail(i, pushHistory = true){
-  current=products[i];
-  if(pushHistory) history.pushState({index: i}, '', '?p='+i);
-
-  imgs=[current.image_main,current.image_thumb1,current.image_thumb2,current.image_thumb3].filter(Boolean);
-  imgIndex=0;
-  qty=1;
-  
-  list.style.display="none";
-  detail.style.display="block";
-  
-  // OCULTAR CARRUSEL EN DETALLE
-  const offersSection = document.getElementById('offersSection');
-  if(offersSection) {
-    offersSection.style.display = 'none';
-  }
-
-  dName.innerText=current.name;
-  dDesc.innerText=current.description||"Sin descripción detallada.";
-  
-  const price = Number(current.price);
-  const discount = Number(current.discount || 0);
-  
-  if (discount > 0) {
-    const finalPrice = price - (price * (discount / 100));
-    dOldPrice.innerText = "Gs. " + formatCurrency(price);
-    dOldPrice.style.display = "block";
-    dPrice.innerText = "Gs. " + formatCurrency(finalPrice);
-    dPrice.className = "detail-curr price-red";
-  } else {
-    dOldPrice.style.display = "none";
-    dPrice.innerText = "Gs. " + formatCurrency(price);
-    dPrice.className = "detail-curr price-navy";
-  }
-  
-  updateTotalDisplay();
-  updateQtyDisplay();
-
-  mainImg.src=imgs[0];
-  thumbs.innerHTML="";
-  imgs.forEach((img,idx)=>{
-    thumbs.innerHTML+=`<img src="${img}" class="${idx===0?'active':''}" onclick="setImg(${idx})">`
-  });
-  
-  window.scrollTo(0,0);
-}
-
-function setImg(i){
-  imgIndex=i;
-  mainImg.src=imgs[i];
-  updateThumbs();
-  const lb = document.getElementById('lightbox');
-  if(lb.style.display === 'flex') {
-    document.getElementById('lightboxImg').src = imgs[i];
-    updateLightboxThumbs();
-  }
-}
-
-function prevImg(){setImg((imgIndex-1+imgs.length)%imgs.length)}
-function nextImg(){setImg((imgIndex+1)%imgs.length)}
-function updateThumbs(){[...thumbs.children].forEach((t,i)=>t.classList.toggle('active',i===imgIndex))}
-
-function changeQty(val){
-  qty += val;
-  if(qty < 1) qty = 1;
-  updateQtyDisplay();
-  updateTotalDisplay();
-}
-function updateQtyDisplay(){ document.getElementById("qty").innerText = qty; }
-function updateTotalDisplay(){
-  const price = Number(current.price);
-  const discount = Number(current.discount || 0);
-  const finalPrice = discount > 0 ? price * (1 - discount/100) : price;
-  const total = finalPrice * qty;
-  document.getElementById("dTotal").innerText = "Gs. " + formatCurrency(total);
-}
-
-/* --- LÓGICA DEL CARRITO --- */
-
-function addToCartFromList(i, event){
-  event.stopPropagation();
-  const prod = products[i];
-  const existing = cart.find(item => item.product.name === prod.name);
-  if(existing){
-    existing.qty += 1;
-  } else {
-    cart.push({ product: prod, qty: 1 });
-  }
-  saveCart();
-  updateCartUI();
-  toggleCart(true);
-}
-
-function addToCart(){
-  const existing = cart.find(item => item.product.name === current.name);
-  if(existing){
-    existing.qty += qty;
-  } else {
-    cart.push({ product: current, qty: qty });
-  }
-  saveCart();
-  updateCartUI();
-  toggleCart(true);
-}
-
-function saveCart(){
-  localStorage.setItem('dombet_cart', JSON.stringify(cart));
-}
-
-function removeFromCart(index, event){
-  if(event) event.stopPropagation();
-  cart.splice(index, 1);
-  saveCart();
-  updateCartUI();
-}
-
-function updateCartUI(){
-  cartCount.innerText = cart.reduce((acc, item) => acc + item.qty, 0);
-  cartItems.innerHTML = "";
-  let total = 0;
-  
-  if(cart.length === 0){
-    cartItems.innerHTML = '<div class="cart-empty-msg">Tu carrito está vacío</div>';
-  } else {
-    cart.forEach((item, index) => {
-      const price = Number(item.product.price);
-      const discount = Number(item.product.discount || 0);
-      const finalPrice = discount > 0 ? price * (1 - discount/100) : price;
-      
-      const itemTotal = finalPrice * item.qty;
-      total += itemTotal;
-      
-      cartItems.innerHTML += `
-        <div class="cart-item">
-          <img src="${item.product.image_main}">
-          <div class="cart-item-info">
-            <div class="cart-item-title">${item.product.name}</div>
-            <div class="cart-item-price">Gs. ${formatCurrency(finalPrice)}</div>
-            <div class="cart-item-qty">Cant: ${item.qty} | Sub: Gs. ${formatCurrency(itemTotal)}</div>
-          </div>
-          <button class="btn-trash" onclick="removeFromCart(${index}, event)">
-            <svg viewBox="0 0 24 24"><path d="M9 3v1H4v2h1v13a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6h1V4h-5V3H9M7 6h10v13H7V6m2 2v9h2V8H9m4 0v9h2V8h-2Z"/></svg>
-          </button>
-        </div>
-      `;
-    });
-  }
-  
-  cartTotalDisplay.innerText = "Gs. " + formatCurrency(total);
-}
-
-function toggleCart(show){
-  const panel = document.getElementById('cartPanel');
-  const overlay = document.getElementById('cartOverlay');
-  
-  if(show){
-    panel.classList.add('open');
-    overlay.classList.add('open');
-  } else {
-    panel.classList.remove('open');
-    overlay.classList.remove('open');
-  }
-}
-
-function buyWhats(){
-  const price = Number(current.price);
-  const discount = Number(current.discount || 0);
-  const finalPrice = discount > 0 ? price * (1 - discount/100) : price;
-  const total = finalPrice * qty;
-  
-  const msg = `Hola! Quiero comprar:\n*${current.name}*\nCantidad: ${qty}\nTotal: Gs. ${formatCurrency(total)}`;
-  window.open("https://wa.me/595985697384?text="+encodeURIComponent(msg));
-}
-
-function buyCartWhats(){
-  if(cart.length === 0) return;
-  let msg = "Hola! Quiero finalizar mi pedido del carrito:\n\n";
-  let total = 0;
-  cart.forEach(item => {
-    const price = Number(item.product.price);
-    const discount = Number(item.product.discount || 0);
-    const finalPrice = discount > 0 ? price * (1 - discount/100) : price;
-    const sub = finalPrice * item.qty;
-    total += sub;
-    msg += `- ${item.product.name} (x${item.qty}): Gs. ${formatCurrency(sub)}\n`;
-  });
-  msg += `\n*TOTAL FINAL: Gs. ${formatCurrency(total)}*`;
-  window.open("https://wa.me/595985697384?text="+encodeURIComponent(msg));
-}
-
-function goHome(){
-  history.pushState(null, '', window.location.pathname);
-  renderList();
-  // Volver a mostrar ofertas al ir al home
-  const offersSection = document.getElementById('offersSection');
-  if(offersSection && products.some(p => p.discount > 0)) {
-    offersSection.style.display = 'block';
-  }
-}
-
-searchInput.oninput=e=>{
-  const t=e.target.value.toLowerCase()
-  if(!t){searchResults.style.display='none';return}
-  const f=products.filter(p=>p.name.toLowerCase().includes(t))
-  searchResults.innerHTML=f.map(p=>{
-    const i=products.indexOf(p)
-    return `<div class="search-item" onclick="openDetail(${i});searchResults.style.display='none'">
-      <img src="${p.image_main}">
-      <div>${p.name}</div>
-    </div>`
-  }).join('')
-  searchResults.style.display='block'
-}
-
-document.addEventListener('click', function(e) {
-  if (!document.querySelector('.search-container').contains(e.target)) {
-    searchResults.style.display = 'none';
-  }
-});
-
-/* ===== LIGHTBOX LOGIC ===== */
-function openLightbox() {
-  const lb = document.getElementById('lightbox');
-  const lbImg = document.getElementById('lightboxImg');
-  const lbThumbs = document.getElementById('lightboxThumbs');
-  
-  lb.style.display = 'flex';
-  lbImg.src = imgs[imgIndex];
-  
-  lbThumbs.innerHTML = "";
-  imgs.forEach((img, idx) => {
-    lbThumbs.innerHTML += `<img src="${img}" class="${idx===imgIndex?'active':''}" onclick="setImg(${idx})">`;
-  });
-  
-  document.body.style.overflow = 'hidden';
-}
-
-function updateLightboxThumbs() {
-  const lbThumbs = document.getElementById('lightboxThumbs');
-  if(lbThumbs.children.length > 0) {
-    [...lbThumbs.children].forEach((t,i)=>t.classList.toggle('active',i===imgIndex));
-  }
-}
-
-function closeLightbox() {
-  document.getElementById('lightbox').style.display = 'none';
-  document.body.style.overflow = '';
-}
-
-function changeLightboxImg(step, event) {
-  if(event) event.stopPropagation();
-  let newIndex = (imgIndex + step + imgs.length) % imgs.length;
-  setImg(newIndex);
-  document.getElementById('lightboxImg').src = imgs[newIndex];
-}
-
-document.addEventListener('keydown', function(e) {
-  if(document.getElementById('lightbox').style.display === 'flex') {
-    if(e.key === 'Escape') closeLightbox();
-    if(e.key === 'ArrowLeft') changeLightboxImg(-1);
-    if(e.key === 'ArrowRight') changeLightboxImg(1);
-  }
-});
-
-/* SWIPE LOGIC */
-let touchStartX = 0;
-let touchEndX = 0;
-
-function handleTouchStart(e) {
-  touchStartX = e.changedTouches[0].screenX;
-}
-
-function handleTouchEnd(e, callbackNext, callbackPrev) {
-  touchEndX = e.changedTouches[0].screenX;
-  if (touchStartX - touchEndX > 50) callbackNext();
-  if (touchEndX - touchStartX > 50) callbackPrev();
-}
-
-const mainImgContainer = document.getElementById('mainImgContainer');
-mainImgContainer.addEventListener('touchstart', handleTouchStart);
-mainImgContainer.addEventListener('touchend', e => handleTouchEnd(e, nextImg, prevImg));
-
-const lightbox = document.getElementById('lightbox');
-lightbox.addEventListener('touchstart', handleTouchStart);
-lightbox.addEventListener('touchend', e => handleTouchEnd(e, () => changeLightboxImg(1), () => changeLightboxImg(-1)));
-
-</script>
-
+    <script>
+        // Referencias
+        const modal = document.getElementById("imageModal");
+        const modalImg = document.getElementById("modalImage");
+        const modalThumbnails = document.getElementById("modalThumbnails"); // Referencia al nuevo contenedor
+        const closeBtn = document.getElementsByClassName("close")[0];
+        const galleryItems = document.querySelectorAll(".gallery-item");
+        
+        // Convertimos NodeList a Array para facilitar manejo de índices
+        const imagesArray = Array.from(galleryItems);
+        let currentIndex = 0;
+
+        // Función para abrir el modal
+        imagesArray.forEach((img, index) => {
+            img.addEventListener('click', () => {
+                openModal(index);
+            });
+        });
+
+        function openModal(index) {
+            modal.style.display = "flex";
+            updateModalImage(index);
+            generateThumbnails(); // Generamos las miniaturas al abrir
+        }
+
+        // Función para actualizar la imagen principal
+        function updateModalImage(index) {
+            currentIndex = index;
+            modalImg.src = imagesArray[index].src;
+            
+            // Actualizar clase 'active' en las miniaturas
+            highlightActiveThumbnail();
+        }
+
+        // --- NUEVO: Función para generar las miniaturas ---
+        function generateThumbnails() {
+            modalThumbnails.innerHTML = ''; // Limpiar anteriores
+            
+            imagesArray.forEach((img, index) => {
+                const thumb = document.createElement('img');
+                thumb.src = img.src;
+                thumb.classList.add('modal-thumb');
+                
+                // Evento click (PC) y touch (Móvil)
+                thumb.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Evitar que se cierre el modal si tienes click outside
+                    updateModalImage(index);
+                });
+
+                modalThumbnails.appendChild(thumb);
+            });
+            
+            highlightActiveThumbnail();
+        }
+
+        // --- NUEVO: Resaltar la miniatura actual ---
+        function highlightActiveThumbnail() {
+            const thumbs = document.querySelectorAll('.modal-thumb');
+            thumbs.forEach((t, i) => {
+                if (i === currentIndex) {
+                    t.classList.add('active');
+                    // Opcional: Hacer scroll automático para que la miniatura activa esté visible
+                    t.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                } else {
+                    t.classList.remove('active');
+                }
+            });
+        }
+
+        // Cerrar modal
+        closeBtn.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // Cerrar al hacer click fuera de la imagen
+        modal.onclick = function(event) {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
 </body>
 </html>
