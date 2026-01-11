@@ -565,7 +565,7 @@ header{
   .gallery { flex-direction: row; }
 }
 
-/* THUMBS */
+/* THUMBS (Vista Detalle Normal) */
 .thumbs{
   display:none; 
   gap:8px;
@@ -596,56 +596,32 @@ header{
 }
 .thumbs img.active{border-color:#0a1a3a; border-width: 2px;}
 
-/* MAIN IMG Y ZOOM */
+/* MAIN IMG */
 .main-img{
   flex: 1;
   width:100%;
   height: 280px;
   position:relative;
   display: flex; align-items: center; justify-content: center;
-  /* cursor: zoom-in; ELIMINADO PARA USAR EL NUEVO ZOOM */
   background: #fff;
   order: 1;
   touch-action: pan-y;
+  overflow: hidden; /* Importante para el zoom */
 }
 
 @media (min-width: 768px) { 
-  .main-img { height: 480px; order: 2; cursor: crosshair; }
+  .main-img { height: 480px; order: 2; }
 }
 
-.main-img img{max-width:100%; max-height:100%; object-fit:contain; pointer-events: none;}
-
-/* ESTILOS DEL ZOOM (SOLO PC) */
-.img-zoom-lens {
-  position: absolute;
-  border: 1px solid #d4d4d4;
-  width: 150px;
-  height: 150px;
-  background: rgba(255, 255, 255, 0.4);
-  cursor: crosshair;
-  display: none; /* Se activa con JS */
-  pointer-events: none; /* Permite clicks a través de la lente */
+.main-img img{
+  max-width:100%; 
+  max-height:100%; 
+  object-fit:contain; 
+  transition: transform 0.3s ease; /* Suavizar zoom */
+  cursor: zoom-in;
 }
 
-.img-zoom-result {
-  border: 1px solid #d4d4d4;
-  width: 500px;
-  height: 500px;
-  position: absolute;
-  top: 0;
-  left: 105%; /* A la derecha de la imagen */
-  z-index: 10000;
-  background-repeat: no-repeat;
-  background-color: #fff;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-  display: none; /* Se activa con JS */
-}
-
-/* Ocultar zoom en móvil */
-@media (max-width: 767px) {
-  .img-zoom-lens, .img-zoom-result { display: none !important; }
-}
-
+/* FLECHAS DE NAVEGACIÓN */
 .arrow{
   position:absolute;
   top:50%;
@@ -668,13 +644,40 @@ header{
 .arrow.left{left: 0;}
 .arrow.right{right: 0;}
 
+/* CONTROLES DE ZOOM (ESTILO FLECHAS) */
+.zoom-controls {
+  position: absolute;
+  top: 20px;
+  left: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  z-index: 5;
+}
+
+.zoom-btn {
+  background: rgba(255,255,255,0.8);
+  color: #000;
+  border: 1px solid #eee;
+  font-size: 24px;
+  font-weight: 300;
+  width: 40px; height: 40px;
+  cursor: pointer;
+  display: flex;
+  align-items: center; justify-content: center;
+  transition: all 0.2s;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.zoom-btn:hover { background: #fff; transform: scale(1.05); }
+
 /* ===== INFO COLUMN ===== */
 .info{
   flex:1; 
   width: 100%;
   display: flex;
   flex-direction: column;
-  position: relative; /* Para contexto de apilamiento */
+  position: relative;
   z-index: 1;
 }
 
@@ -889,11 +892,16 @@ header{
 .lightbox-content {
   margin: auto;
   display: block;
-  max-width: 95%;
-  max-height: 75vh;
+  max-width: 85%; /* Reducido un poco para dar espacio a los thumbs a la izq */
+  max-height: 90vh;
   object-fit: contain;
   animation: zoom 0.3s;
-  pointer-events: none;
+  transition: transform 0.3s ease;
+  margin-left: 100px; /* Espacio para la barra lateral */
+}
+
+@media (max-width: 767px) {
+  .lightbox-content { margin-left: 0; max-width: 95%; }
 }
 
 @keyframes zoom {
@@ -931,24 +939,42 @@ header{
   z-index: 12002;
 }
 @media (min-width: 768px) { .lb-arrow { display: flex; } }
-.lb-prev { left: 20px; }
+.lb-prev { left: 100px; } /* Ajustado por la barra lateral */
 .lb-next { right: 20px; }
 
-/* ESTILOS MEJORADOS PARA LAS MINIATURAS DEL LIGHTBOX */
+/* ESTILOS MINIATURAS LIGHTBOX (VERTICAL A LA IZQUIERDA) */
 .lightbox-thumbs {
   display: flex;
+  flex-direction: column; /* Vertical */
   gap: 15px;
   margin-top: 0;
-  overflow-x: auto;
-  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 100%;
+  width: 90px;
   justify-content: center;
-  padding: 15px 10px;
-  background: rgba(255, 255, 255, 0.9);
+  padding: 20px 10px;
+  background: #f9f9f9;
   position: absolute;
-  bottom: 0;
+  top: 0;
   left: 0;
   z-index: 12002;
-  -webkit-overflow-scrolling: touch;
+  border-right: 1px solid #eee;
+}
+
+/* En móvil, las miniaturas vuelven abajo para aprovechar espacio */
+@media (max-width: 767px) {
+  .lightbox-thumbs {
+    flex-direction: row;
+    width: 100%;
+    height: auto;
+    top: auto;
+    bottom: 0;
+    border-right: none;
+    border-top: 1px solid #eee;
+    justify-content: flex-start;
+  }
+  .lb-prev { left: 10px; }
 }
 
 .lightbox-thumbs img {
@@ -961,13 +987,28 @@ header{
   background: #fff;
   transition: all 0.2s;
   flex-shrink: 0;
+  cursor: pointer;
 }
 
 .lightbox-thumbs img.active {
   border-color: #0a1a3a;
   opacity: 1;
   border-width: 2px;
-  transform: scale(1.1);
+  transform: scale(1.05);
+}
+
+/* CONTROLES ZOOM LIGHTBOX */
+.lb-zoom-controls {
+  position: absolute;
+  top: 20px;
+  left: 110px; /* A la derecha de los thumbs */
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  z-index: 12003;
+}
+@media (max-width: 767px) {
+  .lb-zoom-controls { left: 10px; top: 60px; }
 }
 
 </style>
@@ -1041,12 +1082,15 @@ header{
       <div class="gallery">
         <div class="thumbs" id="thumbs"></div>
         <div class="main-img" id="mainImgContainer" onclick="openLightbox()">
-          <!-- ELEMENTOS PARA EL ZOOM -->
-          <div id="zoomLens" class="img-zoom-lens"></div>
-          <div id="zoomResult" class="img-zoom-result"></div>
           
+          <!-- CONTROLES DE ZOOM (IZQUIERDA) -->
+          <div class="zoom-controls" onclick="event.stopPropagation()">
+            <button class="zoom-btn" onclick="changeZoom(0.5)">+</button>
+            <button class="zoom-btn" onclick="changeZoom(-0.5)">-</button>
+          </div>
+
           <button class="arrow left" onclick="prevImg(); event.stopPropagation()">‹</button>
-          <img id="mainImg">
+          <img id="mainImg" ondblclick="toggleZoom(event)">
           <button class="arrow right" onclick="nextImg(); event.stopPropagation()">›</button>
         </div>
       </div>
@@ -1113,11 +1157,18 @@ header{
   </div>
 </div>
 
-<!-- LIGHTBOX (MODIFICADO: Ya no tiene onclick="closeLightbox()" en el fondo) -->
+<!-- LIGHTBOX -->
 <div id="lightbox" class="lightbox">
   <span class="close-lightbox" onclick="closeLightbox()">&times;</span>
+  
+  <!-- CONTROLES ZOOM LIGHTBOX -->
+  <div class="lb-zoom-controls" onclick="event.stopPropagation()">
+    <button class="zoom-btn" onclick="changeZoom(0.5, true)">+</button>
+    <button class="zoom-btn" onclick="changeZoom(-0.5, true)">-</button>
+  </div>
+
   <a class="lb-arrow lb-prev" onclick="changeLightboxImg(-1, event)">&#10094;</a>
-  <img class="lightbox-content" id="lightboxImg">
+  <img class="lightbox-content" id="lightboxImg" ondblclick="toggleZoom(event, true)">
   <a class="lb-arrow lb-next" onclick="changeLightboxImg(1, event)">&#10095;</a>
   <div class="lightbox-thumbs" id="lightboxThumbs"></div>
 </div>
@@ -1138,6 +1189,10 @@ let prevTranslate = 0;
 let animationId;
 let trackWidth = 0;
 let itemWidth = 0;
+
+// Variables de Zoom
+let currentZoom = 1;
+let currentLbZoom = 1;
 
 // Cargar carrito guardado
 const savedCart = localStorage.getItem('dombet_cart');
@@ -1355,6 +1410,10 @@ function openDetail(i, pushHistory = true){
   imgIndex=0;
   qty=1;
   
+  // Reset Zoom
+  currentZoom = 1;
+  updateZoomTransform(false);
+
   list.style.display="none";
   detail.style.display="block";
   
@@ -1390,23 +1449,21 @@ function openDetail(i, pushHistory = true){
     thumbs.innerHTML+=`<img src="${img}" class="${idx===0?'active':''}" onclick="setImg(${idx})">`
   });
   
-  // INICIALIZAR ZOOM AL ABRIR DETALLE
-  setTimeout(() => {
-    initZoom();
-  }, 100);
-
   window.scrollTo(0,0);
 }
 
 function setImg(i){
   imgIndex=i;
+  
+  // Reset zooms al cambiar imagen
+  currentZoom = 1;
+  currentLbZoom = 1;
+  updateZoomTransform(false);
+  updateZoomTransform(true);
+
   mainImg.src=imgs[i];
   updateThumbs();
   
-  // Actualizar imagen del zoom
-  const result = document.getElementById("zoomResult");
-  if(result) result.style.backgroundImage = "url('" + imgs[i] + "')";
-
   const lb = document.getElementById('lightbox');
   if(lb.style.display === 'flex') {
     document.getElementById('lightboxImg').src = imgs[i];
@@ -1577,11 +1634,6 @@ document.addEventListener('click', function(e) {
 
 /* ===== LIGHTBOX LOGIC ===== */
 function openLightbox() {
-  // Si estamos en PC y el zoom está activo, no abrir lightbox al hacer click en la imagen
-  // (Opcional: Nissei a veces permite ambos, pero para evitar conflictos, priorizamos zoom en PC)
-  // Si quieres que el click abra el lightbox incluso en PC, borra la siguiente línea:
-  if(window.innerWidth >= 768) return; 
-
   const lb = document.getElementById('lightbox');
   const lbImg = document.getElementById('lightboxImg');
   const lbThumbs = document.getElementById('lightboxThumbs');
@@ -1589,6 +1641,10 @@ function openLightbox() {
   lb.style.display = 'flex';
   lbImg.src = imgs[imgIndex];
   
+  // Reset zoom al abrir
+  currentLbZoom = 1;
+  updateZoomTransform(true);
+
   lbThumbs.innerHTML = "";
   imgs.forEach((img, idx) => {
     lbThumbs.innerHTML += `<img src="${img}" class="${idx===imgIndex?'active':''}" onclick="event.stopPropagation(); setImg(${idx})">`;
@@ -1647,76 +1703,43 @@ lightbox.addEventListener('touchstart', handleTouchStart);
 lightbox.addEventListener('touchend', e => handleTouchEnd(e, () => changeLightboxImg(1), () => changeLightboxImg(-1)));
 
 
-/* ===== ZOOM LOGIC (ESTILO NISSEI) ===== */
-function initZoom() {
-  // Solo ejecutar en PC
-  if(window.innerWidth < 768) return;
+/* ===== NUEVA LÓGICA DE ZOOM (BOTONES Y DOBLE CLIC) ===== */
 
-  const img = document.getElementById("mainImg");
-  const result = document.getElementById("zoomResult");
-  const lens = document.getElementById("zoomLens");
-  const container = document.getElementById("mainImgContainer");
-
-  if(!img || !result || !lens || !container) return;
-
-  // Configurar imagen de fondo del resultado
-  result.style.backgroundImage = "url('" + img.src + "')";
-
-  /* Calcular ratio entre resultado y lente */
-  const cx = result.offsetWidth / lens.offsetWidth;
-  const cy = result.offsetHeight / lens.offsetHeight;
-
-  /* Configurar tamaño del background */
-  // Necesitamos el tamaño real visual de la imagen
-  result.style.backgroundSize = (img.width * cx) + "px " + (img.height * cy) + "px";
-
-  /* Eventos */
-  container.addEventListener("mousemove", moveLens);
-  container.addEventListener("mouseenter", function() {
-    if(window.innerWidth >= 768) {
-      lens.style.display = "block";
-      result.style.display = "block";
-      // Recalcular tamaño por si la imagen cambió
-      result.style.backgroundImage = "url('" + img.src + "')";
-      result.style.backgroundSize = (img.width * cx) + "px " + (img.height * cy) + "px";
-    }
-  });
-  container.addEventListener("mouseleave", function() {
-    lens.style.display = "none";
-    result.style.display = "none";
-  });
-
-  function moveLens(e) {
-    e.preventDefault();
-    /* Obtener posición del cursor x, y */
-    const pos = getCursorPos(e);
-    /* Calcular posición de la lente */
-    let x = pos.x - (lens.offsetWidth / 2);
-    let y = pos.y - (lens.offsetHeight / 2);
-
-    /* Prevenir que la lente salga de la imagen */
-    if (x > img.width - lens.offsetWidth) {x = img.width - lens.offsetWidth;}
-    if (x < 0) {x = 0;}
-    if (y > img.height - lens.offsetHeight) {y = img.height - lens.offsetHeight;}
-    if (y < 0) {y = 0;}
-
-    /* Mover la lente */
-    lens.style.left = (x + (container.offsetWidth - img.width)/2) + "px"; // Ajuste por centrado flex
-    lens.style.top = (y + (container.offsetHeight - img.height)/2) + "px";
-
-    /* Mover la imagen de fondo del resultado */
-    result.style.backgroundPosition = "-" + (x * cx) + "px -" + (y * cy) + "px";
+function changeZoom(delta, isLightbox = false) {
+  if(event) event.stopPropagation();
+  
+  if(isLightbox) {
+    currentLbZoom += delta;
+    if(currentLbZoom < 1) currentLbZoom = 1;
+    if(currentLbZoom > 3) currentLbZoom = 3;
+    updateZoomTransform(true);
+  } else {
+    currentZoom += delta;
+    if(currentZoom < 1) currentZoom = 1;
+    if(currentZoom > 3) currentZoom = 3;
+    updateZoomTransform(false);
   }
+}
 
-  function getCursorPos(e) {
-    let a, x = 0, y = 0;
-    e = e || window.event;
-    /* Obtener posición del rectángulo de la imagen */
-    a = img.getBoundingClientRect();
-    /* Calcular coordenadas relativas a la imagen */
-    x = e.pageX - a.left - window.pageXOffset;
-    y = e.pageY - a.top - window.pageYOffset;
-    return {x : x, y : y};
+function toggleZoom(event, isLightbox = false) {
+  if(event) event.stopPropagation();
+  
+  if(isLightbox) {
+    currentLbZoom = (currentLbZoom === 1) ? 2 : 1;
+    updateZoomTransform(true);
+  } else {
+    currentZoom = (currentZoom === 1) ? 2 : 1;
+    updateZoomTransform(false);
+  }
+}
+
+function updateZoomTransform(isLightbox) {
+  if(isLightbox) {
+    const img = document.getElementById('lightboxImg');
+    if(img) img.style.transform = `scale(${currentLbZoom})`;
+  } else {
+    const img = document.getElementById('mainImg');
+    if(img) img.style.transform = `scale(${currentZoom})`;
   }
 }
 
