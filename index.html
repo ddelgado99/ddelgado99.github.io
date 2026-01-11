@@ -229,7 +229,6 @@ header{
 .btn-list-add:hover { background: #152c5b; }
 .btn-list-add svg { width: 16px; height: 16px; fill: white; }
 
-/* AJUSTE MOVIL BOTON LISTA */
 @media (max-width: 767px) {
   .btn-list-add { padding: 8px 4px; font-size: 11px; gap: 4px; }
   .btn-list-add svg { width: 14px; height: 14px; }
@@ -249,14 +248,13 @@ header{
   gap:30px;
 }
 
-/* --- AJUSTES PC PARA OCUPAR MEJOR EL ESPACIO --- */
 @media (min-width: 768px) {
   .detail { padding: 40px 30px; }
   .detail-box { 
     padding: 50px; 
     flex-direction: row; 
-    gap: 60px; /* Más separación entre imagen y texto */
-    max-width: 1280px; /* Más ancho para llenar pantalla */
+    gap: 60px;
+    max-width: 1280px;
   }
 }
 
@@ -269,11 +267,11 @@ header{
   border-radius: 10px;
   padding: 10px;
   display: flex; align-items: center; justify-content: center;
+  cursor: zoom-in; /* Cursor de lupa */
 }
 
-/* IMAGEN MAS GRANDE EN PC */
 @media (min-width: 768px) { 
-  .main-img { height: 550px; } /* Aumentado de 450px a 550px */
+  .main-img { height: 550px; }
 }
 
 .main-img img{max-width:100%; max-height:100%; object-fit:contain;}
@@ -308,9 +306,8 @@ header{
 .info{flex:1; width: 100%;}
 .info h2{margin:0 0 10px 0;font-size:22px; color: #222; line-height: 1.3;}
 
-/* TEXTOS MAS GRANDES EN PC */
 @media (min-width: 768px) { 
-  .info h2 { font-size: 34px; margin-bottom: 20px; } /* Titulo más grande */
+  .info h2 { font-size: 34px; margin-bottom: 20px; }
 }
 
 .detail-prices { margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 15px; }
@@ -319,7 +316,7 @@ header{
 
 @media (min-width: 768px) { 
   .detail-old { font-size: 20px; }
-  .detail-curr { font-size: 42px; display: inline; margin-top: 0; } /* Precio más grande */
+  .detail-curr { font-size: 42px; display: inline; margin-top: 0; }
 }
 
 .label-title { font-weight: 800; font-size: 13px; color: #555; margin-bottom: 5px; text-transform: uppercase; }
@@ -327,7 +324,7 @@ header{
 
 @media (min-width: 768px) {
   .label-title { font-size: 15px; margin-bottom: 10px; }
-  .desc-text { font-size: 16px; line-height: 1.7; margin-bottom: 30px; } /* Descripción más legible */
+  .desc-text { font-size: 16px; line-height: 1.7; margin-bottom: 30px; }
 }
 
 .shipping-info {
@@ -382,20 +379,88 @@ header{
 }
 .btn-add-cart { background: #0a1a3a; color: white; }
 
-/* BOTON WHATSAPP CON LOGO AL COSTADO */
+/* BOTON WHATSAPP CON LOGO ORIGINAL */
 .btn-whats { 
   background: #25D366; 
   color: white; 
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px; /* Espacio entre logo y texto */
+  gap: 12px;
 }
 .btn-whats svg {
   width: 24px;
   height: 24px;
-  fill: white;
+  fill: white; /* El logo original es blanco sobre fondo verde */
 }
+
+/* ===== LIGHTBOX (VISOR DE IMAGENES) ===== */
+.lightbox {
+  display: none;
+  position: fixed;
+  z-index: 3000;
+  padding-top: 50px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.9);
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.lightbox-content {
+  margin: auto;
+  display: block;
+  max-width: 90%;
+  max-height: 85vh; /* Acorde a la ventana */
+  object-fit: contain;
+  animation: zoom 0.3s;
+}
+
+@keyframes zoom {
+  from {transform:scale(0)} 
+  to {transform:scale(1)}
+}
+
+.close-lightbox {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+  cursor: pointer;
+  z-index: 3001;
+}
+.close-lightbox:hover,
+.close-lightbox:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.lb-arrow {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  padding: 16px;
+  margin-top: -50px;
+  color: white;
+  font-weight: bold;
+  font-size: 30px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+  background: rgba(0,0,0,0.3);
+}
+.lb-arrow:hover { background-color: rgba(0,0,0,0.8); }
+.lb-prev { left: 0; border-radius: 3px 0 0 3px; }
+.lb-next { right: 0; border-radius: 3px 0 0 3px; }
 
 /* ===== CARRITO FLOTANTE ===== */
 .cart-panel {
@@ -527,10 +592,10 @@ header{
 <div class="detail" id="detail">
   <div class="detail-box">
     <div class="gallery">
-      <div class="main-img">
-        <button class="arrow left" onclick="prevImg()">‹</button>
+      <div class="main-img" onclick="openLightbox()">
+        <button class="arrow left" onclick="prevImg(); event.stopPropagation()">‹</button>
         <img id="mainImg">
-        <button class="arrow right" onclick="nextImg()">›</button>
+        <button class="arrow right" onclick="nextImg(); event.stopPropagation()">›</button>
       </div>
       <div class="thumbs" id="thumbs"></div>
     </div>
@@ -558,9 +623,9 @@ header{
       <div class="total-section">TOTAL: <span id="dTotal"></span></div>
       <button class="btn-add-cart" onclick="addToCart()">AÑADIR A CARRITO</button>
       
-      <!-- BOTON WHATSAPP CON LOGO AL COSTADO -->
+      <!-- BOTON WHATSAPP CON LOGO ORIGINAL -->
       <button class="btn-whats" onclick="buyWhats()">
-        <svg viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.969.585 1.961.893 3.056.893 3.179 0 5.767-2.587 5.767-5.766.001-3.187-2.585-5.77-6.027-5.78zM12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2zm6.31 14.24c-.26-.13-1.53-.76-1.77-.85-.24-.09-.41-.13-.58.13-.17.26-.67.85-.82 1.02-.15.17-.3.19-.56.06-.26-.13-1.09-.4-2.07-1.28-.76-.68-1.27-1.52-1.42-1.78-.15-.26-.02-.39.11-.52.11-.11.25-.29.37-.43.13-.15.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.13-.58-1.39-.79-1.9-.21-.51-.42-.44-.58-.45l-.49-.01c-.17 0-.45.06-.69.32-.24.26-.92.9-1.01 1.35-.09.46.15 1.58 1.63 3.15 1.48 1.57 3.48 2.45 4.86 2.68.82.14 1.48.06 2.01-.1.59-.18 1.53-.63 1.75-1.23.22-.6.22-1.12.15-1.23-.07-.11-.26-.17-.52-.3z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
         Comprar por WhatsApp
       </button>
     </div>
@@ -582,6 +647,14 @@ header{
     </div>
     <button class="btn-checkout" onclick="buyCartWhats()">FINALIZAR PEDIDO (WhatsApp)</button>
   </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" class="lightbox" onclick="closeLightbox()">
+  <span class="close-lightbox">&times;</span>
+  <a class="lb-arrow lb-prev" onclick="changeLightboxImg(-1, event)">&#10094;</a>
+  <img class="lightbox-content" id="lightboxImg">
+  <a class="lb-arrow lb-next" onclick="changeLightboxImg(1, event)">&#10095;</a>
 </div>
 
 <script>
@@ -672,7 +745,17 @@ function openDetail(i, pushHistory = true){
   window.scrollTo(0,0);
 }
 
-function setImg(i){imgIndex=i;mainImg.src=imgs[i];updateThumbs()}
+function setImg(i){
+  imgIndex=i;
+  mainImg.src=imgs[i];
+  updateThumbs();
+  // Si el lightbox esta abierto, actualizarlo tambien
+  const lb = document.getElementById('lightbox');
+  if(lb.style.display === 'flex') {
+    document.getElementById('lightboxImg').src = imgs[i];
+  }
+}
+
 function prevImg(){setImg((imgIndex-1+imgs.length)%imgs.length)}
 function nextImg(){setImg((imgIndex+1)%imgs.length)}
 function updateThumbs(){[...thumbs.children].forEach((t,i)=>t.classList.toggle('active',i===imgIndex))}
@@ -821,6 +904,36 @@ searchInput.oninput=e=>{
 document.addEventListener('click', function(e) {
   if (!document.querySelector('.search-container').contains(e.target)) {
     searchResults.style.display = 'none';
+  }
+});
+
+/* ===== LIGHTBOX LOGIC ===== */
+function openLightbox() {
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lightboxImg');
+  lb.style.display = 'flex';
+  lbImg.src = imgs[imgIndex];
+  document.body.style.overflow = 'hidden'; // Bloquear scroll
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').style.display = 'none';
+  document.body.style.overflow = ''; // Restaurar scroll
+}
+
+function changeLightboxImg(step, event) {
+  if(event) event.stopPropagation();
+  let newIndex = (imgIndex + step + imgs.length) % imgs.length;
+  setImg(newIndex); // Esto actualiza imgIndex y la imagen principal
+  document.getElementById('lightboxImg').src = imgs[newIndex];
+}
+
+// Teclado para lightbox
+document.addEventListener('keydown', function(e) {
+  if(document.getElementById('lightbox').style.display === 'flex') {
+    if(e.key === 'Escape') closeLightbox();
+    if(e.key === 'ArrowLeft') changeLightboxImg(-1);
+    if(e.key === 'ArrowRight') changeLightboxImg(1);
   }
 });
 </script>
