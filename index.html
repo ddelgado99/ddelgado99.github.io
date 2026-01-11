@@ -251,7 +251,7 @@ header{
   overflow: hidden;
   border-bottom: 1px solid #eee;
   display: none;
-  user-select: none; /* Evita seleccionar texto al arrastrar */
+  user-select: none;
 }
 
 .offers-header {
@@ -276,19 +276,20 @@ header{
   width: 100%;
   overflow: hidden;
   position: relative;
-  cursor: grab; /* Icono de manito */
+  cursor: grab;
+  touch-action: pan-y; /* Permite scroll vertical pero controlamos horizontal */
 }
 .offers-track-container:active {
   cursor: grabbing;
 }
 
-/* Pista que se mueve (Controlada por JS ahora) */
+/* Pista que se mueve (Controlada por JS) */
 .offers-track {
   display: flex;
   gap: 15px;
   width: max-content;
   padding: 0 15px;
-  will-change: transform; /* Optimización de rendimiento */
+  will-change: transform;
 }
 
 /* Tarjeta de Oferta */
@@ -302,7 +303,6 @@ header{
   flex-shrink: 0;
   cursor: pointer;
   position: relative;
-  /* Quitamos la transición aquí para que el arrastre sea instantáneo */
 }
 
 .offer-card img {
@@ -310,7 +310,7 @@ header{
   height: 120px;
   object-fit: contain;
   margin-bottom: 8px;
-  pointer-events: none; /* Evita arrastrar la imagen fantasma */
+  pointer-events: none;
 }
 
 .offer-name {
@@ -1054,7 +1054,7 @@ let animationLoopCount = 0;
 
 // Variables para la animación JS
 let carouselPos = 0;
-let carouselSpeed = 0.5; // Velocidad de desplazamiento
+let carouselSpeed = 0.3; // Velocidad reducida para elegancia
 let isDragging = false;
 let startX = 0;
 let currentTranslate = 0;
@@ -1213,7 +1213,8 @@ function updateCarouselBatch() {
       // Ancho de tarjeta + gap (15px)
       itemWidth = firstCard.offsetWidth + 15; 
       // Ancho total de la mitad del contenido (un set de items)
-      trackWidth = itemWidth * selected.length;
+      // Usamos scrollWidth / 2 para mayor precisión
+      trackWidth = track.scrollWidth / 2;
     }
   }, 100);
 }
@@ -1221,15 +1222,22 @@ function updateCarouselBatch() {
 function animateCarousel() {
   if (!isDragging) {
     carouselPos -= carouselSpeed;
-    // Si se pasa de la mitad (el set duplicado), resetear a 0
-    if (Math.abs(carouselPos) >= trackWidth && trackWidth > 0) {
-      carouselPos = 0;
-      animationLoopCount++;
-      // Cada 5 vueltas completas, cambiar productos
-      if (animationLoopCount % 5 === 0) {
-        updateCarouselBatch();
-      }
+    
+    // Lógica de Bucle Infinito (Teletransportación)
+    // Si nos pasamos a la izquierda (más allá del ancho del set original)
+    if (carouselPos <= -trackWidth) {
+      carouselPos += trackWidth;
     }
+    // Si nos pasamos a la derecha (más allá del inicio)
+    if (carouselPos > 0) {
+      carouselPos -= trackWidth;
+    }
+
+    // Contador de vueltas para cambiar productos (opcional, basado en posición)
+    // Nota: Con la lógica de teletransporte, contar vueltas exactas es complejo,
+    // pero podemos cambiar productos periódicamente si se desea.
+    // Por ahora mantenemos el bucle visual perfecto.
+    
     setSliderPosition();
   }
   animationId = requestAnimationFrame(animateCarousel);
@@ -1241,26 +1249,33 @@ function setSliderPosition() {
 }
 
 // --- Funciones de Arrastre ---
-function touchStart(index) {
+function touchStart(event) {
   isDragging = true;
-  startX = getPositionX(index);
-  // Guardar posición actual para calcular delta
+  startX = getPositionX(event);
   prevTranslate = carouselPos;
-  // Cancelar animación momentáneamente (opcional, pero animateCarousel ya chequea isDragging)
 }
 
-function touchMove(index) {
+function touchMove(event) {
   if (isDragging) {
-    const currentPosition = getPositionX(index);
+    // Prevenir scroll vertical en móviles mientras se arrastra el carrusel
+    if(event.type === 'touchmove') {
+       // Opcional: solo prevenir si el movimiento es mayormente horizontal
+    }
+    
+    const currentPosition = getPositionX(event);
     const diff = currentPosition - startX;
     carouselPos = prevTranslate + diff;
+    
+    // Aplicar límites infinitos también durante el arrastre
+    if (carouselPos <= -trackWidth) carouselPos += trackWidth;
+    if (carouselPos > 0) carouselPos -= trackWidth;
+
     setSliderPosition();
   }
 }
 
 function touchEnd() {
   isDragging = false;
-  // Al soltar, la animación continúa desde la nueva 'carouselPos'
 }
 
 function getPositionX(event) {
