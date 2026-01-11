@@ -906,30 +906,40 @@ header{
 .lb-prev { left: 20px; }
 .lb-next { right: 20px; }
 
+/* ESTILOS MEJORADOS PARA LAS MINIATURAS DEL LIGHTBOX */
 .lightbox-thumbs {
   display: flex;
-  gap: 10px;
-  margin-top: 20px;
+  gap: 15px; /* Más espacio */
+  margin-top: 0;
   overflow-x: auto;
   width: 100%;
   justify-content: center;
-  padding: 10px;
-  background: #fff;
+  padding: 15px 10px; /* Más área táctil */
+  background: rgba(255, 255, 255, 0.9); /* Fondo semi-transparente */
   position: absolute;
-  bottom: 20px;
+  bottom: 0;
+  left: 0;
   z-index: 12002;
+  -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
 }
+
 .lightbox-thumbs img {
-  width: 60px; height: 60px;
+  width: 60px; 
+  height: 60px;
   object-fit: contain;
   border: 1px solid #eee;
   border-radius: 4px;
   opacity: 0.6;
+  background: #fff;
+  transition: all 0.2s;
+  flex-shrink: 0;
 }
+
 .lightbox-thumbs img.active {
   border-color: #0a1a3a;
   opacity: 1;
   border-width: 2px;
+  transform: scale(1.1); /* Efecto visual al seleccionar */
 }
 
 </style>
@@ -1566,7 +1576,8 @@ function openLightbox() {
   
   lbThumbs.innerHTML = "";
   imgs.forEach((img, idx) => {
-    lbThumbs.innerHTML += `<img src="${img}" class="${idx===imgIndex?'active':''}" onclick="setImg(${idx})">`;
+    // AQUÍ ESTÁ LA CORRECCIÓN: event.stopPropagation()
+    lbThumbs.innerHTML += `<img src="${img}" class="${idx===imgIndex?'active':''}" onclick="event.stopPropagation(); setImg(${idx})">`;
   });
   
   document.body.style.overflow = 'hidden';
