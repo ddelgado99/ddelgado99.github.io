@@ -180,7 +180,7 @@ header{
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  border-bottom: 1px solid #f0f0f0; 
+  border-bottom: 1px solid #eee; /* LINEA 1 (Arriba del titulo) */
   max-width: 1400px;
   margin: 0 auto;
 }
@@ -304,45 +304,46 @@ header{
   .btn-list-add svg { width: 16px; height: 16px; }
 }
 
-/* ===== DETALLE (COMPACTO) ===== */
+/* ===== DETALLE (COMPACTO Y ARRIBA) ===== */
 .detail{
   display:none;
   padding: 0;
+  margin-top: 0; /* Pegado a la barra de filtros */
 }
 .detail-box{
   max-width:1400px;
   margin: 0 auto;
   background:#fff;
-  padding: 15px;
+  padding: 10px 15px; /* Padding reducido */
   border-radius: 0; 
   display: block;
 }
 
 @media (min-width: 768px) {
-  .detail { padding: 10px 40px; } /* Padding superior reducido en PC */
+  .detail { padding: 0 40px; } 
   .detail-box { 
-    padding: 20px 40px; 
-    border-radius: 8px; 
-    margin-top: 10px; /* Acercar al header */
+    padding: 10px 40px; 
+    border-radius: 0; 
   }
 }
 
+/* TITULO ENTRE LAS DOS LINEAS */
 .detail-title {
   font-size: 20px;
   font-weight: 700;
   color: #333;
-  margin: 0 0 15px 0;
+  margin: 10px 0 15px 0; /* Margen equilibrado */
   line-height: 1.2;
   width: 100%;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee; /* LINEA 2 (Abajo del titulo) */
 }
 
 @media (min-width: 768px) {
   .detail-title {
     font-size: 32px;
-    margin-top: 0; /* Sin margen superior */
+    margin-top: 15px;
     margin-bottom: 20px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #eee;
   }
 }
 
