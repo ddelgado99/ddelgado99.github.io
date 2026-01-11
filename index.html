@@ -18,7 +18,7 @@ body{
   color: #333;
 }
 
-/* DEFINICIÓN DE LA ANIMACIÓN DE REBOTE (USADA EN LOGO Y ARTÍCULOS) */
+/* DEFINICIÓN DE LA ANIMACIÓN DE REBOTE (ENTRADA) */
 @keyframes elegantBounce {
   0% { opacity: 0; transform: scale(0.9); }
   70% { transform: scale(1.03); }
@@ -241,6 +241,7 @@ header{
   flex-direction: column;
   border: 1px solid #eee; 
   position: relative;
+  height: 100%; /* Asegura que todas las tarjetas de la fila tengan la misma altura */
   
   /* 1. ANIMACIÓN DE ENTRADA (Igual al logo) */
   animation: elegantBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both;
@@ -264,15 +265,18 @@ header{
 }
 @media (min-width: 768px) { .card img { height: 180px; padding: 15px; } }
 
+/* CORRECCIÓN DEL NOMBRE PARA QUE NO SE CORTE NI SE ENCIME */
 .name{
   font-size:13px;
-  height:34px;
-  overflow:hidden; 
+  /* Eliminamos height fijo y overflow hidden */
+  height: auto; 
+  min-height: 34px; /* Mantiene alineación mínima para nombres cortos */
   color: #333; 
-  margin-bottom: 5px; 
+  margin-bottom: 8px; 
   line-height: 1.3;
+  word-wrap: break-word; /* Rompe palabras largas si es necesario */
 }
-@media (min-width: 768px) { .name { font-size: 14px; height: 38px; } }
+@media (min-width: 768px) { .name { font-size: 14px; min-height: 38px; } }
 
 .price-container { 
   display: flex; 
@@ -308,7 +312,7 @@ header{
 }
 
 .btn-list-add{
-  margin-top:auto;
+  margin-top:auto; /* Esto empuja el botón al fondo de la tarjeta */
   width:100%;
   padding: 8px 4px;
   background:#0a1a3a;
