@@ -5,11 +5,8 @@
 <title>DOMBET INFORMÁTICA</title>
 
 <style>
-body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:#f5f5f5
-}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f5f5f5}
 
 /* ===== HEADER ===== */
 header{
@@ -20,20 +17,35 @@ header{
   align-items:center;
   justify-content:space-between;
   position:relative;
-  z-index:1000;
 }
 
+/* LOGO */
 .logo{
+  display:flex;
+  flex-direction:column;
   cursor:pointer;
+  animation:rebote .9s ease-out;
 }
-.brand{font-size:40px;font-weight:900;line-height:1}
-.sub{font-size:14px;letter-spacing:4px}
+.brand,.sub{
+  width:200px;
+  text-align:left;
+}
+.brand{
+  font-size:42px;
+  font-weight:900;
+  line-height:1;
+}
+.sub{
+  font-size:14px;
+  letter-spacing:4px;
+  margin-top:4px;
+}
 
-/* carrito */
-.cart{
-  cursor:pointer;
+@keyframes rebote{
+  0%{transform:translateY(-25px);opacity:0}
+  60%{transform:translateY(5px)}
+  100%{transform:translateY(0);opacity:1}
 }
-.cart svg{fill:#fff}
 
 /* ===== BUSCADOR ===== */
 .search-box{
@@ -41,50 +53,22 @@ header{
   left:50%;
   transform:translateX(-50%);
   width:520px;
-  z-index:1001;
 }
 .search-box input{
   width:100%;
-  padding:12px 44px 12px 18px;
-  border-radius:10px;
+  padding:12px 42px 12px 18px;
+  border-radius:12px;
   border:none;
   outline:none;
   font-size:15px;
 }
 .search-box svg{
   position:absolute;
-  right:14px;
+  right:10px;
   top:50%;
   transform:translateY(-50%);
   fill:#777;
-}
-
-.search-results{
-  position:absolute;
-  top:110%;
-  width:100%;
-  background:#fff;
-  border-radius:12px;
-  box-shadow:0 6px 20px rgba(0,0,0,.15);
-  display:none;
-  z-index:2000;
-}
-.search-item{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:10px 14px;
-  cursor:pointer;
-}
-.search-item:hover{background:#f2f2f2}
-.search-item img{
-  width:40px;
-  height:40px;
-  object-fit:contain;
-}
-.search-item div{
-  color:#000;
-  font-size:14px;
+  pointer-events:none;
 }
 
 /* ===== LISTADO ===== */
@@ -93,8 +77,6 @@ header{
   grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
   gap:20px;
   padding:25px;
-  position:relative;
-  z-index:1;
 }
 .card{
   background:#fff;
@@ -179,34 +161,17 @@ header{
 .info{flex:1;min-width:300px}
 .info h2{margin:0;font-size:26px}
 .info .price{font-size:32px;margin:15px 0}
-
-.shipping{
+.info h4{margin:18px 0 6px}
+.info p{color:#555}
+.envio{
   display:flex;
-  gap:8px;
   align-items:center;
-  color:#777;
+  gap:8px;
+  color:#888;
   margin:10px 0;
 }
-.shipping svg{fill:#777}
 
-.qty{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  margin:15px 0;
-}
-.qty button{
-  width:36px;
-  height:36px;
-  font-size:20px;
-}
-
-.btn-whats{
-  background:#25D366;
-  margin-top:10px;
-}
-
-/* ===== ZOOM ===== */
+/* ===== ZOOM CORRECTO ===== */
 .zoom-overlay{
   position:fixed;
   inset:0;
@@ -214,7 +179,7 @@ header{
   display:none;
   justify-content:center;
   align-items:center;
-  z-index:3000;
+  z-index:999;
 }
 .zoom-box{
   width:80%;
@@ -222,12 +187,16 @@ header{
   overflow:hidden;
   cursor:zoom-in;
 }
+.zoom-box.zoomed{cursor:move}
 .zoom-box img{
   width:100%;
   height:100%;
   object-fit:contain;
-  transition:transform .1s;
+  transition:transform .12s linear;
 }
+
+/* ===== BACK ===== */
+.back{cursor:pointer;color:#0a1a3a;font-weight:bold}
 </style>
 </head>
 
@@ -240,16 +209,9 @@ header{
   </div>
 
   <div class="search-box">
-    <input id="searchInput" placeholder="Buscar productos">
+    <input placeholder="Buscar productos">
     <svg width="20" height="20" viewBox="0 0 24 24">
       <path d="M10 2a8 8 0 105.293 14.293l4.707 4.707 1.414-1.414-4.707-4.707A8 8 0 0010 2z"/>
-    </svg>
-    <div class="search-results" id="searchResults"></div>
-  </div>
-
-  <div class="cart">
-    <svg width="26" height="26" viewBox="0 0 24 24">
-      <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.2 14h9.9c.8 0 1.5-.4 1.8-1.1l3-6-1.7-.9-3 6H8.1L6.3 4H2v2h3l3.6 8z"/>
     </svg>
   </div>
 </header>
@@ -257,6 +219,7 @@ header{
 <div class="products" id="list"></div>
 
 <div class="detail" id="detail">
+  <div class="back" onclick="goHome()">← Volver</div>
   <div class="detail-box">
     <div class="gallery">
       <div class="main-img" onclick="openZoom()">
@@ -270,37 +233,24 @@ header{
     <div class="info">
       <h2 id="dName"></h2>
       <div class="price" id="dPrice"></div>
-
-      <strong>Detalles:</strong>
+      <h4>Detalles:</h4>
       <p id="dDesc"></p>
-
-      <div class="shipping">
-        <svg width="20" height="20" viewBox="0 0 24 24">
-          <path d="M20 8h-3V4H3v13h2a2 2 0 104 0h6a2 2 0 104 0h2v-5l-3-4z"/>
-        </svg>
-        Envíos a todo el Paraguay por transportadora
+      <div class="envio">
+        🚚 <span>Envíos a todo el Paraguay por transportadora</span>
       </div>
-
-      <div class="qty">
-        <button onclick="qty--,updateQty()">-</button>
-        <span id="qty">1</span>
-        <button onclick="qty++,updateQty()">+</button>
-      </div>
-
-      <button class="btn btn-whats" onclick="buyWhats()">Comprar por WhatsApp</button>
-      <button class="btn">Añadir al carrito</button>
     </div>
   </div>
 </div>
 
+<!-- ZOOM -->
 <div class="zoom-overlay" id="zoomOverlay" onclick="closeZoom()">
-  <div class="zoom-box" id="zoomBox" onclick="toggleZoom(event)">
+  <div class="zoom-box" id="zoomBox">
     <img id="zoomImg">
   </div>
 </div>
 
 <script>
-let products=[],current=null,imgs=[],imgIndex=0,zoom=false,qty=1
+let products=[],imgs=[],imgIndex=0,zoom=false
 
 fetch("https://dombet-backend.onrender.com/products")
 .then(r=>r.json())
@@ -312,48 +262,49 @@ function renderList(){
   list.style.display="grid"
   products.forEach((p,i)=>{
     list.innerHTML+=`
-      <div class="card" onclick="openDetail(${i})">
-        <img src="${p.image_main}">
-        <div class="name">${p.name}</div>
-        <div class="price">Gs. ${Number(p.price).toLocaleString()}</div>
-        <button class="btn">Ver producto</button>
-      </div>`
+    <div class="card" onclick="openDetail(${i})">
+      <img src="${p.image_main}">
+      <div class="name">${p.name}</div>
+      <div class="price">Gs. ${Number(p.price).toLocaleString()}</div>
+      <button class="btn">Ver producto</button>
+    </div>`
   })
 }
 
 function openDetail(i){
-  current=products[i]
-  imgs=[current.image_main,current.image_thumb1,current.image_thumb2,current.image_thumb3].filter(Boolean)
+  const p=products[i]
+  imgs=[p.image_main,p.image_thumb1,p.image_thumb2,p.image_thumb3].filter(Boolean)
   imgIndex=0
-  qty=1
-  document.getElementById("qty").innerText=qty
-
   list.style.display="none"
   detail.style.display="block"
-
-  dName.innerText=current.name
-  dDesc.innerText=current.description
-  dPrice.innerText="Gs. "+Number(current.price).toLocaleString()
+  dName.innerText=p.name
+  dDesc.innerText=p.description
+  dPrice.innerText="Gs. "+Number(p.price).toLocaleString()
   mainImg.src=imgs[0]
-
-  thumbs.innerHTML=""
-  imgs.forEach((img,idx)=>{
-    thumbs.innerHTML+=`<img src="${img}" class="${idx===0?'active':''}" onclick="setImg(${idx})">`
-  })
+  thumbs.innerHTML=imgs.map((img,idx)=>
+    `<img src="${img}" class="${idx===0?'active':''}" onclick="setImg(${idx})">`
+  ).join('')
 }
 
-function setImg(i){imgIndex=i;mainImg.src=imgs[i];updateThumbs()}
+function setImg(i){
+  imgIndex=i
+  mainImg.src=imgs[i]
+  updateThumbs()
+}
 function prevImg(){setImg((imgIndex-1+imgs.length)%imgs.length)}
 function nextImg(){setImg((imgIndex+1)%imgs.length)}
-function updateThumbs(){[...thumbs.children].forEach((t,i)=>t.classList.toggle('active',i===imgIndex))}
+function updateThumbs(){
+  [...thumbs.children].forEach((t,i)=>t.classList.toggle('active',i===imgIndex))
+}
 
+/* ZOOM REAL */
 function openZoom(){
   zoom=false
-  zoomImg.style.transform='scale(1)'
   zoomOverlay.style.display='flex'
   zoomImg.src=imgs[imgIndex]
+  zoomImg.style.transform='scale(1)'
 }
-function toggleZoom(e){
+zoomBox.onclick=e=>{
   e.stopPropagation()
   zoom=!zoom
 }
@@ -362,31 +313,11 @@ zoomBox.onmousemove=e=>{
   const r=zoomBox.getBoundingClientRect()
   const x=(e.clientX-r.left)/r.width*100
   const y=(e.clientY-r.top)/r.height*100
-  zoomImg.style.transform=`scale(2) translate(${-x/2}%,${-y/2}%)`
+  zoomImg.style.transformOrigin=`${x}% ${y}%`
+  zoomImg.style.transform='scale(2)'
 }
 function closeZoom(){zoomOverlay.style.display='none'}
-
-function updateQty(){document.getElementById("qty").innerText=qty<1?1:qty}
-function buyWhats(){
-  window.open("https://wa.me/595985697384?text="+encodeURIComponent(`Hola! Quiero comprar:\n${current.name}\nCantidad: ${qty}`))
-}
-
 function goHome(){renderList()}
-
-/* BUSCADOR */
-searchInput.oninput=e=>{
-  const t=e.target.value.toLowerCase()
-  if(!t){searchResults.style.display='none';return}
-  const f=products.filter(p=>p.name.toLowerCase().includes(t))
-  searchResults.innerHTML=f.map(p=>{
-    const i=products.indexOf(p)
-    return `<div class="search-item" onclick="openDetail(${i});searchResults.style.display='none'">
-      <img src="${p.image_main}">
-      <div>${p.name}</div>
-    </div>`
-  }).join('')
-  searchResults.style.display='block'
-}
 </script>
 
 </body>
