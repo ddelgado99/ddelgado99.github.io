@@ -185,13 +185,14 @@ header{
   margin: 0 auto;
 }
 
+/* CAMBIO: Estilo rectangular con bordes redondeados */
 .sort-container {
   display: flex;
   align-items: center;
   gap: 8px;
   background: #fff;
-  padding: 5px 10px;
-  border-radius: 20px;
+  padding: 8px 12px; /* Un poco más de padding para dar cuerpo */
+  border-radius: 4px; /* CAMBIO: De 20px a 4px para ser rectangular */
   border: 1px solid #ddd;
 }
 
@@ -257,11 +258,10 @@ header{
 }
 @media (min-width: 768px) { .name { font-size: 14px; height: 38px; } }
 
-/* CAMBIO: Alineación horizontal de precios */
 .price-container { 
   display: flex; 
-  flex-direction: row; /* Lado a lado */
-  align-items: baseline; /* Alineados por la base del texto */
+  flex-direction: row; 
+  align-items: baseline; 
   gap: 8px; 
   margin-bottom: 8px; 
   flex-wrap: wrap;
@@ -269,10 +269,9 @@ header{
 
 .old-price { color: #999; text-decoration: line-through; font-size: 11px; }
 
-/* CLASES DE COLOR DE PRECIO */
 .current-price { font-size: 15px; font-weight:bold; }
-.price-red { color: #d32f2f; } /* Rojo para descuentos */
-.price-navy { color: #0a1a3a; } /* Azul marino para precio normal */
+.price-red { color: #d32f2f; }
+.price-navy { color: #0a1a3a; }
 
 @media (min-width: 768px) { 
   .old-price { font-size: 13px; }
