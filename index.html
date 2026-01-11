@@ -257,7 +257,16 @@ header{
 }
 @media (min-width: 768px) { .name { font-size: 14px; height: 38px; } }
 
-.price-container { display: flex; flex-direction: column; margin-bottom: 8px; }
+/* CAMBIO: Alineación horizontal de precios */
+.price-container { 
+  display: flex; 
+  flex-direction: row; /* Lado a lado */
+  align-items: baseline; /* Alineados por la base del texto */
+  gap: 8px; 
+  margin-bottom: 8px; 
+  flex-wrap: wrap;
+}
+
 .old-price { color: #999; text-decoration: line-through; font-size: 11px; }
 
 /* CLASES DE COLOR DE PRECIO */
