@@ -7,19 +7,19 @@
 <style>
   :root {
     /* PALETA DARK MODE PROFESIONAL */
-    --primary: #3b82f6; /* Azul moderno para acciones principales */
+    --primary: #3b82f6;
     --primary-hover: #2563eb;
-    --header-bg: #0f172a; /* Azul muy oscuro para header */
-    --bg: #0f1115; /* Fondo principal casi negro */
-    --card: #1e2128; /* Fondo de tarjetas/modal */
+    --header-bg: #0f172a;
+    --bg: #0f1115;
+    --card: #1e2128;
     --input-bg: #2a2d35;
-    --text: #e2e8f0; /* Texto principal claro */
-    --text-muted: #94a3b8; /* Texto secundario */
-    --border: #2d3748; /* Bordes sutiles */
+    --text: #e2e8f0;
+    --text-muted: #94a3b8;
+    --border: #2d3748;
     
-    --accent: #10b981; /* Verde éxito */
-    --danger: #ef4444; /* Rojo peligro */
-    --warning: #f59e0b; /* Naranja alerta */
+    --accent: #10b981; /* Verde para precio final */
+    --danger: #ef4444;
+    --warning: #f59e0b;
     
     --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
   }
@@ -28,7 +28,7 @@
 
   body {
     margin: 0;
-    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; /* Fuente moderna */
+    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
     background: var(--bg);
     color: var(--text);
     height: 100vh;
@@ -144,11 +144,27 @@
     width: 48px; height: 48px;
     border-radius: 6px;
     object-fit: contain;
-    background: #fff; /* Fondo blanco para que se vea bien la imagen del producto */
+    background: #fff;
     padding: 2px;
   }
 
-  .price-tag { font-weight: 600; color: #fff; }
+  /* ESTILOS DE PRECIOS */
+  .price-original { 
+    text-decoration: line-through; 
+    color: var(--text-muted); 
+    font-size: 12px; 
+    display: block;
+  }
+  .price-final { 
+    font-weight: 700; 
+    color: var(--accent); 
+    font-size: 15px;
+  }
+  .price-normal {
+    font-weight: 600;
+    color: #fff;
+  }
+
   .discount-tag { 
     background: rgba(239, 68, 68, 0.2); color: #fca5a5; 
     padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold;
@@ -187,7 +203,7 @@
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.75); /* Fondo más oscuro */
+    background: rgba(0,0,0,0.75);
     backdrop-filter: blur(2px);
     z-index: 1000;
     align-items: center;
@@ -269,7 +285,6 @@
 <header>
   <div class="brand">DOMBET <span>ADMIN</span></div>
   <button class="btn btn-outline" onclick="location.href='index.html'">
-    <!-- Icono External Link -->
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
     Ir a Tienda
   </button>
@@ -279,12 +294,10 @@
   <!-- TOOLBAR -->
   <div class="toolbar">
     <div class="search-box">
-      <!-- Icono Search -->
       <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
       <input type="text" id="searchInput" placeholder="Buscar producto..." onkeyup="filterProducts()">
     </div>
     <button class="btn btn-success" onclick="openModal()">
-      <!-- Icono Plus -->
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
       Nuevo Producto
     </button>
@@ -298,7 +311,7 @@
           <tr>
             <th width="80">Imagen</th>
             <th>Producto</th>
-            <th width="150">Precio</th>
+            <th width="180">Precio</th>
             <th width="100">Desc.</th>
             <th width="120" style="text-align:center">Acciones</th>
           </tr>
@@ -313,12 +326,10 @@
 
 <!-- MODAL -->
 <div class="modal" id="modal">
-  <!-- Se eliminó el evento onclick en el fondo para que no cierre -->
   <div class="modal-content">
     <div class="modal-header">
       <h2 id="modalTitle">Gestión de Producto</h2>
       <button class="close-modal-btn" onclick="closeModal()">
-        <!-- Icono X -->
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
       </button>
     </div>
@@ -326,13 +337,11 @@
     <input type="hidden" id="pId">
 
     <div class="form-grid">
-      <!-- Fila 1 -->
       <div class="form-group full-width">
         <label>Nombre del Producto</label>
         <input class="form-control" id="pName" placeholder="Ej: Laptop HP Pavilion...">
       </div>
 
-      <!-- Fila 2 -->
       <div class="form-group">
         <label>Precio (Gs)</label>
         <input class="form-control" id="pPrice" type="number" placeholder="0">
@@ -342,13 +351,11 @@
         <input class="form-control" id="pDiscount" type="number" placeholder="0">
       </div>
 
-      <!-- Fila 3 -->
       <div class="form-group full-width">
         <label>Descripción</label>
         <textarea class="form-control" id="pDesc" placeholder="Detalles técnicos..."></textarea>
       </div>
 
-      <!-- Fila 4 -->
       <div class="form-group full-width">
         <label>Imágenes (URLs)</label>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
@@ -371,6 +378,11 @@
 const API = "https://dombet-backend.onrender.com/products"
 let products = []
 
+// Función para formatear Guaraníes correctamente (Puntos para miles)
+function formatCurrency(value) {
+  return Number(value).toLocaleString('es-PY');
+}
+
 // Cargar datos
 fetch(API)
   .then(r => r.json())
@@ -387,7 +399,23 @@ function render(data){
     return;
   }
 
-  list.innerHTML = data.map((p,i)=>`
+  list.innerHTML = data.map((p,i)=> {
+    // Cálculo del precio final con descuento
+    const price = Number(p.price);
+    const discount = Number(p.discount || 0);
+    let priceHtml = '';
+
+    if (discount > 0) {
+      const finalPrice = price - (price * (discount / 100));
+      priceHtml = `
+        <span class="price-original">Gs ${formatCurrency(price)}</span>
+        <span class="price-final">Gs ${formatCurrency(finalPrice)}</span>
+      `;
+    } else {
+      priceHtml = `<span class="price-normal">Gs ${formatCurrency(price)}</span>`;
+    }
+
+    return `
     <tr>
       <td>
         <img class="product-img" src="${p.image_main || 'https://via.placeholder.com/60'}" 
@@ -399,20 +427,18 @@ function render(data){
           ${p.description || 'Sin descripción'}
         </div>
       </td>
-      <td><span class="price-tag">Gs ${Number(p.price).toLocaleString()}</span></td>
-      <td>${p.discount > 0 ? `<span class="discount-tag">-${p.discount}%</span>` : '<span style="color:#555">-</span>'}</td>
+      <td>${priceHtml}</td>
+      <td>${discount > 0 ? `<span class="discount-tag">-${discount}%</span>` : '<span style="color:#555">-</span>'}</td>
       <td style="text-align:center">
         <button class="btn-icon btn-edit" onclick="edit(${p.id})" title="Editar">
-          <!-- Icono Edit -->
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
         </button>
         <button class="btn-icon btn-delete" onclick="del(${p.id})" title="Eliminar">
-          <!-- Icono Trash -->
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
         </button>
       </td>
     </tr>
-  `).join('')
+  `}).join('')
 }
 
 function filterProducts() {
