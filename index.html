@@ -5,8 +5,6 @@
 <title>DOMBET INFORMÁTICA</title>
 
 <style>
-*{box-sizing:border-box}
-
 body{
   margin:0;
   font-family:Arial,sans-serif;
@@ -22,16 +20,12 @@ header{
   align-items:center;
   justify-content:space-between;
   position:relative;
-  z-index:10; /* 🔑 clave */
+  z-index:1000;
 }
 
 .logo{cursor:pointer}
 .brand{font-size:40px;font-weight:900;line-height:1}
 .sub{font-size:14px;letter-spacing:4px}
-
-/* carrito */
-.cart{cursor:pointer}
-.cart svg{fill:#fff}
 
 /* ===== BUSCADOR ===== */
 .search-box{
@@ -39,8 +33,6 @@ header{
   left:50%;
   transform:translateX(-50%);
   width:520px;
-  z-index:11; /* 🔑 solo sobre el header */
-  pointer-events:auto;
 }
 .search-box input{
   width:100%;
@@ -48,15 +40,13 @@ header{
   border-radius:10px;
   border:none;
   outline:none;
-  font-size:15px;
 }
 .search-box svg{
   position:absolute;
-  right:10px;
+  right:14px;
   top:50%;
   transform:translateY(-50%);
   fill:#777;
-  pointer-events:none;
 }
 
 .search-results{
@@ -67,22 +57,16 @@ header{
   border-radius:12px;
   box-shadow:0 6px 20px rgba(0,0,0,.15);
   display:none;
-  z-index:20;
 }
 .search-item{
   display:flex;
   align-items:center;
   gap:12px;
-  padding:10px 14px;
+  padding:10px;
   cursor:pointer;
 }
 .search-item:hover{background:#f2f2f2}
-.search-item img{
-  width:40px;
-  height:40px;
-  object-fit:contain;
-}
-.search-item div{color:#000;font-size:14px}
+.search-item img{width:40px;height:40px;object-fit:contain}
 
 /* ===== LISTADO ===== */
 .products{
@@ -90,19 +74,14 @@ header{
   grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
   gap:20px;
   padding:25px;
-  position:relative;
-  z-index:1; /* 🔑 recibe clicks */
 }
-
 .card{
   background:#fff;
   border-radius:14px;
   padding:14px;
   box-shadow:0 4px 14px rgba(0,0,0,.08);
   cursor:pointer;
-  transition:.3s;
 }
-.card:hover{transform:translateY(-6px)}
 .card img{width:100%;height:180px;object-fit:contain}
 .name{font-size:15px;height:38px;overflow:hidden}
 .price{color:#d32f2f;font-size:20px;font-weight:bold;margin-top:6px}
@@ -129,7 +108,6 @@ header{
   flex-wrap:wrap;
 }
 
-/* ===== GALERÍA ===== */
 .gallery{flex:1;min-width:320px}
 .main-img{
   width:100%;
@@ -142,7 +120,6 @@ header{
   object-fit:contain;
 }
 
-/* Flechas */
 .arrow{
   position:absolute;
   top:50%;
@@ -158,7 +135,6 @@ header{
 .arrow.left{left:10px}
 .arrow.right{right:10px}
 
-/* Thumbs */
 .thumbs{
   display:flex;
   gap:10px;
@@ -174,19 +150,9 @@ header{
 }
 .thumbs img.active{border-color:#0a1a3a}
 
-/* ===== INFO ===== */
 .info{flex:1;min-width:300px}
 .info h2{margin:0;font-size:26px}
 .info .price{font-size:32px;margin:15px 0}
-
-.shipping{
-  display:flex;
-  gap:8px;
-  align-items:center;
-  color:#777;
-  margin:10px 0;
-}
-.shipping svg{fill:#777}
 
 .qty{
   display:flex;
@@ -202,7 +168,6 @@ header{
 
 .btn-whats{
   background:#25D366;
-  margin-top:10px;
 }
 </style>
 </head>
@@ -222,17 +187,37 @@ header{
     </svg>
     <div class="search-results" id="searchResults"></div>
   </div>
-
-  <div class="cart">
-    <svg width="26" height="26" viewBox="0 0 24 24">
-      <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.2 14h9.9c.8 0 1.5-.4 1.8-1.1l3-6-1.7-.9-3 6H8.1L6.3 4H2v2h3l3.6 8z"/>
-    </svg>
-  </div>
 </header>
 
 <div class="products" id="list"></div>
 
-<!-- JS SIN CAMBIOS -->
+<div class="detail" id="detail">
+  <div class="detail-box">
+    <div class="gallery">
+      <div class="main-img">
+        <button class="arrow left" onclick="prevImg()">‹</button>
+        <img id="mainImg">
+        <button class="arrow right" onclick="nextImg()">›</button>
+      </div>
+      <div class="thumbs" id="thumbs"></div>
+    </div>
+
+    <div class="info">
+      <h2 id="dName"></h2>
+      <div class="price" id="dPrice"></div>
+      <p id="dDesc"></p>
+
+      <div class="qty">
+        <button onclick="qty--,updateQty()">-</button>
+        <span id="qty">1</span>
+        <button onclick="qty++,updateQty()">+</button>
+      </div>
+
+      <button class="btn btn-whats" onclick="buyWhats()">Comprar por WhatsApp</button>
+    </div>
+  </div>
+</div>
+
 <script>
 let products=[],current=null,imgs=[],imgIndex=0,qty=1
 
@@ -242,6 +227,7 @@ fetch("https://dombet-backend.onrender.com/products")
 
 function renderList(){
   list.innerHTML=""
+  detail.style.display="none"
   list.style.display="grid"
   products.forEach((p,i)=>{
     list.innerHTML+=`
@@ -255,9 +241,37 @@ function renderList(){
 }
 
 function openDetail(i){
-  alert("Producto clickeado correctamente ✔")
+  current=products[i]
+  imgs=[current.image_main,current.image_thumb1,current.image_thumb2,current.image_thumb3].filter(Boolean)
+  imgIndex=0
+  qty=1
+  document.getElementById("qty").innerText=qty
+
+  list.style.display="none"
+  detail.style.display="block"
+
+  dName.innerText=current.name
+  dDesc.innerText=current.description||""
+  dPrice.innerText="Gs. "+Number(current.price).toLocaleString()
+  mainImg.src=imgs[0]
+
+  thumbs.innerHTML=""
+  imgs.forEach((img,idx)=>{
+    thumbs.innerHTML+=`<img src="${img}" class="${idx===0?'active':''}" onclick="setImg(${idx})">`
+  })
 }
 
+function setImg(i){imgIndex=i;mainImg.src=imgs[i];updateThumbs()}
+function prevImg(){setImg((imgIndex-1+imgs.length)%imgs.length)}
+function nextImg(){setImg((imgIndex+1)%imgs.length)}
+function updateThumbs(){[...thumbs.children].forEach((t,i)=>t.classList.toggle('active',i===imgIndex))}
+
+function updateQty(){document.getElementById("qty").innerText=qty<1?1:qty}
+function buyWhats(){
+  window.open("https://wa.me/595985697384?text="+encodeURIComponent(
+    `Hola! Quiero comprar:\n${current.name}\nCantidad: ${qty}`
+  ))
+}
 function goHome(){renderList()}
 
 /* BUSCADOR */
@@ -265,12 +279,13 @@ searchInput.oninput=e=>{
   const t=e.target.value.toLowerCase()
   if(!t){searchResults.style.display='none';return}
   const f=products.filter(p=>p.name.toLowerCase().includes(t))
-  searchResults.innerHTML=f.map(p=>`
-    <div class="search-item">
+  searchResults.innerHTML=f.map(p=>{
+    const i=products.indexOf(p)
+    return `<div class="search-item" onclick="openDetail(${i});searchResults.style.display='none'">
       <img src="${p.image_main}">
       <div>${p.name}</div>
     </div>`
-  ).join('')
+  }).join('')
   searchResults.style.display='block'
 }
 </script>
