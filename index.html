@@ -1222,25 +1222,33 @@ function updateCarouselBatch() {
 function animateCarousel() {
   if (!isDragging) {
     carouselPos -= carouselSpeed;
+    checkBoundary(); // Verificar límites en cada frame
     
-    // Lógica de Bucle Infinito (Teletransportación)
-    // Si nos pasamos a la izquierda (más allá del ancho del set original)
-    if (carouselPos <= -trackWidth) {
-      carouselPos += trackWidth;
+    // Contador de vueltas para cambiar productos (aproximado)
+    if (Math.abs(carouselPos) % trackWidth < carouselSpeed) {
+       animationLoopCount++;
+       if (animationLoopCount % 5 === 0) {
+         // updateCarouselBatch(); // Descomentar si quieres cambiar productos dinámicamente
+       }
     }
-    // Si nos pasamos a la derecha (más allá del inicio)
-    if (carouselPos > 0) {
-      carouselPos -= trackWidth;
-    }
-
-    // Contador de vueltas para cambiar productos (opcional, basado en posición)
-    // Nota: Con la lógica de teletransporte, contar vueltas exactas es complejo,
-    // pero podemos cambiar productos periódicamente si se desea.
-    // Por ahora mantenemos el bucle visual perfecto.
     
     setSliderPosition();
   }
   animationId = requestAnimationFrame(animateCarousel);
+}
+
+// Función clave para el bucle infinito sin saltos
+function checkBoundary() {
+  // Si nos pasamos a la izquierda (más allá del ancho del set original)
+  if (carouselPos <= -trackWidth) {
+    carouselPos += trackWidth;
+    if(isDragging) prevTranslate += trackWidth; // Ajustar referencia si estamos arrastrando
+  }
+  // Si nos pasamos a la derecha (más allá del inicio)
+  if (carouselPos > 0) {
+    carouselPos -= trackWidth;
+    if(isDragging) prevTranslate -= trackWidth; // Ajustar referencia si estamos arrastrando
+  }
 }
 
 function setSliderPosition() {
@@ -1257,19 +1265,11 @@ function touchStart(event) {
 
 function touchMove(event) {
   if (isDragging) {
-    // Prevenir scroll vertical en móviles mientras se arrastra el carrusel
-    if(event.type === 'touchmove') {
-       // Opcional: solo prevenir si el movimiento es mayormente horizontal
-    }
-    
     const currentPosition = getPositionX(event);
     const diff = currentPosition - startX;
     carouselPos = prevTranslate + diff;
     
-    // Aplicar límites infinitos también durante el arrastre
-    if (carouselPos <= -trackWidth) carouselPos += trackWidth;
-    if (carouselPos > 0) carouselPos -= trackWidth;
-
+    checkBoundary(); // Verificar límites mientras arrastras para evitar espacios blancos
     setSliderPosition();
   }
 }
