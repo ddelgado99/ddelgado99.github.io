@@ -263,7 +263,7 @@ header{
   padding: 20px 0;
   overflow: hidden;
   border-bottom: 1px solid #eee;
-  display: none; /* Oculto por defecto */
+  display: none;
   user-select: none;
 }
 
@@ -1089,10 +1089,6 @@ fetch("https://dombet-backend.onrender.com/products")
 .then(r=>r.json())
 .then(d=>{
   products=d;
-  // 1. Inicializar ofertas primero para tener los datos listos
-  initOffers(); 
-  
-  // 2. Verificar URL para decidir qué mostrar
   const params = new URLSearchParams(window.location.search);
   const pIndex = params.get('p');
   if(pIndex !== null && products[pIndex]){
@@ -1100,6 +1096,7 @@ fetch("https://dombet-backend.onrender.com/products")
   } else {
     renderList();
   }
+  initOffers(); // Iniciar carrusel de ofertas
 });
 
 window.onpopstate = function(event) {
@@ -1109,6 +1106,11 @@ window.onpopstate = function(event) {
     openDetail(parseInt(pIndex), false);
   } else {
     renderList();
+    // Restaurar ofertas si volvemos al inicio
+    const offersSection = document.getElementById('offersSection');
+    if(offersSection && products.some(p => p.discount > 0)) {
+      offersSection.style.display = 'block';
+    }
   }
 };
 
@@ -1195,9 +1197,14 @@ function initOffers() {
 function updateCarouselBatch() {
   const track = document.getElementById('offersTrack');
   
-  // Seleccionar 5 productos al azar
-  let shuffled = discountProducts.sort(() => 0.5 - Math.random());
-  let selected = shuffled.slice(0, 5);
+  // 1. Obtener todos los productos con descuento
+  let itemsToRender = [...discountProducts];
+
+  // 2. Si hay pocos productos, repetirlos hasta tener suficientes para llenar la pantalla
+  // Esto evita espacios en blanco en monitores anchos
+  while (itemsToRender.length < 10) {
+      itemsToRender = [...itemsToRender, ...discountProducts];
+  }
 
   let content = '';
   const createCard = (p) => {
@@ -1218,22 +1225,15 @@ function updateCarouselBatch() {
     `;
   };
 
-  // Repetir 4 veces para cubrir pantallas anchas y evitar espacios en blanco
-  for(let i=0; i<4; i++) {
-    selected.forEach(p => content += createCard(p));
-  }
-
-  track.innerHTML = content;
+  // 3. Renderizar DOS sets completos (Original + Clon)
+  // Esto es suficiente para el bucle infinito si el set original es lo bastante largo
+  const setHTML = itemsToRender.map(createCard).join('');
+  track.innerHTML = setHTML + setHTML; // [SET A] [SET B (Clon)]
   
-  // Recalcular dimensiones una vez renderizado
+  // 4. Calcular el punto de reinicio exacto
   setTimeout(() => {
-    const firstCard = track.children[0];
-    if(firstCard) {
-      // Ancho de tarjeta + gap (15px)
-      itemWidth = firstCard.offsetWidth + 15; 
-      // Ancho total de UN set de items (total / 4)
-      trackWidth = track.scrollWidth / 4;
-    }
+    // El ancho total es scrollWidth. El punto de reinicio es exactamente la mitad.
+    trackWidth = track.scrollWidth / 2;
   }, 100);
 }
 
@@ -1241,15 +1241,6 @@ function animateCarousel() {
   if (!isDragging) {
     carouselPos -= carouselSpeed;
     checkBoundary(); // Verificar límites en cada frame
-    
-    // Contador de vueltas para cambiar productos (aproximado)
-    if (Math.abs(carouselPos) % trackWidth < carouselSpeed) {
-       animationLoopCount++;
-       if (animationLoopCount % 5 === 0) {
-         // updateCarouselBatch(); // Descomentar si quieres cambiar productos dinámicamente
-       }
-    }
-    
     setSliderPosition();
   }
   animationId = requestAnimationFrame(animateCarousel);
