@@ -18,7 +18,7 @@ body{
   color: #333;
 }
 
-/* DEFINICIÓN DE LA ANIMACIÓN DE REBOTE (ENTRADA) */
+/* DEFINICIÓN DE LA ANIMACIÓN DE REBOTE (SOLO PARA EL LOGO) */
 @keyframes elegantBounce {
   0% { opacity: 0; transform: scale(0.9); }
   70% { transform: scale(1.03); }
@@ -47,7 +47,7 @@ header{
   display: flex;
   flex-direction: column;
   width: max-content;
-  /* Animación de entrada para el logo */
+  /* Animación de entrada MANTENIDA para el logo */
   animation: elegantBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 .brand{
@@ -230,7 +230,7 @@ header{
   }
 }
 
-/* ESTILOS DE LA TARJETA (COMBINACIÓN DE EFECTOS) */
+/* ESTILOS DE LA TARJETA (SOLO HOVER) */
 .card{
   background:#fff;
   border-radius:8px;
@@ -242,11 +242,9 @@ header{
   border: 1px solid #eee; 
   position: relative;
   
-  /* 1. ANIMACIÓN DE ENTRADA (Al cargar la página) */
-  animation: elegantBounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  /* Se eliminó la animación de entrada 'animation: elegantBounce...' */
 
-  /* 2. TRANSICIÓN DE HOVER (Al pasar el mouse) 
-     El cubic-bezier(0.175, ...) crea el efecto elástico de rebote */
+  /* TRANSICIÓN DE HOVER (Al pasar el mouse) */
   transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
 }
 
