@@ -242,17 +242,18 @@ header{
   border: 1px solid #eee; 
   position: relative;
   
-  /* 1. ANIMACIÓN DE ENTRADA (Al cargar) */
+  /* 1. ANIMACIÓN DE ENTRADA (Al cargar la página) */
   animation: elegantBounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 
-  /* 2. TRANSICIÓN DE HOVER (Al pasar el mouse) */
+  /* 2. TRANSICIÓN DE HOVER (Al pasar el mouse) 
+     El cubic-bezier(0.175, ...) crea el efecto elástico de rebote */
   transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
 }
 
-/* Efecto al pasar el mouse */
+/* Efecto al pasar el mouse: Se levanta y rebota */
 .card:hover { 
   box-shadow: 0 12px 24px rgba(0,0,0,0.15); 
-  transform: translateY(-5px) scale(1.03); /* Se levanta y crece con rebote */
+  transform: translateY(-5px) scale(1.03); 
   z-index: 10;
 }
 
