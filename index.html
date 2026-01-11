@@ -49,7 +49,7 @@ header{
   width: max-content;
   animation: elegantBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both;
   position: relative;
-  z-index: 1002; /* Asegura que el logo esté sobre el buscador en pantallas muy estrechas */
+  z-index: 1002;
 }
 .brand{
   font-size:28px;
@@ -157,9 +157,8 @@ header{
   .brand { font-size: 36px; }
   .sub { font-size: 12.5px; } 
   
-  /* Buscador centrado absolutamente */
   .search-container { 
-    order: unset; /* Resetear orden flex */
+    order: unset; 
     position: absolute;
     left: 50%;
     top: 50%;
@@ -198,7 +197,7 @@ header{
 .search-item img{width:40px;height:40px;object-fit:contain}
 .search-item div { color: #000; font-weight: 500; font-size: 14px; }
 
-/* ===== HERO SECTION (COMPACTO) ===== */
+/* ===== HERO SECTION ===== */
 .hero-section {
   background: #051025;
   padding: 8px 0;
@@ -278,13 +277,13 @@ header{
   cursor: pointer;
 }
 
-/* ===== SECCIÓN DE OFERTAS (CARRUSEL INTERACTIVO) ===== */
+/* ===== SECCIÓN DE OFERTAS ===== */
 .offers-section {
   background: #f9f9f9;
   padding: 20px 0;
   overflow: hidden;
   border-bottom: 1px solid #eee;
-  display: none; /* Se controla con JS */
+  display: none;
   user-select: none;
 }
 
@@ -317,7 +316,6 @@ header{
   cursor: grabbing;
 }
 
-/* Pista que se mueve (Controlada por JS) */
 .offers-track {
   display: flex;
   gap: 15px;
@@ -326,7 +324,6 @@ header{
   will-change: transform;
 }
 
-/* Tarjeta de Oferta */
 .offer-card {
   background: #fff;
   border-radius: 8px;
@@ -400,7 +397,6 @@ header{
   }
 }
 
-/* ESTILOS DE LA TARJETA */
 .card{
   background:#fff;
   border-radius:8px;
@@ -523,12 +519,11 @@ header{
   }
 }
 
-/* TÍTULO EN DETALLE (MODIFICADO) */
 .detail-title {
   font-size: 20px;
   font-weight: 700;
   color: #333;
-  margin: 0 0 15px 0; /* Margen ajustado */
+  margin: 0 0 15px 0;
   line-height: 1.2;
   width: 100%;
   padding-bottom: 10px;
@@ -601,24 +596,55 @@ header{
 }
 .thumbs img.active{border-color:#0a1a3a; border-width: 2px;}
 
-/* MAIN IMG */
+/* MAIN IMG Y ZOOM */
 .main-img{
   flex: 1;
   width:100%;
   height: 280px;
   position:relative;
   display: flex; align-items: center; justify-content: center;
-  cursor: zoom-in;
+  /* cursor: zoom-in; ELIMINADO PARA USAR EL NUEVO ZOOM */
   background: #fff;
   order: 1;
   touch-action: pan-y;
 }
 
 @media (min-width: 768px) { 
-  .main-img { height: 480px; order: 2; }
+  .main-img { height: 480px; order: 2; cursor: crosshair; }
 }
 
 .main-img img{max-width:100%; max-height:100%; object-fit:contain; pointer-events: none;}
+
+/* ESTILOS DEL ZOOM (SOLO PC) */
+.img-zoom-lens {
+  position: absolute;
+  border: 1px solid #d4d4d4;
+  width: 150px;
+  height: 150px;
+  background: rgba(255, 255, 255, 0.4);
+  cursor: crosshair;
+  display: none; /* Se activa con JS */
+  pointer-events: none; /* Permite clicks a través de la lente */
+}
+
+.img-zoom-result {
+  border: 1px solid #d4d4d4;
+  width: 500px;
+  height: 500px;
+  position: absolute;
+  top: 0;
+  left: 105%; /* A la derecha de la imagen */
+  z-index: 10000;
+  background-repeat: no-repeat;
+  background-color: #fff;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  display: none; /* Se activa con JS */
+}
+
+/* Ocultar zoom en móvil */
+@media (max-width: 767px) {
+  .img-zoom-lens, .img-zoom-result { display: none !important; }
+}
 
 .arrow{
   position:absolute;
@@ -648,6 +674,8 @@ header{
   width: 100%;
   display: flex;
   flex-direction: column;
+  position: relative; /* Para contexto de apilamiento */
+  z-index: 1;
 }
 
 .info-header { margin-bottom: 10px; }
@@ -740,7 +768,7 @@ header{
 .label-title { font-weight: 700; font-size: 13px; color: #333; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
 .desc-text { color: #666; line-height: 1.5; margin-bottom: 20px; font-size: 14px; }
 
-/* CAJA DE ENVÍOS MODIFICADA (LIMPIA) */
+/* CAJA DE ENVÍOS */
 .shipping-info {
   background: transparent;
   color: #15803d;
@@ -758,7 +786,7 @@ header{
   position: fixed;
   top: 0; left: 0; width: 100%; height: 100%;
   background: rgba(0,0,0,0.5);
-  z-index: 9998; /* Justo debajo del panel */
+  z-index: 9998;
   display: none;
   opacity: 0;
   transition: opacity 0.3s;
@@ -769,11 +797,11 @@ header{
   position: fixed;
   top: 0;
   right: 0;
-  width: 85%; /* Ancho en móvil */
+  width: 85%;
   max-width: 400px;
   height: 100%;
   background: #fff;
-  z-index: 9999; /* Por encima de todo */
+  z-index: 9999;
   box-shadow: -2px 0 10px rgba(0,0,0,0.1);
   transform: translateX(100%);
   transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -909,18 +937,18 @@ header{
 /* ESTILOS MEJORADOS PARA LAS MINIATURAS DEL LIGHTBOX */
 .lightbox-thumbs {
   display: flex;
-  gap: 15px; /* Más espacio */
+  gap: 15px;
   margin-top: 0;
   overflow-x: auto;
   width: 100%;
   justify-content: center;
-  padding: 15px 10px; /* Más área táctil */
-  background: rgba(255, 255, 255, 0.9); /* Fondo semi-transparente */
+  padding: 15px 10px;
+  background: rgba(255, 255, 255, 0.9);
   position: absolute;
   bottom: 0;
   left: 0;
   z-index: 12002;
-  -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
+  -webkit-overflow-scrolling: touch;
 }
 
 .lightbox-thumbs img {
@@ -939,7 +967,7 @@ header{
   border-color: #0a1a3a;
   opacity: 1;
   border-width: 2px;
-  transform: scale(1.1); /* Efecto visual al seleccionar */
+  transform: scale(1.1);
 }
 
 </style>
@@ -974,7 +1002,7 @@ header{
   </div>
 </header>
 
-<!-- HERO SECTION (NUEVO DISEÑO COMPACTO) -->
+<!-- HERO SECTION -->
 <div class="hero-section">
   <div class="hero-content">
     <h2 class="hero-title">TECNOLOGÍA AL ALCANCE DE TODOS</h2>
@@ -993,7 +1021,7 @@ header{
   </div>
 </div>
 
-<!-- SECCIÓN DE OFERTAS (CARRUSEL) -->
+<!-- SECCIÓN DE OFERTAS -->
 <div class="offers-section" id="offersSection">
   <div class="offers-header">
     <h3 class="offers-title">OFERTAS DESTACADAS</h3>
@@ -1009,12 +1037,14 @@ header{
 
 <div class="detail" id="detail">
   <div class="detail-box">
-    <!-- TÍTULO ELIMINADO DE AQUÍ -->
-
     <div class="detail-columns">
       <div class="gallery">
         <div class="thumbs" id="thumbs"></div>
         <div class="main-img" id="mainImgContainer" onclick="openLightbox()">
+          <!-- ELEMENTOS PARA EL ZOOM -->
+          <div id="zoomLens" class="img-zoom-lens"></div>
+          <div id="zoomResult" class="img-zoom-result"></div>
+          
           <button class="arrow left" onclick="prevImg(); event.stopPropagation()">‹</button>
           <img id="mainImg">
           <button class="arrow right" onclick="nextImg(); event.stopPropagation()">›</button>
@@ -1022,7 +1052,6 @@ header{
       </div>
 
       <div class="info">
-        <!-- TÍTULO MOVIDO AQUÍ -->
         <h1 class="detail-title" id="dName"></h1>
 
         <div class="info-header">
@@ -1084,9 +1113,9 @@ header{
   </div>
 </div>
 
-<!-- LIGHTBOX -->
-<div id="lightbox" class="lightbox" onclick="closeLightbox()">
-  <span class="close-lightbox">&times;</span>
+<!-- LIGHTBOX (MODIFICADO: Ya no tiene onclick="closeLightbox()" en el fondo) -->
+<div id="lightbox" class="lightbox">
+  <span class="close-lightbox" onclick="closeLightbox()">&times;</span>
   <a class="lb-arrow lb-prev" onclick="changeLightboxImg(-1, event)">&#10094;</a>
   <img class="lightbox-content" id="lightboxImg">
   <a class="lb-arrow lb-next" onclick="changeLightboxImg(1, event)">&#10095;</a>
@@ -1101,7 +1130,7 @@ let animationLoopCount = 0;
 
 // Variables para la animación JS
 let carouselPos = 0;
-let carouselSpeed = 0.3; // Velocidad reducida para elegancia
+let carouselSpeed = 0.3; 
 let isDragging = false;
 let startX = 0;
 let currentTranslate = 0;
@@ -1123,10 +1152,8 @@ fetch("https://dombet-backend.onrender.com/products")
 .then(r=>r.json())
 .then(d=>{
   products=d;
-  // 1. Inicializar ofertas primero para tener los datos listos
   initOffers(); 
   
-  // 2. Verificar URL para decidir qué mostrar
   const params = new URLSearchParams(window.location.search);
   const pIndex = params.get('p');
   if(pIndex !== null && products[pIndex]){
@@ -1156,12 +1183,10 @@ function renderList(){
   list.style.display="grid";
   window.scrollTo(0,0);
   
-  // MOSTRAR CARRUSEL SOLO EN EL LISTADO
   const offersSection = document.getElementById('offersSection');
   if(offersSection) {
     if(discountProducts.length > 0) {
         offersSection.style.display = 'block';
-        // Recalcular dimensiones por si acaso
         updateCarouselBatch();
     } else {
         offersSection.style.display = 'none';
@@ -1201,19 +1226,15 @@ function renderList(){
   })
 }
 
-/* ===== LÓGICA DEL CARRUSEL DE OFERTAS (JS ANIMATION) ===== */
+/* ===== LÓGICA DEL CARRUSEL DE OFERTAS ===== */
 function initOffers() {
   discountProducts = products.filter(p => p.discount > 0);
   const section = document.getElementById('offersSection');
   const trackContainer = document.getElementById('offersContainer');
   const track = document.getElementById('offersTrack');
 
-  // Si no hay productos, no hacemos nada más
-  if (discountProducts.length === 0) {
-    return;
-  }
+  if (discountProducts.length === 0) return;
 
-  // Event Listeners para arrastrar (Touch y Mouse)
   trackContainer.addEventListener('touchstart', touchStart);
   trackContainer.addEventListener('touchmove', touchMove);
   trackContainer.addEventListener('touchend', touchEnd);
@@ -1225,7 +1246,6 @@ function initOffers() {
     if(isDragging) touchEnd();
   });
 
-  // Iniciar animación
   animationId = requestAnimationFrame(animateCarousel);
 }
 
@@ -1233,11 +1253,7 @@ function updateCarouselBatch() {
   const track = document.getElementById('offersTrack');
   if(!track || discountProducts.length === 0) return;
   
-  // 1. Obtener todos los productos con descuento
   let itemsToRender = [...discountProducts];
-
-  // 2. Si hay pocos productos, repetirlos hasta tener suficientes para llenar la pantalla
-  // Esto evita espacios en blanco en monitores anchos
   while (itemsToRender.length < 10) {
       itemsToRender = [...itemsToRender, ...discountProducts];
   }
@@ -1261,14 +1277,10 @@ function updateCarouselBatch() {
     `;
   };
 
-  // 3. Renderizar DOS sets completos (Original + Clon)
-  // Esto es suficiente para el bucle infinito si el set original es lo bastante largo
   const setHTML = itemsToRender.map(createCard).join('');
-  track.innerHTML = setHTML + setHTML; // [SET A] [SET B (Clon)]
+  track.innerHTML = setHTML + setHTML; 
   
-  // 4. Calcular el punto de reinicio exacto
   setTimeout(() => {
-    // El ancho total es scrollWidth. El punto de reinicio es exactamente la mitad.
     trackWidth = track.scrollWidth / 2;
   }, 100);
 }
@@ -1276,25 +1288,21 @@ function updateCarouselBatch() {
 function animateCarousel() {
   if (!isDragging) {
     carouselPos -= carouselSpeed;
-    checkBoundary(); // Verificar límites en cada frame
+    checkBoundary(); 
     setSliderPosition();
   }
   animationId = requestAnimationFrame(animateCarousel);
 }
 
-// Función clave para el bucle infinito sin saltos
 function checkBoundary() {
-  if (trackWidth === 0) return; // Evitar errores si no se ha calculado el ancho
-
-  // Si nos pasamos a la izquierda (más allá del ancho del set original)
+  if (trackWidth === 0) return; 
   if (carouselPos <= -trackWidth) {
     carouselPos += trackWidth;
-    if(isDragging) prevTranslate += trackWidth; // Ajustar referencia si estamos arrastrando
+    if(isDragging) prevTranslate += trackWidth; 
   }
-  // Si nos pasamos a la derecha (más allá del inicio)
   if (carouselPos > 0) {
     carouselPos -= trackWidth;
-    if(isDragging) prevTranslate -= trackWidth; // Ajustar referencia si estamos arrastrando
+    if(isDragging) prevTranslate -= trackWidth; 
   }
 }
 
@@ -1303,7 +1311,6 @@ function setSliderPosition() {
   if(track) track.style.transform = `translateX(${carouselPos}px)`;
 }
 
-// --- Funciones de Arrastre ---
 function touchStart(event) {
   isDragging = true;
   startX = getPositionX(event);
@@ -1312,16 +1319,11 @@ function touchStart(event) {
 
 function touchMove(event) {
   if (isDragging) {
-    // Prevenir scroll vertical en móviles mientras se arrastra el carrusel
-    if(event.type === 'touchmove') {
-       // Opcional: solo prevenir si el movimiento es mayormente horizontal
-    }
-    
+    if(event.type === 'touchmove') {}
     const currentPosition = getPositionX(event);
     const diff = currentPosition - startX;
     carouselPos = prevTranslate + diff;
-    
-    checkBoundary(); // Verificar límites mientras arrastras para evitar espacios blancos
+    checkBoundary(); 
     setSliderPosition();
   }
 }
@@ -1356,7 +1358,6 @@ function openDetail(i, pushHistory = true){
   list.style.display="none";
   detail.style.display="block";
   
-  // OCULTAR CARRUSEL EN DETALLE
   const offersSection = document.getElementById('offersSection');
   if(offersSection) {
     offersSection.style.display = 'none';
@@ -1389,6 +1390,11 @@ function openDetail(i, pushHistory = true){
     thumbs.innerHTML+=`<img src="${img}" class="${idx===0?'active':''}" onclick="setImg(${idx})">`
   });
   
+  // INICIALIZAR ZOOM AL ABRIR DETALLE
+  setTimeout(() => {
+    initZoom();
+  }, 100);
+
   window.scrollTo(0,0);
 }
 
@@ -1396,6 +1402,11 @@ function setImg(i){
   imgIndex=i;
   mainImg.src=imgs[i];
   updateThumbs();
+  
+  // Actualizar imagen del zoom
+  const result = document.getElementById("zoomResult");
+  if(result) result.style.backgroundImage = "url('" + imgs[i] + "')";
+
   const lb = document.getElementById('lightbox');
   if(lb.style.display === 'flex') {
     document.getElementById('lightboxImg').src = imgs[i];
@@ -1538,7 +1549,6 @@ function buyCartWhats(){
 function goHome(){
   history.pushState(null, '', window.location.pathname);
   renderList();
-  // Volver a mostrar ofertas al ir al home
   const offersSection = document.getElementById('offersSection');
   if(offersSection && products.some(p => p.discount > 0)) {
     offersSection.style.display = 'block';
@@ -1567,6 +1577,11 @@ document.addEventListener('click', function(e) {
 
 /* ===== LIGHTBOX LOGIC ===== */
 function openLightbox() {
+  // Si estamos en PC y el zoom está activo, no abrir lightbox al hacer click en la imagen
+  // (Opcional: Nissei a veces permite ambos, pero para evitar conflictos, priorizamos zoom en PC)
+  // Si quieres que el click abra el lightbox incluso en PC, borra la siguiente línea:
+  if(window.innerWidth >= 768) return; 
+
   const lb = document.getElementById('lightbox');
   const lbImg = document.getElementById('lightboxImg');
   const lbThumbs = document.getElementById('lightboxThumbs');
@@ -1576,7 +1591,6 @@ function openLightbox() {
   
   lbThumbs.innerHTML = "";
   imgs.forEach((img, idx) => {
-    // AQUÍ ESTÁ LA CORRECCIÓN: event.stopPropagation()
     lbThumbs.innerHTML += `<img src="${img}" class="${idx===imgIndex?'active':''}" onclick="event.stopPropagation(); setImg(${idx})">`;
   });
   
@@ -1631,6 +1645,80 @@ mainImgContainer.addEventListener('touchend', e => handleTouchEnd(e, nextImg, pr
 const lightbox = document.getElementById('lightbox');
 lightbox.addEventListener('touchstart', handleTouchStart);
 lightbox.addEventListener('touchend', e => handleTouchEnd(e, () => changeLightboxImg(1), () => changeLightboxImg(-1)));
+
+
+/* ===== ZOOM LOGIC (ESTILO NISSEI) ===== */
+function initZoom() {
+  // Solo ejecutar en PC
+  if(window.innerWidth < 768) return;
+
+  const img = document.getElementById("mainImg");
+  const result = document.getElementById("zoomResult");
+  const lens = document.getElementById("zoomLens");
+  const container = document.getElementById("mainImgContainer");
+
+  if(!img || !result || !lens || !container) return;
+
+  // Configurar imagen de fondo del resultado
+  result.style.backgroundImage = "url('" + img.src + "')";
+
+  /* Calcular ratio entre resultado y lente */
+  const cx = result.offsetWidth / lens.offsetWidth;
+  const cy = result.offsetHeight / lens.offsetHeight;
+
+  /* Configurar tamaño del background */
+  // Necesitamos el tamaño real visual de la imagen
+  result.style.backgroundSize = (img.width * cx) + "px " + (img.height * cy) + "px";
+
+  /* Eventos */
+  container.addEventListener("mousemove", moveLens);
+  container.addEventListener("mouseenter", function() {
+    if(window.innerWidth >= 768) {
+      lens.style.display = "block";
+      result.style.display = "block";
+      // Recalcular tamaño por si la imagen cambió
+      result.style.backgroundImage = "url('" + img.src + "')";
+      result.style.backgroundSize = (img.width * cx) + "px " + (img.height * cy) + "px";
+    }
+  });
+  container.addEventListener("mouseleave", function() {
+    lens.style.display = "none";
+    result.style.display = "none";
+  });
+
+  function moveLens(e) {
+    e.preventDefault();
+    /* Obtener posición del cursor x, y */
+    const pos = getCursorPos(e);
+    /* Calcular posición de la lente */
+    let x = pos.x - (lens.offsetWidth / 2);
+    let y = pos.y - (lens.offsetHeight / 2);
+
+    /* Prevenir que la lente salga de la imagen */
+    if (x > img.width - lens.offsetWidth) {x = img.width - lens.offsetWidth;}
+    if (x < 0) {x = 0;}
+    if (y > img.height - lens.offsetHeight) {y = img.height - lens.offsetHeight;}
+    if (y < 0) {y = 0;}
+
+    /* Mover la lente */
+    lens.style.left = (x + (container.offsetWidth - img.width)/2) + "px"; // Ajuste por centrado flex
+    lens.style.top = (y + (container.offsetHeight - img.height)/2) + "px";
+
+    /* Mover la imagen de fondo del resultado */
+    result.style.backgroundPosition = "-" + (x * cx) + "px -" + (y * cy) + "px";
+  }
+
+  function getCursorPos(e) {
+    let a, x = 0, y = 0;
+    e = e || window.event;
+    /* Obtener posición del rectángulo de la imagen */
+    a = img.getBoundingClientRect();
+    /* Calcular coordenadas relativas a la imagen */
+    x = e.pageX - a.left - window.pageXOffset;
+    y = e.pageY - a.top - window.pageYOffset;
+    return {x : x, y : y};
+  }
+}
 
 </script>
 
