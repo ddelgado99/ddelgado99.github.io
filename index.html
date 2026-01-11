@@ -22,7 +22,7 @@ header{
 /* ===== BUSCADOR ===== */
 .search-box{
   position:absolute;
-  left:56%; /* movido a la derecha */
+  left:56%;
   transform:translateX(-50%);
   width:520px;
 }
@@ -48,7 +48,6 @@ header{
   background:#fff;
   border-radius:12px;
   box-shadow:0 6px 20px rgba(0,0,0,.15);
-  overflow:hidden;
   display:none;
   z-index:200;
 }
@@ -65,10 +64,7 @@ header{
   height:40px;
   object-fit:contain;
 }
-.search-item div{
-  color:#000; /* texto negro */
-  font-size:14px;
-}
+.search-item div{color:#000;font-size:14px}
 
 /* ===== LISTADO ===== */
 .products{
@@ -156,15 +152,15 @@ header{
 }
 .thumbs img.active{border-color:#0a1a3a}
 
-/* ===== ZOOM OVERLAY ===== */
+/* ===== ZOOM ===== */
 .zoom-overlay{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.8);
+  background:rgba(0,0,0,.85);
   display:none;
   justify-content:center;
   align-items:center;
-  z-index:500;
+  z-index:999;
 }
 .zoom-box{
   width:80%;
@@ -172,7 +168,7 @@ header{
   overflow:hidden;
   cursor:zoom-in;
 }
-.zoom-box.zoomed{cursor:zoom-out}
+.zoom-box.zoomed{cursor:move}
 .zoom-box img{
   width:100%;
   height:100%;
@@ -227,7 +223,6 @@ header{
   </div>
 </div>
 
-<!-- ZOOM -->
 <div class="zoom-overlay" id="zoomOverlay" onclick="closeZoom()">
   <div class="zoom-box" id="zoomBox" onclick="toggleZoom(event)">
     <img id="zoomImg">
@@ -235,7 +230,8 @@ header{
 </div>
 
 <script>
-let products=[],current=null,imgs=[],imgIndex=0,zoom=false
+let products=[],current=null,imgs=[],imgIndex=0
+let zoom=false
 
 fetch("https://dombet-backend.onrender.com/products")
 .then(r=>r.json())
@@ -271,7 +267,7 @@ function openDetail(i){
 
   thumbs.innerHTML=""
   imgs.forEach((img,idx)=>{
-    thumbs.innerHTML+=`<img src="${img}" class="${idx==0?'active':''}" onclick="setImg(${idx})">`
+    thumbs.innerHTML+=`<img src="${img}" class="${idx===0?'active':''}" onclick="setImg(${idx})">`
   })
 }
 
@@ -286,9 +282,11 @@ function updateThumbs(){
   [...thumbs.children].forEach((t,i)=>t.classList.toggle('active',i===imgIndex))
 }
 
+/* ===== ZOOM ===== */
 function openZoom(){
   zoom=false
   zoomBox.classList.remove('zoomed')
+  zoomImg.style.transform='scale(1)'
   zoomOverlay.style.display='flex'
   zoomImg.src=imgs[imgIndex]
 }
@@ -297,15 +295,21 @@ function toggleZoom(e){
   e.stopPropagation()
   zoom=!zoom
   zoomBox.classList.toggle('zoomed',zoom)
+  zoomImg.style.transform=zoom?'scale(2)':'scale(1)'
 }
 
-function closeZoom(){
-  zoomOverlay.style.display='none'
+zoomBox.onmousemove=e=>{
+  if(!zoom) return
+  const r=zoomBox.getBoundingClientRect()
+  const x=(e.clientX-r.left)/r.width*100
+  const y=(e.clientY-r.top)/r.height*100
+  zoomImg.style.transform=`scale(2) translate(${-x/2}%,${-y/2}%)`
 }
 
+function closeZoom(){zoomOverlay.style.display='none'}
 function goHome(){renderList()}
 
-/* buscador */
+/* BUSCADOR */
 searchInput.oninput=e=>{
   const t=e.target.value.toLowerCase()
   if(!t){searchResults.style.display='none';return}
