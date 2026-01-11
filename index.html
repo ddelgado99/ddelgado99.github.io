@@ -173,23 +173,64 @@ header{
 .search-item img{width:40px;height:40px;object-fit:contain}
 .search-item div { color: #000; font-weight: 500; font-size: 14px; }
 
-/* ===== LISTADO ===== */
+/* ===== BARRA DE FILTROS ===== */
+.filter-bar {
+  background: #fff;
+  padding: 10px 15px;
+  display: flex;
+  justify-content: flex-end; /* A la derecha */
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.sort-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f9f9f9;
+  padding: 5px 10px;
+  border-radius: 20px;
+  border: 1px solid #eee;
+}
+
+.sort-icon { width: 18px; height: 18px; fill: #555; }
+
+.sort-select {
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  color: #333;
+  font-weight: 600;
+  outline: none;
+  cursor: pointer;
+}
+
+/* ===== LISTADO (OPTIMIZADO MOVIL 2 COLUMNAS) ===== */
 .products{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); 
-  gap:15px;
-  padding:15px;
+  /* MOVIL: 2 Columnas forzadas */
+  grid-template-columns: repeat(2, 1fr); 
+  gap: 10px; /* Espacio reducido en movil */
+  padding: 10px;
   max-width: 1400px;
   margin: auto;
 }
+
 @media (min-width: 768px) {
-  .products { gap: 20px; padding: 40px; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); }
+  .products { 
+    gap: 20px; 
+    padding: 40px; 
+    /* PC: Auto ajuste */
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); 
+  }
 }
 
 .card{
   background:#fff;
   border-radius:8px;
-  padding:15px;
+  padding:10px; /* Padding reducido en movil */
   box-shadow:0 1px 3px rgba(0,0,0,.05);
   cursor:pointer;
   transition: box-shadow 0.2s;
@@ -198,36 +239,60 @@ header{
   border: 1px solid #eee;
 }
 .card:hover { box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-.card img{width:100%;height:180px;object-fit:contain; margin-bottom: 15px;}
-.name{font-size:14px;height:38px;overflow:hidden; color: #333; margin-bottom: 5px; line-height: 1.3;}
 
-.price-container { display: flex; flex-direction: column; margin-bottom: 10px; }
-.old-price { color: #999; text-decoration: line-through; font-size: 13px; }
-.current-price { color: #d32f2f; font-size: 18px; font-weight:bold; }
+/* Imagen en tarjeta */
+.card img{
+  width:100%;
+  height:140px; /* Altura reducida para movil */
+  object-fit:contain; 
+  margin-bottom: 10px;
+}
+@media (min-width: 768px) { .card img { height: 180px; padding: 15px; } }
 
+/* Texto en tarjeta */
+.name{
+  font-size:13px; /* Letra mas pequeña en movil */
+  height:34px;
+  overflow:hidden; 
+  color: #333; 
+  margin-bottom: 5px; 
+  line-height: 1.3;
+}
+@media (min-width: 768px) { .name { font-size: 14px; height: 38px; } }
+
+.price-container { display: flex; flex-direction: column; margin-bottom: 8px; }
+.old-price { color: #999; text-decoration: line-through; font-size: 11px; }
+.current-price { color: #d32f2f; font-size: 15px; font-weight:bold; }
+@media (min-width: 768px) { 
+  .old-price { font-size: 13px; }
+  .current-price { font-size: 18px; }
+}
+
+/* BOTON AÑADIR EN LISTA (OPTIMIZADO) */
 .btn-list-add{
   margin-top:auto;
   width:100%;
-  padding:10px;
+  padding: 8px 4px; /* Compacto */
   background:#0a1a3a;
   color:#fff;
   border:none;
   border-radius:4px;
   font-weight: 600;
-  font-size: 13px;
+  font-size: 11px; /* Letra pequeña para que quepa */
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 4px;
   transition: background 0.2s;
+  white-space: nowrap; /* Evita salto de linea */
 }
 .btn-list-add:hover { background: #152c5b; }
-.btn-list-add svg { width: 16px; height: 16px; fill: white; }
+.btn-list-add svg { width: 14px; height: 14px; fill: white; }
 
-@media (max-width: 767px) {
-  .btn-list-add { padding: 8px 4px; font-size: 11px; gap: 4px; }
-  .btn-list-add svg { width: 14px; height: 14px; }
+@media (min-width: 768px) {
+  .btn-list-add { padding: 10px; font-size: 13px; gap: 8px; }
+  .btn-list-add svg { width: 16px; height: 16px; }
 }
 
 /* ===== DETALLE ===== */
@@ -339,7 +404,7 @@ header{
 .arrow.left{left: 0;}
 .arrow.right{right: 0;}
 
-/* ===== INFO COLUMN (REESTRUCTURADA) ===== */
+/* ===== INFO COLUMN ===== */
 .info{
   flex:1; 
   width: 100%;
@@ -348,7 +413,6 @@ header{
   padding-top: 10px;
 }
 
-/* 1. HEADER INFO */
 .info-header { margin-bottom: 15px; }
 .info h2{
   margin:0 0 10px 0;
@@ -364,7 +428,6 @@ header{
 .detail-curr { color: #d32f2f; font-size: 32px; font-weight: 700; display: block; }
 @media (min-width: 768px) { .detail-curr { font-size: 40px; } }
 
-/* 2. PURCHASE SECTION (CANTIDAD) */
 .info-purchase { margin-bottom: 20px; }
 
 .qty-label {
@@ -383,12 +446,13 @@ header{
   margin-bottom: 10px;
 }
 
-/* RECTANGULO AZUL MARINO PEQUEÑO */
+/* BOTONES CANTIDAD GRIS ELEGANTE */
 .qty-controls { 
   display: inline-flex; 
   align-items: center; 
   gap: 0; 
-  background: #0a1a3a; /* Azul Marino */
+  background: #f0f0f0; /* Gris Claro */
+  border: 1px solid #ddd;
   border-radius: 6px; 
   padding: 2px;
   width: max-content;
@@ -397,29 +461,28 @@ header{
 .qty-btn {
   width: 32px; height: 32px;
   background: transparent;
-  color: #fff;
+  color: #333; /* Texto oscuro */
   border: none;
   font-size: 18px;
   cursor: pointer;
   display: flex; align-items: center; justify-content: center;
 }
-.qty-btn:hover { background: rgba(255,255,255,0.1); }
+.qty-btn:hover { background: rgba(0,0,0,0.05); }
 
 .qty-val { 
   font-size: 16px; 
   font-weight: 600; 
   width: 30px; 
   text-align: center; 
-  color: #fff;
-  border-left: 1px solid rgba(255,255,255,0.2); 
-  border-right: 1px solid rgba(255,255,255,0.2); 
+  color: #333;
+  border-left: 1px solid #ddd; 
+  border-right: 1px solid #ddd; 
   height: 20px; 
   line-height: 20px; 
 }
 
 .total-section { font-size: 16px; font-weight: 700; color: #333; }
 
-/* 3. ACTIONS (BOTONES) */
 .info-actions { margin-bottom: 30px; }
 
 .btn-add-cart, .btn-whats {
@@ -441,7 +504,6 @@ header{
 .btn-whats { background: #25D366; color: white; }
 .btn-whats svg { width: 26px; height: 26px; fill: white; }
 
-/* 4. DETAILS (ABAJO) */
 .info-details { 
   border-top: 1px solid #eee; 
   padding-top: 20px; 
@@ -680,6 +742,18 @@ header{
   </div>
 </header>
 
+<!-- BARRA DE FILTROS -->
+<div class="filter-bar">
+  <div class="sort-container">
+    <svg class="sort-icon" viewBox="0 0 24 24"><path d="M3 18h6v-2H3v2zM3 6v2h18V6H3zm0 7h12v-2H3v2z"/></svg>
+    <select class="sort-select" onchange="sortProducts(this.value)">
+      <option value="">Ordenar por precio</option>
+      <option value="asc">Menor a Mayor</option>
+      <option value="desc">Mayor a Menor</option>
+    </select>
+  </div>
+</div>
+
 <div class="products" id="list"></div>
 
 <div class="detail" id="detail">
@@ -694,7 +768,7 @@ header{
     </div>
 
     <div class="info">
-      <!-- GRUPO 1: HEADER -->
+      <!-- HEADER -->
       <div class="info-header">
         <h2 id="dName"></h2>
         <div class="detail-prices">
@@ -703,7 +777,7 @@ header{
         </div>
       </div>
 
-      <!-- GRUPO 2: COMPRA (CANTIDAD) -->
+      <!-- COMPRA (CANTIDAD) -->
       <div class="info-purchase">
         <div class="qty-label">Cantidad</div>
         <div class="qty-section">
@@ -716,7 +790,7 @@ header{
         </div>
       </div>
 
-      <!-- GRUPO 3: ACCIONES -->
+      <!-- ACCIONES -->
       <div class="info-actions">
         <button class="btn-add-cart" onclick="addToCart()">AÑADIR A CARRITO</button>
         <button class="btn-whats" onclick="buyWhats()">
@@ -725,7 +799,7 @@ header{
         </button>
       </div>
 
-      <!-- GRUPO 4: DETALLES (AL FINAL) -->
+      <!-- DETALLES -->
       <div class="info-details">
         <div class="label-title">Detalles:</div>
         <p class="desc-text" id="dDesc"></p>
@@ -820,6 +894,18 @@ function renderList(){
         </button>
       </div>`
   })
+}
+
+// FUNCION DE ORDENAMIENTO
+function sortProducts(order) {
+  if(!order) return; // Si selecciona el default, no hace nada o podria recargar
+  
+  if(order === 'asc') {
+    products.sort((a,b) => Number(a.price) - Number(b.price));
+  } else if(order === 'desc') {
+    products.sort((a,b) => Number(b.price) - Number(a.price));
+  }
+  renderList();
 }
 
 function openDetail(i, pushHistory = true){
