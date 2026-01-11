@@ -4,259 +4,152 @@
 <meta charset="UTF-8">
 <title>DOMBET ADMIN</title>
 <style>
-/* Estilos base heredados de index.html para consistencia */
 html{zoom:.9}
 body{margin:0;font-family:Arial,sans-serif;background:#f4f6f8}
-header{background:#0a1a3a;padding:16px 22px;color:#fff;display:flex;align-items:center;justify-content:space-between;box-shadow: 0 2px 5px rgba(0,0,0,0.1);}
-
-.logo-left{cursor:pointer; display: flex; flex-direction: column;}
-.brand{font-size:32px;font-weight:900;line-height:1;}
-.sub{font-size:12px;letter-spacing:4px;text-transform:uppercase; margin-top: 5px;}
-
-/* Contenedor principal */
-.container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
-
-/* Cabecera de la sección */
-.admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-.admin-title { font-size: 28px; color: #333; font-weight: bold; }
-
-/* Botones Estilizados */
-.btn { border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; transition: .3s; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; }
-.btn-primary { background: #0a1a3a; color: #fff; }
-.btn-primary:hover { background: #152c55; }
-.btn-success { background: #25D366; color: #fff; } /* Verde estilo WhatsApp */
-.btn-success:hover { background: #1da851; }
-.btn-danger { background: #d32f2f; color: #fff; padding: 8px 16px; font-size: 14px; }
-.btn-danger:hover { background: #b71c1c; }
-.btn-warning { background: #ff9800; color: #fff; padding: 8px 16px; font-size: 14px; }
-.btn-warning:hover { background: #f57c00; }
-.btn-secondary { background: #e0e0e0; color: #333; }
-.btn-secondary:hover { background: #d5d5d5; }
-
-/* Tabla de productos elegante */
-.table-container { background: #fff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); overflow: hidden; }
-table { width: 100%; border-collapse: collapse; }
-th, td { padding: 18px 25px; text-align: left; border-bottom: 1px solid #eee; }
-th { background: #f8f9fa; color: #555; font-weight: 600; text-transform: uppercase; font-size: 13px; letter-spacing: 1px; }
-tr:last-child td { border-bottom: none; }
-tr:hover { background: #fafafa; }
-.prod-img { width: 60px; height: 60px; object-fit: contain; border-radius: 6px; border: 1px solid #eee; background: #fff; }
-.action-buttons { display: flex; gap: 10px; }
-
-/* Modal (Ventana emergente) */
-.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(2px); }
-.modal-content { background: #fff; padding: 40px; border-radius: 16px; width: 500px; max-width: 90%; box-shadow: 0 10px 30px rgba(0,0,0,0.2); animation: slideUp 0.3s ease; }
-@keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-
-.form-group { margin-bottom: 20px; }
-.form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #333; }
-.form-control { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; outline: none; transition: .3s; box-sizing: border-box; }
-.form-control:focus { border-color: #0a1a3a; box-shadow: 0 0 0 3px rgba(10,26,58,0.1); }
-textarea.form-control { resize: vertical; min-height: 100px; }
-
-.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
-.modal-title { font-size: 24px; font-weight: bold; color: #0a1a3a; }
-.close-modal { cursor: pointer; font-size: 24px; color: #999; transition: .3s; }
-.close-modal:hover { color: #333; }
-
-.modal-footer { display: flex; justify-content: flex-end; gap: 15px; margin-top: 30px; }
+header{background:#0a1a3a;padding:16px 22px;color:#fff;display:flex;justify-content:space-between;align-items:center}
+.container{max-width:1200px;margin:40px auto;padding:0 20px}
+.btn{border:none;padding:10px 18px;border-radius:6px;cursor:pointer;font-weight:bold}
+.btn-success{background:#25D366;color:#fff}
+.btn-primary{background:#0a1a3a;color:#fff}
+.btn-danger{background:#d32f2f;color:#fff}
+.btn-warning{background:#ff9800;color:#fff}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden}
+th,td{padding:14px;border-bottom:1px solid #eee}
+th{background:#f8f9fa}
+img{width:60px;height:60px;object-fit:contain}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);align-items:center;justify-content:center}
+.modal-content{background:#fff;padding:30px;border-radius:12px;width:520px}
+.form-group{margin-bottom:14px}
+.form-control{width:100%;padding:10px;border:1px solid #ccc;border-radius:6px}
 </style>
 </head>
+
 <body>
 
 <header>
-  <div class="logo-left" onclick="window.location.href='index.html'">
-    <div class="brand">DOMBET</div>
-    <div class="sub">PANEL ADMINISTRATIVO</div>
-  </div>
-  <button class="btn btn-secondary" onclick="window.location.href='index.html'">Ir a la Tienda</button>
+  <strong>DOMBET · ADMIN</strong>
+  <button class="btn" onclick="location.href='index.html'">Ir a tienda</button>
 </header>
 
 <div class="container">
-  <div class="admin-header">
-    <div class="admin-title">Gestión de Productos</div>
-    <button class="btn btn-success" onclick="openModal()">
-      <span>+</span> Nuevo Producto
-    </button>
-  </div>
+  <button class="btn btn-success" onclick="openModal()">+ Nuevo Producto</button>
 
-  <div class="table-container">
-    <table>
-      <thead>
-        <tr>
-          <th width="80">Imagen</th>
-          <th>Nombre</th>
-          <th>Descripción</th>
-          <th>Precio</th>
-          <th width="150">Acciones</th>
-        </tr>
-      </thead>
-      <tbody id="list"></tbody>
-    </table>
-  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Img</th>
+        <th>Nombre</th>
+        <th>Precio</th>
+        <th>Desc.</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody id="list"></tbody>
+  </table>
 </div>
 
-<!-- Modal Formulario -->
+<!-- MODAL -->
 <div class="modal" id="modal">
   <div class="modal-content">
-    <div class="modal-header">
-      <div class="modal-title" id="modalTitle">Nuevo Producto</div>
-      <div class="close-modal" onclick="closeModal()">&times;</div>
-    </div>
-    
+    <h3 id="modalTitle">Producto</h3>
+
     <input type="hidden" id="pId">
-    
+
     <div class="form-group">
-      <label>Nombre del Producto</label>
-      <input type="text" class="form-control" id="pName" placeholder="Ej: Laptop HP...">
-    </div>
-    
-    <div class="form-group">
-      <label>URL de Imagen</label>
-      <input type="text" class="form-control" id="pImg" placeholder="https://..." oninput="updatePreview()">
-      <img id="preview" src="" style="display:none; width: 100px; height: 100px; object-fit: contain; margin-top: 10px; border: 1px solid #ddd; border-radius: 4px;">
+      <input class="form-control" id="pName" placeholder="Nombre">
     </div>
 
     <div class="form-group">
-      <label>Precio (Gs.)</label>
-      <input type="number" class="form-control" id="pPrice" placeholder="0">
+      <input class="form-control" id="pPrice" type="number" placeholder="Precio">
     </div>
 
     <div class="form-group">
-      <label>Descripción</label>
-      <textarea class="form-control" id="pDesc" placeholder="Detalles del producto..."></textarea>
+      <input class="form-control" id="pDiscount" type="number" placeholder="Descuento %">
     </div>
 
-    <div class="modal-footer">
-      <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
-      <button class="btn btn-primary" onclick="saveProduct()">Guardar Producto</button>
+    <div class="form-group">
+      <textarea class="form-control" id="pDesc" placeholder="Descripción"></textarea>
     </div>
+
+    <div class="form-group">
+      <input class="form-control" id="imgMain" placeholder="Imagen principal (URL)">
+      <input class="form-control" id="img1" placeholder="Imagen 1 (URL)">
+      <input class="form-control" id="img2" placeholder="Imagen 2 (URL)">
+      <input class="form-control" id="img3" placeholder="Imagen 3 (URL)">
+    </div>
+
+    <button class="btn btn-primary" onclick="save()">Guardar</button>
+    <button class="btn" onclick="closeModal()">Cancelar</button>
   </div>
 </div>
 
 <script>
-const API_URL = "https://dombet-backend.onrender.com/products"
+const API = "https://dombet-backend.onrender.com/products"
 let products = []
 
-// Cargar productos al iniciar
-fetch(API_URL)
-  .then(r => r.json())
-  .then(d => {
-    products = d
-    render()
-  })
-  .catch(err => console.error("Error cargando productos:", err))
+fetch(API).then(r=>r.json()).then(d=>{products=d;render()})
 
-function render() {
-  const list = document.getElementById('list')
-  list.innerHTML = products.map((p, i) => `
+function render(){
+  list.innerHTML = products.map((p,i)=>`
     <tr>
-      <td><img src="${p.image}" class="prod-img" onerror="this.src='https://via.placeholder.com/60?text=Sin+Img'"></td>
-      <td><strong>${p.name}</strong></td>
-      <td style="color:#666; font-size:14px;">${p.description ? p.description.substring(0, 50) + '...' : ''}</td>
-      <td style="font-weight:bold; color:#0a1a3a;">Gs. ${Number(p.price).toLocaleString()}</td>
+      <td><img src="${p.image_main || ''}" onerror="this.src='https://via.placeholder.com/60'"></td>
+      <td>${p.name}</td>
+      <td>Gs ${Number(p.price).toLocaleString()}</td>
+      <td>${p.discount || 0}%</td>
       <td>
-        <div class="action-buttons">
-          <button class="btn btn-warning" onclick="editProduct(${i})">✏️</button>
-          <button class="btn btn-danger" onclick="deleteProduct(${p.id})">🗑️</button>
-        </div>
+        <button class="btn btn-warning" onclick="edit(${i})">✏</button>
+        <button class="btn btn-danger" onclick="del(${p.id})">🗑</button>
       </td>
     </tr>
   `).join('')
 }
 
-// Lógica del Modal
-const modal = document.getElementById('modal')
-const modalTitle = document.getElementById('modalTitle')
-const pId = document.getElementById('pId')
-const pName = document.getElementById('pName')
-const pImg = document.getElementById('pImg')
-const pPrice = document.getElementById('pPrice')
-const pDesc = document.getElementById('pDesc')
-const preview = document.getElementById('preview')
-
-function openModal() {
-  // Resetear formulario
-  pId.value = ''
-  pName.value = ''
-  pImg.value = ''
-  pPrice.value = ''
-  pDesc.value = ''
-  modalTitle.innerText = "Nuevo Producto"
-  updatePreview()
-  modal.style.display = 'flex'
+function openModal(){
+  modal.style.display='flex'
+  pId.value=''
+  document.querySelectorAll('.form-control').forEach(i=>i.value='')
 }
 
-function closeModal() {
-  modal.style.display = 'none'
+function closeModal(){modal.style.display='none'}
+
+function edit(i){
+  const p=products[i]
+  pId.value=p.id
+  pName.value=p.name
+  pPrice.value=p.price
+  pDiscount.value=p.discount
+  pDesc.value=p.description
+  imgMain.value=p.image_main
+  img1.value=p.image_thumb1
+  img2.value=p.image_thumb2
+  img3.value=p.image_thumb3
+  modal.style.display='flex'
 }
 
-function editProduct(index) {
-  const p = products[index]
-  pId.value = p.id
-  pName.value = p.name
-  pImg.value = p.image
-  pPrice.value = p.price
-  pDesc.value = p.description
-  modalTitle.innerText = "Editar Producto"
-  updatePreview()
-  modal.style.display = 'flex'
-}
-
-function saveProduct() {
-  const id = pId.value
-  const data = {
-    name: pName.value,
-    image: pImg.value.trim(),
-    price: Number(pPrice.value),
-    description: pDesc.value
+function save(){
+  const data={
+    name:pName.value,
+    price:Number(pPrice.value),
+    discount:Number(pDiscount.value||0),
+    description:pDesc.value,
+    image_main:imgMain.value,
+    image_thumb1:img1.value,
+    image_thumb2:img2.value,
+    image_thumb3:img3.value
   }
 
-  const method = id ? 'PUT' : 'POST'
-  const url = id ? `${API_URL}/${id}` : API_URL
-
-  console.log("Intentando guardar:", data); // Para ver en consola qué se envía
-
-  fetch(url, {
-    method: method,
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
-  })
-  .then(r => {
-    if (r.ok) {
-      location.reload()
-    } else {
-      // Muestra el error real que devuelve Railway/Backend
-      r.text().then(msg => alert("Error del servidor: " + msg))
-    }
-  })
-  .catch(err => alert("Error de conexión con el servidor."))
+  const id=pId.value
+  fetch(id?`${API}/${id}`:API,{
+    method:id?'PUT':'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(data)
+  }).then(()=>location.reload())
 }
 
-function deleteProduct(id) {
-  if (confirm("¿Estás seguro de que quieres eliminar este producto?")) {
-    fetch(`${API_URL}/${id}`, {
-      method: 'DELETE'
-    }).then(() => {
-      location.reload()
-    })
+function del(id){
+  if(confirm("Eliminar producto?")){
+    fetch(`${API}/${id}`,{method:'DELETE'}).then(()=>location.reload())
   }
-}
-
-function updatePreview() {
-  const url = pImg.value.trim()
-  if (url) {
-    preview.src = url
-    preview.style.display = 'block'
-    preview.onerror = () => preview.style.display = 'none'
-  } else {
-    preview.style.display = 'none'
-  }
-}
-
-// Cerrar modal al hacer clic fuera
-window.onclick = function(e) {
-  if (e.target == modal) closeModal()
 }
 </script>
 
