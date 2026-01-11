@@ -606,7 +606,7 @@ header{
   background: #fff;
   order: 1;
   touch-action: pan-y;
-  overflow: hidden; /* Importante para el zoom */
+  overflow: hidden;
 }
 
 @media (min-width: 768px) { 
@@ -617,11 +617,11 @@ header{
   max-width:100%; 
   max-height:100%; 
   object-fit:contain; 
-  transition: transform 0.3s ease; /* Suavizar zoom */
-  cursor: zoom-in;
+  transition: transform 0.3s ease;
+  cursor: pointer; /* Cursor de mano para indicar que se abre */
 }
 
-/* FLECHAS DE NAVEGACIÓN */
+/* FLECHAS DE NAVEGACIÓN (MODIFICADO PARA HOVER Y TAMAÑO) */
 .arrow{
   position:absolute;
   top:50%;
@@ -629,32 +629,34 @@ header{
   background: none;
   color: #000;
   border:none;
-  font-size: 40px;
+  /* TAMAÑO IGUALADO AL LIGHTBOX */
+  font-size: 50px; 
   font-weight: 300;
-  width: 50px; height: 60px;
+  width: 60px; 
+  height: 60px;
   cursor:pointer;
   z-index: 2;
   display: none; 
   align-items: center; justify-content: center;
-  transition: opacity 0.2s;
+  /* TRANSICIÓN DE OPACIDAD */
+  transition: opacity 0.3s ease;
   padding: 0;
+  opacity: 0; /* Invisible por defecto */
 }
-@media (min-width: 768px) { .arrow { display: flex; } }
-.arrow:hover { opacity: 0.6; }
+
+@media (min-width: 768px) { 
+  .arrow { display: flex; } 
+  /* MOSTRAR SOLO AL HACER HOVER EN LA IMAGEN */
+  .main-img:hover .arrow {
+    opacity: 1;
+  }
+}
+
+.arrow:hover { opacity: 0.6 !important; } /* Forzar opacidad al pasar sobre la flecha misma */
 .arrow.left{left: 0;}
 .arrow.right{right: 0;}
 
-/* CONTROLES DE ZOOM (ESTILO FLECHAS) */
-.zoom-controls {
-  position: absolute;
-  top: 20px;
-  left: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  z-index: 5;
-}
-
+/* ESTILOS BOTONES ZOOM (SOLO PARA LIGHTBOX AHORA) */
 .zoom-btn {
   background: rgba(255,255,255,0.8);
   color: #000;
@@ -1092,14 +1094,10 @@ header{
         <div class="thumbs" id="thumbs"></div>
         <div class="main-img" id="mainImgContainer" onclick="openLightbox()">
           
-          <!-- CONTROLES DE ZOOM (IZQUIERDA) -->
-          <div class="zoom-controls" onclick="event.stopPropagation()">
-            <button class="zoom-btn" onclick="changeZoom(0.5)">+</button>
-            <button class="zoom-btn" onclick="changeZoom(-0.5)">-</button>
-          </div>
+          <!-- ZOOM CONTROLS REMOVED FROM HERE -->
 
           <button class="arrow left" onclick="prevImg(); event.stopPropagation()">‹</button>
-          <img id="mainImg" ondblclick="toggleZoom(event)">
+          <img id="mainImg"> <!-- ondblclick REMOVED -->
           <button class="arrow right" onclick="nextImg(); event.stopPropagation()">›</button>
         </div>
       </div>
