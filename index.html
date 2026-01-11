@@ -64,9 +64,9 @@ header{background:#0a1a3a;color:#fff;padding:16px 24px;display:flex;align-items:
   width:100%;
   height:100%;
   object-fit:contain;
-  transition:transform .2s;
+  transition:transform .25s ease;
 }
-.main-img:hover img{transform:scale(1.7)}
+.main-img:hover img{transform:scale(1.6)}
 
 .arrow{
   position:absolute;
@@ -75,9 +75,10 @@ header{background:#0a1a3a;color:#fff;padding:16px 24px;display:flex;align-items:
   background:rgba(0,0,0,.6);
   color:#fff;
   border:none;
-  font-size:24px;
-  padding:6px 10px;
+  font-size:26px;
+  padding:6px 12px;
   cursor:pointer;
+  border-radius:6px;
 }
 .arrow.left{left:10px}
 .arrow.right{right:10px}
@@ -85,15 +86,19 @@ header{background:#0a1a3a;color:#fff;padding:16px 24px;display:flex;align-items:
 .thumbs{
   display:flex;
   gap:10px;
-  margin-top:10px;
+  margin-top:12px;
 }
 .thumbs img{
   width:70px;
   height:70px;
   object-fit:contain;
-  border:1px solid #ccc;
-  border-radius:6px;
+  border:2px solid transparent;
+  border-radius:8px;
   cursor:pointer;
+  transition:.2s;
+}
+.thumbs img.active{
+  border-color:#0a1a3a;
 }
 
 /* info */
@@ -107,7 +112,12 @@ header{background:#0a1a3a;color:#fff;padding:16px 24px;display:flex;align-items:
   font-size:18px;
   margin-top:15px;
 }
-.back{margin-bottom:15px;cursor:pointer;color:#0a1a3a;font-weight:bold}
+.back{
+  margin-bottom:15px;
+  cursor:pointer;
+  color:#0a1a3a;
+  font-weight:bold
+}
 </style>
 </head>
 
@@ -125,11 +135,12 @@ header{background:#0a1a3a;color:#fff;padding:16px 24px;display:flex;align-items:
 <div class="detail" id="detail">
   <div class="back" onclick="goHome()">← Volver</div>
   <div class="detail-box">
+
     <div class="gallery">
       <div class="main-img">
-        <button class="arrow left" onclick="prevImg()">‹</button>
+        <button class="arrow left" id="prevBtn" onclick="prevImg()">‹</button>
         <img id="mainImg">
-        <button class="arrow right" onclick="nextImg()">›</button>
+        <button class="arrow right" id="nextBtn" onclick="nextImg()">›</button>
       </div>
       <div class="thumbs" id="thumbs"></div>
     </div>
@@ -140,6 +151,7 @@ header{background:#0a1a3a;color:#fff;padding:16px 24px;display:flex;align-items:
       <p id="dDesc"></p>
       <button class="btn btn-whats" onclick="buyWhats()">Comprar por WhatsApp</button>
     </div>
+
   </div>
 </div>
 
@@ -167,9 +179,14 @@ function renderList(){
 
 function openDetail(i){
   current=products[i]
-  imgs=[current.image_main,current.image_thumb1,current.image_thumb2,current.image_thumb3].filter(Boolean)
-  imgIndex=0
+  imgs=[
+    current.image_main,
+    current.image_thumb1,
+    current.image_thumb2,
+    current.image_thumb3
+  ].filter(Boolean)
 
+  imgIndex=0
   list.style.display="none"
   detail.style.display="block"
 
@@ -180,13 +197,35 @@ function openDetail(i){
 
   thumbs.innerHTML=""
   imgs.forEach((img,idx)=>{
-    thumbs.innerHTML+=`<img src="${img}" onclick="setImg(${idx})">`
+    thumbs.innerHTML+=`
+      <img src="${img}" class="${idx===0?'active':''}" onclick="setImg(${idx})">
+    `
   })
+
+  prevBtn.style.display = nextBtn.style.display = imgs.length>1 ? 'block':'none'
 }
 
-function setImg(i){imgIndex=i;mainImg.src=imgs[i]}
-function prevImg(){imgIndex=(imgIndex-1+imgs.length)%imgs.length;mainImg.src=imgs[imgIndex]}
-function nextImg(){imgIndex=(imgIndex+1)%imgs.length;mainImg.src=imgs[imgIndex]}
+function setImg(i){
+  imgIndex=i
+  mainImg.src=imgs[i]
+  updateThumbs()
+}
+
+function prevImg(){
+  imgIndex=(imgIndex-1+imgs.length)%imgs.length
+  mainImg.src=imgs[imgIndex]
+  updateThumbs()
+}
+
+function nextImg(){
+  imgIndex=(imgIndex+1)%imgs.length
+  mainImg.src=imgs[imgIndex]
+  updateThumbs()
+}
+
+function updateThumbs(){
+  [...thumbs.children].forEach((t,i)=>t.classList.toggle('active',i===imgIndex))
+}
 
 function buyWhats(){
   const msg=`Hola! Quiero comprar:\n${current.name}\nPrecio: Gs. ${current.price}`
