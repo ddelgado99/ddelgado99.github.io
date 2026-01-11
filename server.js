@@ -8,11 +8,15 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Configuración para __dirname en ES Modules
+// =======================
+// __dirname (ESM)
+// =======================
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Servir archivos estáticos (Frontend)
+// =======================
+// STATIC FILES
+// =======================
 app.use(express.static(path.join(__dirname, "public")));
 
 // =======================
@@ -35,57 +39,45 @@ db.connect(err => {
 });
 
 // =======================
-// ENDPOINTS
+// GET PRODUCTS
 // =======================
-
-// Obtener productos
 app.get("/products", (req, res) => {
-  db.query("SELECT * FROM products", (err, results) => {
+  db.query("SELECT * FROM products ORDER BY id DESC", (err, rows) => {
     if (err) return res.status(500).json(err);
-    
-    // Adaptar los datos de la DB al formato que espera el frontend
-    const products = results.map(p => {
-      // 1. Manejo de imágenes: soporta columna 'image' (singular) o 'images' (JSON array)
-      let imgs = [];
-      if (p.image) {
-        imgs = [p.image]; // Si viene de la columna 'image' (tu caso actual)
-      } else if (p.images) {
-        try {
-          imgs = typeof p.images === 'string' ? JSON.parse(p.images) : p.images;
-        } catch (e) { imgs = []; }
-      }
-
-      // 2. Manejo de disponibilidad: si no existe la columna, asumimos disponible (1)
-      const isAvailable = (p.available !== undefined && p.available !== null) ? p.available : 1;
-
-      return {
-        ...p,
-        images: Array.isArray(imgs) ? imgs : [],
-        available: isAvailable,
-        discount: p.discount || 0
-      };
-    });
-    
-    res.json(products);
+    res.json(rows);
   });
 });
 
-// Crear producto (admin)
+// =======================
+// CREATE PRODUCT
+// =======================
 app.post("/products", (req, res) => {
-  const p = req.body;
-  // Usar la primera imagen del array para la columna 'image' (singular)
-  const image = (p.images && p.images.length > 0) ? p.images[0] : "";
-  
+  const {
+    name,
+    description,
+    price,
+    discount,
+    image_main,
+    image_thumb1,
+    image_thumb2,
+    image_thumb3
+  } = req.body;
+
   const sql = `
-    INSERT INTO products (name, description, price, image)
-    VALUES (?, ?, ?, ?)
+    INSERT INTO products
+    (name, description, price, discount, image_main, image_thumb1, image_thumb2, image_thumb3)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
   `;
-  
+
   const values = [
-      p.name,
-      p.description,
-      Number(p.price) || 0,
-      image
+    name,
+    description,
+    Number(price) || 0,
+    Number(discount) || 0,
+    image_main || null,
+    image_thumb1 || null,
+    image_thumb2 || null,
+    image_thumb3 || null
   ];
 
   db.query(sql, values, (err, result) => {
@@ -94,30 +86,59 @@ app.post("/products", (req, res) => {
   });
 });
 
-// Actualizar producto (PUT) - Necesario para tu admin.html
+// =======================
+// UPDATE PRODUCT
+// =======================
 app.put("/products/:id", (req, res) => {
   const { id } = req.params;
-  const p = req.body;
-  const image = (p.images && p.images.length > 0) ? p.images[0] : "";
-  
-  const sql = `UPDATE products SET name=?, description=?, price=?, image=? WHERE id=?`;
+  const {
+    name,
+    description,
+    price,
+    discount,
+    image_main,
+    image_thumb1,
+    image_thumb2,
+    image_thumb3
+  } = req.body;
+
+  const sql = `
+    UPDATE products SET
+    name = ?,
+    description = ?,
+    price = ?,
+    discount = ?,
+    image_main = ?,
+    image_thumb1 = ?,
+    image_thumb2 = ?,
+    image_thumb3 = ?
+    WHERE id = ?
+  `;
+
   const values = [
-      p.name,
-      p.description,
-      Number(p.price) || 0,
-      image,
-      id
+    name,
+    description,
+    Number(price) || 0,
+    Number(discount) || 0,
+    image_main || null,
+    image_thumb1 || null,
+    image_thumb2 || null,
+    image_thumb3 || null,
+    id
   ];
-  db.query(sql, values, (err) => {
-      if (err) return res.status(500).json({ success: false });
-      res.json({ success: true });
+
+  db.query(sql, values, err => {
+    if (err) return res.status(500).json(err);
+    res.json({ success: true });
   });
 });
 
-// Eliminar producto (DELETE) - Necesario para tu admin.html
+// =======================
+// DELETE PRODUCT
+// =======================
 app.delete("/products/:id", (req, res) => {
-  db.query("DELETE FROM products WHERE id=?", [req.params.id], (err) => {
-    if (err) return res.status(500).json({ success: false });
+  db.query("DELETE FROM products WHERE id = ?", [req.params.id], err => {
+    if (err) return res.status(500).json(err);
     res.json({ success: true });
   });
 });
