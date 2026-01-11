@@ -39,7 +39,7 @@ header{
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  width: max-content; /* Se ajusta al contenido */
+  width: max-content;
 }
 .brand{
   font-size:28px;
@@ -48,11 +48,10 @@ header{
   letter-spacing: 1px;
   text-align: center;
 }
-/* Técnica para justificar la palabra completa */
 .sub{
   display: flex;
   justify-content: space-between;
-  width: 100%; /* Ocupa el 100% del ancho del padre (.brand) */
+  width: 100%;
   font-size: 10px; 
   font-weight: 600;
   opacity: 0.9;
@@ -209,12 +208,12 @@ header{
 .old-price { color: #d32f2f; text-decoration: line-through; font-size: 12px; }
 .current-price { color: #2e7d32; font-size: 16px; font-weight:bold; }
 
-/* BOTON AÑADIR EN LISTA */
+/* BOTON AÑADIR EN LISTA (ESTILO GENERAL/PC) */
 .btn-list-add{
   margin-top:auto;
   width:100%;
   padding:10px;
-  background:#0a1a3a; /* Azul Marino */
+  background:#0a1a3a;
   color:#fff;
   border:none;
   border-radius:6px;
@@ -229,6 +228,19 @@ header{
 }
 .btn-list-add:hover { background: #152c5b; }
 .btn-list-add svg { width: 16px; height: 16px; fill: white; }
+
+/* AJUSTE ESPECIFICO PARA CELULAR (OPTIMIZACION MOVIL) */
+@media (max-width: 767px) {
+  .btn-list-add {
+    padding: 8px 4px; /* Menos relleno lateral */
+    font-size: 11px;  /* Letra ajustada para que quepa bien */
+    gap: 4px;
+  }
+  .btn-list-add svg {
+    width: 14px; /* Icono proporcional */
+    height: 14px;
+  }
+}
 
 /* ===== DETALLE ===== */
 .detail{display:none;padding:15px;}
@@ -415,7 +427,7 @@ header{
 .btn-trash svg {
   width: 20px;
   height: 20px;
-  fill: #d32f2f; /* Rojo elegante */
+  fill: #d32f2f;
   transition: fill 0.2s;
 }
 .btn-trash:hover svg { fill: #b71c1c; }
@@ -443,7 +455,6 @@ header{
   <div class="logo" onclick="goHome()">
     <div class="brand">DOMBET</div>
     <div class="sub">
-      <!-- Letras separadas para justificación perfecta -->
       <span>I</span><span>N</span><span>F</span><span>O</span><span>R</span><span>M</span><span>Á</span><span>T</span><span>I</span><span>C</span><span>A</span>
     </div>
   </div>
@@ -542,7 +553,7 @@ header{
 let products=[], current=null, imgs=[], imgIndex=0, qty=1;
 let cart = [];
 
-// CARGAR CARRITO GUARDADO (Persistencia)
+// CARGAR CARRITO GUARDADO
 const savedCart = localStorage.getItem('dombet_cart');
 if(savedCart){
   try {
@@ -583,8 +594,6 @@ function renderList(){
   window.scrollTo(0,0);
   products.forEach((p,i)=>{
     const oldPrice = p.price * 1.2;
-    // Se cambio el boton "Ver producto" por "Añadir al carrito"
-    // El click en la tarjeta (card) abre el detalle, el click en el boton añade al carrito
     list.innerHTML+=`
       <div class="card" onclick="openDetail(${i})">
         <img src="${p.image_main}">
@@ -648,9 +657,8 @@ function updateTotalDisplay(){
   document.getElementById("dTotal").innerText = "Gs. " + Number(total).toLocaleString();
 }
 
-// AÑADIR DESDE LISTA (Sin entrar al detalle)
 function addToCartFromList(i, event){
-  event.stopPropagation(); // Evita que se abra el detalle
+  event.stopPropagation();
   const prod = products[i];
   const existing = cart.find(item => item.product.name === prod.name);
   if(existing){
@@ -663,7 +671,6 @@ function addToCartFromList(i, event){
   toggleCart(true);
 }
 
-// AÑADIR DESDE DETALLE
 function addToCart(){
   const existing = cart.find(item => item.product.name === current.name);
   if(existing){
@@ -700,7 +707,6 @@ function updateCartUI(){
             <div class="cart-item-qty">Cant: ${item.qty} | Sub: Gs. ${Number(itemTotal).toLocaleString()}</div>
           </div>
           <button class="btn-trash" onclick="removeFromCart(${index})">
-            <!-- ICONO BASURERO ROJO -->
             <svg viewBox="0 0 24 24"><path d="M9 3v1H4v2h1v13a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6h1V4h-5V3H9M7 6h10v13H7V6m2 2v9h2V8H9m4 0v9h2V8h-2Z"/></svg>
           </button>
         </div>
@@ -727,12 +733,10 @@ function toggleCart(forceState){
   }
 }
 
-// CERRAR CARRITO AL CLICKEAR FUERA
 document.addEventListener('click', function(e) {
   const panel = document.getElementById('cartPanel');
   const trigger = document.querySelector('.cart-trigger');
   const addBtn = document.querySelector('.btn-add-cart');
-  // Tambien verificar botones de lista
   const isListBtn = e.target.closest('.btn-list-add');
   
   if(panel.classList.contains('open') && 
@@ -768,7 +772,6 @@ function goHome(){
   renderList();
 }
 
-/* BUSCADOR */
 searchInput.oninput=e=>{
   const t=e.target.value.toLowerCase()
   if(!t){searchResults.style.display='none';return}
