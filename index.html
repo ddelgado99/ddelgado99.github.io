@@ -18,6 +18,13 @@ body{
   color: #333;
 }
 
+/* ANIMACIÓN REBOTE (BOUNCE) */
+@keyframes elegantBounce {
+  0% { opacity: 0; transform: scale(0.9); }
+  70% { transform: scale(1.03); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
 /* ===== HEADER ===== */
 header{
   background:#0a1a3a;
@@ -40,6 +47,8 @@ header{
   display: flex;
   flex-direction: column;
   width: max-content;
+  /* Efecto rebote al cargar */
+  animation: elegantBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 .brand{
   font-size:28px;
@@ -232,6 +241,8 @@ header{
   flex-direction: column;
   border: 1px solid #eee; 
   position: relative;
+  /* Efecto rebote al aparecer */
+  animation: elegantBounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 .card:hover { box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
 
@@ -552,17 +563,17 @@ header{
 .label-title { font-weight: 700; font-size: 13px; color: #333; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
 .desc-text { color: #666; line-height: 1.5; margin-bottom: 20px; font-size: 14px; }
 
+/* CAJA DE ENVÍOS MODIFICADA (LIMPIA) */
 .shipping-info {
-  background: #f0fdf4;
+  background: transparent;
   color: #15803d;
-  padding: 10px;
-  border-radius: 4px;
+  padding: 10px 0;
   font-size: 13px;
   font-weight: 600;
   display: flex;
   align-items: center;
   gap: 10px;
-  border: 1px solid #dcfce7;
+  border: none;
 }
 
 /* ===== CARRITO FLOTANTE Y OVERLAY ===== */
