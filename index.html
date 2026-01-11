@@ -19,10 +19,10 @@ header{
 .brand{font-size:42px;font-weight:900;cursor:pointer}
 .sub{font-size:14px;letter-spacing:4px}
 
-/* buscador */
+/* ===== BUSCADOR ===== */
 .search-box{
   position:absolute;
-  left:50%;
+  left:56%; /* movido a la derecha */
   transform:translateX(-50%);
   width:520px;
 }
@@ -64,6 +64,10 @@ header{
   width:40px;
   height:40px;
   object-fit:contain;
+}
+.search-item div{
+  color:#000; /* texto negro */
+  font-size:14px;
 }
 
 /* ===== LISTADO ===== */
@@ -114,17 +118,13 @@ header{
   width:100%;
   height:420px;
   position:relative;
-  overflow:hidden;
-  cursor:zoom-in;
+  cursor:pointer;
 }
-.main-img.zoom{cursor:zoom-out}
 .main-img img{
   width:100%;
   height:100%;
   object-fit:contain;
-  transition:transform .25s ease;
 }
-.main-img.zoom img{transform:scale(1.8)}
 
 .arrow{
   position:absolute;
@@ -156,6 +156,30 @@ header{
 }
 .thumbs img.active{border-color:#0a1a3a}
 
+/* ===== ZOOM OVERLAY ===== */
+.zoom-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.8);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:500;
+}
+.zoom-box{
+  width:80%;
+  height:80%;
+  overflow:hidden;
+  cursor:zoom-in;
+}
+.zoom-box.zoomed{cursor:zoom-out}
+.zoom-box img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  transition:transform .15s;
+}
+
 /* info */
 .info{flex:1;min-width:300px}
 .info h2{margin:0;font-size:26px}
@@ -176,7 +200,7 @@ header{
   <div class="search-box">
     <input id="searchInput" placeholder="Buscar productos">
     <svg width="20" height="20" viewBox="0 0 24 24">
-      <path d="M10 2a8 8 0 105.293 14.293l4.707 4.707 1.414-1.414-4.707-4.707A8 8 0 0010 2zm0 2a6 6 0 110 12 6 6 0 010-12z"/>
+      <path d="M10 2a8 8 0 105.293 14.293l4.707 4.707 1.414-1.414-4.707-4.707A8 8 0 0010 2z"/>
     </svg>
     <div class="search-results" id="searchResults"></div>
   </div>
@@ -187,22 +211,26 @@ header{
 <div class="detail" id="detail">
   <div class="back" onclick="goHome()">← Volver</div>
   <div class="detail-box">
-
     <div class="gallery">
-      <div class="main-img" id="zoomBox" onclick="toggleZoom()">
+      <div class="main-img" onclick="openZoom()">
         <button class="arrow left" onclick="event.stopPropagation();prevImg()">‹</button>
         <img id="mainImg">
         <button class="arrow right" onclick="event.stopPropagation();nextImg()">›</button>
       </div>
       <div class="thumbs" id="thumbs"></div>
     </div>
-
     <div class="info">
       <h2 id="dName"></h2>
       <div class="price" id="dPrice"></div>
       <p id="dDesc"></p>
     </div>
+  </div>
+</div>
 
+<!-- ZOOM -->
+<div class="zoom-overlay" id="zoomOverlay" onclick="closeZoom()">
+  <div class="zoom-box" id="zoomBox" onclick="toggleZoom(event)">
+    <img id="zoomImg">
   </div>
 </div>
 
@@ -232,8 +260,6 @@ function openDetail(i){
   current=products[i]
   imgs=[current.image_main,current.image_thumb1,current.image_thumb2,current.image_thumb3].filter(Boolean)
   imgIndex=0
-  zoom=false
-  zoomBox.classList.remove('zoom')
 
   list.style.display="none"
   detail.style.display="block"
@@ -249,14 +275,8 @@ function openDetail(i){
   })
 }
 
-function toggleZoom(){
-  zoom=!zoom
-  zoomBox.classList.toggle('zoom',zoom)
-}
 function setImg(i){
   imgIndex=i
-  zoom=false
-  zoomBox.classList.remove('zoom')
   mainImg.src=imgs[i]
   updateThumbs()
 }
@@ -265,9 +285,27 @@ function nextImg(){setImg((imgIndex+1)%imgs.length)}
 function updateThumbs(){
   [...thumbs.children].forEach((t,i)=>t.classList.toggle('active',i===imgIndex))
 }
+
+function openZoom(){
+  zoom=false
+  zoomBox.classList.remove('zoomed')
+  zoomOverlay.style.display='flex'
+  zoomImg.src=imgs[imgIndex]
+}
+
+function toggleZoom(e){
+  e.stopPropagation()
+  zoom=!zoom
+  zoomBox.classList.toggle('zoomed',zoom)
+}
+
+function closeZoom(){
+  zoomOverlay.style.display='none'
+}
+
 function goHome(){renderList()}
 
-/* buscador predictivo */
+/* buscador */
 searchInput.oninput=e=>{
   const t=e.target.value.toLowerCase()
   if(!t){searchResults.style.display='none';return}
