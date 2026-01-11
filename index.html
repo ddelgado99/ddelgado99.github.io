@@ -17,6 +17,7 @@ header{
   align-items:center;
   justify-content:space-between;
   position:relative;
+  z-index:1000;
 }
 
 /* LOGO */
@@ -27,11 +28,10 @@ header{
   animation:rebote .9s ease-out;
 }
 .brand,.sub{
-  width:200px;
-  text-align:left;
+  width:210px;          /* mismo ancho */
 }
 .brand{
-  font-size:42px;
+  font-size:40px;
   font-weight:900;
   line-height:1;
 }
@@ -42,8 +42,8 @@ header{
 }
 
 @keyframes rebote{
-  0%{transform:translateY(-25px);opacity:0}
-  60%{transform:translateY(5px)}
+  0%{transform:translateY(-20px);opacity:0}
+  60%{transform:translateY(6px)}
   100%{transform:translateY(0);opacity:1}
 }
 
@@ -56,7 +56,7 @@ header{
 }
 .search-box input{
   width:100%;
-  padding:12px 42px 12px 18px;
+  padding:12px 36px 12px 18px; /* lupa más cerca */
   border-radius:12px;
   border:none;
   outline:none;
@@ -64,7 +64,7 @@ header{
 }
 .search-box svg{
   position:absolute;
-  right:10px;
+  right:8px;
   top:50%;
   transform:translateY(-50%);
   fill:#777;
@@ -119,7 +119,6 @@ header{
   width:100%;
   height:420px;
   position:relative;
-  cursor:pointer;
 }
 .main-img img{
   width:100%;
@@ -161,42 +160,18 @@ header{
 .info{flex:1;min-width:300px}
 .info h2{margin:0;font-size:26px}
 .info .price{font-size:32px;margin:15px 0}
-.info h4{margin:18px 0 6px}
 .info p{color:#555}
-.envio{
+
+.shipping{
   display:flex;
-  align-items:center;
   gap:8px;
-  color:#888;
+  align-items:center;
+  color:#777;
   margin:10px 0;
 }
 
-/* ===== ZOOM CORRECTO ===== */
-.zoom-overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.85);
-  display:none;
-  justify-content:center;
-  align-items:center;
-  z-index:999;
-}
-.zoom-box{
-  width:80%;
-  height:80%;
-  overflow:hidden;
-  cursor:zoom-in;
-}
-.zoom-box.zoomed{cursor:move}
-.zoom-box img{
-  width:100%;
-  height:100%;
-  object-fit:contain;
-  transition:transform .12s linear;
-}
-
 /* ===== BACK ===== */
-.back{cursor:pointer;color:#0a1a3a;font-weight:bold}
+.back{cursor:pointer;color:#0a1a3a;font-weight:bold;margin-bottom:15px}
 </style>
 </head>
 
@@ -222,10 +197,10 @@ header{
   <div class="back" onclick="goHome()">← Volver</div>
   <div class="detail-box">
     <div class="gallery">
-      <div class="main-img" onclick="openZoom()">
-        <button class="arrow left" onclick="event.stopPropagation();prevImg()">‹</button>
+      <div class="main-img">
+        <button class="arrow left" onclick="prevImg()">‹</button>
         <img id="mainImg">
-        <button class="arrow right" onclick="event.stopPropagation();nextImg()">›</button>
+        <button class="arrow right" onclick="nextImg()">›</button>
       </div>
       <div class="thumbs" id="thumbs"></div>
     </div>
@@ -233,24 +208,15 @@ header{
     <div class="info">
       <h2 id="dName"></h2>
       <div class="price" id="dPrice"></div>
-      <h4>Detalles:</h4>
+      <strong>Detalles:</strong>
       <p id="dDesc"></p>
-      <div class="envio">
-        🚚 <span>Envíos a todo el Paraguay por transportadora</span>
-      </div>
+      <div class="shipping">🚚 Envíos a todo el Paraguay por transportadora</div>
     </div>
   </div>
 </div>
 
-<!-- ZOOM -->
-<div class="zoom-overlay" id="zoomOverlay" onclick="closeZoom()">
-  <div class="zoom-box" id="zoomBox">
-    <img id="zoomImg">
-  </div>
-</div>
-
 <script>
-let products=[],imgs=[],imgIndex=0,zoom=false
+let products=[],imgs=[],imgIndex=0
 
 fetch("https://dombet-backend.onrender.com/products")
 .then(r=>r.json())
@@ -297,26 +263,6 @@ function updateThumbs(){
   [...thumbs.children].forEach((t,i)=>t.classList.toggle('active',i===imgIndex))
 }
 
-/* ZOOM REAL */
-function openZoom(){
-  zoom=false
-  zoomOverlay.style.display='flex'
-  zoomImg.src=imgs[imgIndex]
-  zoomImg.style.transform='scale(1)'
-}
-zoomBox.onclick=e=>{
-  e.stopPropagation()
-  zoom=!zoom
-}
-zoomBox.onmousemove=e=>{
-  if(!zoom) return
-  const r=zoomBox.getBoundingClientRect()
-  const x=(e.clientX-r.left)/r.width*100
-  const y=(e.clientY-r.top)/r.height*100
-  zoomImg.style.transformOrigin=`${x}% ${y}%`
-  zoomImg.style.transform='scale(2)'
-}
-function closeZoom(){zoomOverlay.style.display='none'}
 function goHome(){renderList()}
 </script>
 
