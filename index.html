@@ -177,67 +177,36 @@ header{
 .search-item img{width:40px;height:40px;object-fit:contain}
 .search-item div { color: #000; font-weight: 500; font-size: 14px; }
 
-/* ===== HERO SECTION (NUEVO) ===== */
+/* ===== HERO SECTION (MODIFICADO: MÁS DELGADO) ===== */
 .hero-section {
   background: linear-gradient(135deg, #0a1a3a 0%, #152c5b 100%);
   color: white;
-  padding: 25px 15px 15px 15px;
+  /* Padding reducido para que sea más delgado */
+  padding: 15px 15px; 
   text-align: center;
   margin-bottom: 0;
 }
 
 .hero-title {
-  font-size: 22px;
+  font-size: 18px; /* Tamaño ajustado */
   font-weight: 800;
-  margin: 0 0 8px 0;
+  margin: 0 0 4px 0;
   letter-spacing: 0.5px;
+  text-transform: uppercase; /* Todo en mayúsculas */
 }
 .hero-subtitle {
-  font-size: 13px;
-  opacity: 0.8;
-  margin: 0 0 20px 0;
+  font-size: 12px;
+  opacity: 0.9;
+  margin: 0;
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
 }
 
-/* BARRA DE CATEGORÍAS */
-.category-scroll {
-  display: flex;
-  gap: 10px;
-  overflow-x: auto;
-  padding-bottom: 10px;
-  justify-content: flex-start;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none; /* Firefox */
-}
-.category-scroll::-webkit-scrollbar { display: none; } /* Chrome/Safari */
-
-.cat-pill {
-  background: rgba(255,255,255,0.15);
-  color: white;
-  border: 1px solid rgba(255,255,255,0.2);
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 13px;
-  font-weight: 600;
-  white-space: nowrap;
-  cursor: pointer;
-  transition: 0.2s;
-  flex-shrink: 0;
-}
-.cat-pill:hover, .cat-pill.active {
-  background: white;
-  color: #0a1a3a;
-  border-color: white;
-  transform: translateY(-2px);
-}
-
 @media (min-width: 768px) {
-  .hero-section { padding: 40px 20px 20px 20px; }
-  .hero-title { font-size: 32px; }
-  .hero-subtitle { font-size: 15px; }
-  .category-scroll { justify-content: center; }
+  .hero-section { padding: 20px; }
+  .hero-title { font-size: 24px; }
+  .hero-subtitle { font-size: 14px; }
 }
 
 /* ===== BARRA DE FILTROS ===== */
@@ -865,19 +834,11 @@ header{
   </div>
 </header>
 
-<!-- HERO SECTION (NUEVO) -->
+<!-- HERO SECTION (MODIFICADO) -->
 <div class="hero-section">
   <div class="hero-content">
-    <h2 class="hero-title">Tecnología al Alcance de Todos</h2>
+    <h2 class="hero-title">TECNOLOGÍA AL ALCANCE DE TODOS</h2>
     <p class="hero-subtitle">Encuentra las mejores ofertas en hardware y accesorios.</p>
-  </div>
-  <div class="category-scroll">
-    <button class="cat-pill active" onclick="filterByCategory('all')">Todo</button>
-    <button class="cat-pill" onclick="filterByCategory('laptop')">Laptops</button>
-    <button class="cat-pill" onclick="filterByCategory('pc')">PC Gamer</button>
-    <button class="cat-pill" onclick="filterByCategory('componente')">Componentes</button>
-    <button class="cat-pill" onclick="filterByCategory('periferico')">Periféricos</button>
-    <button class="cat-pill" onclick="filterByCategory('monitor')">Monitores</button>
   </div>
 </div>
 
@@ -981,7 +942,6 @@ header{
 <script>
 let products=[], current=null, imgs=[], imgIndex=0, qty=1;
 let cart = [];
-let currentCategory = 'all';
 
 // Cargar carrito guardado
 const savedCart = localStorage.getItem('dombet_cart');
@@ -1019,41 +979,12 @@ function formatCurrency(value) {
   return Number(value).toLocaleString('es-PY');
 }
 
-function filterByCategory(cat) {
-  currentCategory = cat;
-  
-  // Update active pill
-  document.querySelectorAll('.cat-pill').forEach(btn => {
-    btn.classList.remove('active');
-    if(btn.innerText.toLowerCase().includes(cat) || (cat === 'all' && btn.innerText === 'Todo')) {
-      btn.classList.add('active');
-    }
-  });
-
-  // If 'all', just render list. If specific, filter by name (simple implementation)
-  if(cat === 'all') {
-    renderList(products);
-  } else {
-    const filtered = products.filter(p => p.name.toLowerCase().includes(cat));
-    renderList(filtered);
-  }
-}
-
-function renderList(items = products){
+function renderList(){
   list.innerHTML="";
   detail.style.display="none";
   list.style.display="grid";
   window.scrollTo(0,0);
-  
-  if(items.length === 0) {
-    list.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px;">No se encontraron productos.</div>';
-    return;
-  }
-
-  items.forEach((p)=>{
-    // Find original index for correct linking
-    const i = products.indexOf(p);
-    
+  products.forEach((p,i)=>{
     const price = Number(p.price);
     const discount = Number(p.discount || 0);
     let priceHtml = '';
@@ -1089,16 +1020,12 @@ function renderList(items = products){
 function sortProducts(order) {
   if(!order) return;
   const getPrice = p => p.discount > 0 ? p.price * (1 - p.discount/100) : p.price;
-  
-  // Sort the currently displayed list (filtered or full)
-  let listToSort = currentCategory === 'all' ? [...products] : products.filter(p => p.name.toLowerCase().includes(currentCategory));
-
   if(order === 'asc') {
-    listToSort.sort((a,b) => getPrice(a) - getPrice(b));
+    products.sort((a,b) => getPrice(a) - getPrice(b));
   } else if(order === 'desc') {
-    listToSort.sort((a,b) => getPrice(b) - getPrice(a));
+    products.sort((a,b) => getPrice(b) - getPrice(a));
   }
-  renderList(listToSort);
+  renderList();
 }
 
 function openDetail(i, pushHistory = true){
