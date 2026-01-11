@@ -178,7 +178,7 @@ header{
   background: #fff;
   padding: 10px 15px;
   display: flex;
-  justify-content: flex-end; /* A la derecha */
+  justify-content: flex-end;
   align-items: center;
   border-bottom: 1px solid #eee;
   max-width: 1400px;
@@ -207,12 +207,11 @@ header{
   cursor: pointer;
 }
 
-/* ===== LISTADO (OPTIMIZADO MOVIL 2 COLUMNAS) ===== */
+/* ===== LISTADO ===== */
 .products{
   display:grid;
-  /* MOVIL: 2 Columnas forzadas */
   grid-template-columns: repeat(2, 1fr); 
-  gap: 10px; /* Espacio reducido en movil */
+  gap: 10px;
   padding: 10px;
   max-width: 1400px;
   margin: auto;
@@ -222,7 +221,6 @@ header{
   .products { 
     gap: 20px; 
     padding: 40px; 
-    /* PC: Auto ajuste */
     grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); 
   }
 }
@@ -230,7 +228,7 @@ header{
 .card{
   background:#fff;
   border-radius:8px;
-  padding:10px; /* Padding reducido en movil */
+  padding:10px;
   box-shadow:0 1px 3px rgba(0,0,0,.05);
   cursor:pointer;
   transition: box-shadow 0.2s;
@@ -240,18 +238,16 @@ header{
 }
 .card:hover { box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
 
-/* Imagen en tarjeta */
 .card img{
   width:100%;
-  height:140px; /* Altura reducida para movil */
+  height:140px;
   object-fit:contain; 
   margin-bottom: 10px;
 }
 @media (min-width: 768px) { .card img { height: 180px; padding: 15px; } }
 
-/* Texto en tarjeta */
 .name{
-  font-size:13px; /* Letra mas pequeña en movil */
+  font-size:13px;
   height:34px;
   overflow:hidden; 
   color: #333; 
@@ -268,24 +264,23 @@ header{
   .current-price { font-size: 18px; }
 }
 
-/* BOTON AÑADIR EN LISTA (OPTIMIZADO) */
 .btn-list-add{
   margin-top:auto;
   width:100%;
-  padding: 8px 4px; /* Compacto */
+  padding: 8px 4px;
   background:#0a1a3a;
   color:#fff;
   border:none;
   border-radius:4px;
   font-weight: 600;
-  font-size: 11px; /* Letra pequeña para que quepa */
+  font-size: 11px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 4px;
   transition: background 0.2s;
-  white-space: nowrap; /* Evita salto de linea */
+  white-space: nowrap;
 }
 .btn-list-add:hover { background: #152c5b; }
 .btn-list-add svg { width: 14px; height: 14px; fill: white; }
@@ -295,7 +290,7 @@ header{
   .btn-list-add svg { width: 16px; height: 16px; }
 }
 
-/* ===== DETALLE ===== */
+/* ===== DETALLE (NUEVA ESTRUCTURA) ===== */
 .detail{display:none;padding:0;}
 .detail-box{
   max-width:1400px;
@@ -303,16 +298,43 @@ header{
   background:#fff;
   padding: 20px;
   border-radius: 8px;
-  display:flex;
-  flex-direction: column;
-  gap:30px;
+  display: block; /* Cambiado a block para permitir titulo arriba */
 }
 
 @media (min-width: 768px) {
   .detail { padding: 20px; }
-  .detail-box { 
-    padding: 40px; 
-    flex-direction: row; 
+  .detail-box { padding: 40px; }
+}
+
+/* TITULO PRINCIPAL ARRIBA */
+.detail-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 20px 0;
+  line-height: 1.3;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .detail-title {
+    font-size: 34px;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee; /* Linea separadora estilo PC */
+  }
+}
+
+/* CONTENEDOR DE COLUMNAS (IMAGEN + INFO) */
+.detail-columns {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+@media (min-width: 768px) {
+  .detail-columns {
+    flex-direction: row;
     align-items: flex-start;
     gap: 50px;
   }
@@ -410,18 +432,9 @@ header{
   width: 100%;
   display: flex;
   flex-direction: column;
-  padding-top: 10px;
 }
 
 .info-header { margin-bottom: 15px; }
-.info h2{
-  margin:0 0 10px 0;
-  font-size: 24px; 
-  color: #333; 
-  line-height: 1.2;
-  font-weight: 600;
-}
-@media (min-width: 768px) { .info h2 { font-size: 32px; margin-bottom: 15px; } }
 
 .detail-prices { padding-bottom: 10px; border-bottom: 1px solid #eee; }
 .detail-old { color: #999; text-decoration: line-through; font-size: 16px; display: block; margin-bottom: 5px;}
@@ -446,12 +459,11 @@ header{
   margin-bottom: 10px;
 }
 
-/* BOTONES CANTIDAD GRIS ELEGANTE */
 .qty-controls { 
   display: inline-flex; 
   align-items: center; 
   gap: 0; 
-  background: #f0f0f0; /* Gris Claro */
+  background: #f0f0f0;
   border: 1px solid #ddd;
   border-radius: 6px; 
   padding: 2px;
@@ -461,7 +473,7 @@ header{
 .qty-btn {
   width: 32px; height: 32px;
   background: transparent;
-  color: #333; /* Texto oscuro */
+  color: #333;
   border: none;
   font-size: 18px;
   cursor: pointer;
@@ -758,43 +770,48 @@ header{
 
 <div class="detail" id="detail">
   <div class="detail-box">
-    <div class="gallery">
-      <div class="thumbs" id="thumbs"></div>
-      <div class="main-img" id="mainImgContainer" onclick="openLightbox()">
-        <button class="arrow left" onclick="prevImg(); event.stopPropagation()">‹</button>
-        <img id="mainImg">
-        <button class="arrow right" onclick="nextImg(); event.stopPropagation()">›</button>
-      </div>
-    </div>
+    <!-- TITULO ARRIBA -->
+    <h1 class="detail-title" id="dName"></h1>
 
-    <div class="info">
-      <!-- HEADER -->
-      <div class="info-header">
-        <h2 id="dName"></h2>
-        <div class="detail-prices">
-          <span class="detail-old" id="dOldPrice"></span>
-          <span class="detail-curr" id="dPrice"></span>
+    <div class="detail-columns">
+      <!-- COLUMNA IZQUIERDA: IMAGEN -->
+      <div class="gallery">
+        <div class="thumbs" id="thumbs"></div>
+        <div class="main-img" id="mainImgContainer" onclick="openLightbox()">
+          <button class="arrow left" onclick="prevImg(); event.stopPropagation()">‹</button>
+          <img id="mainImg">
+          <button class="arrow right" onclick="nextImg(); event.stopPropagation()">›</button>
         </div>
       </div>
 
-      <!-- COMPRA (CANTIDAD) -->
-      <div class="info-purchase">
-        <div class="qty-label">Cantidad</div>
-        <div class="qty-section">
-          <div class="qty-controls">
-            <button class="qty-btn" onclick="changeQty(-1)">-</button>
-            <div class="qty-val" id="qty">1</div>
-            <button class="qty-btn" onclick="changeQty(1)">+</button>
+      <!-- COLUMNA DERECHA: INFO -->
+      <div class="info">
+        <!-- PRECIO -->
+        <div class="info-header">
+          <div class="detail-prices">
+            <span class="detail-old" id="dOldPrice"></span>
+            <span class="detail-curr" id="dPrice"></span>
           </div>
-          <div class="total-section">TOTAL: <span id="dTotal"></span></div>
         </div>
-      </div>
 
-      <!-- ACCIONES -->
-      <div class="info-actions">
-        <button class="btn-add-cart" onclick="addToCart()">AÑADIR A CARRITO</button>
-        <button class="btn-whats" onclick="buyWhats()">
-          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        <!-- COMPRA (CANTIDAD) -->
+        <div class="info-purchase">
+          <div class="qty-label">Cantidad</div>
+          <div class="qty-section">
+            <div class="qty-controls">
+              <button class="qty-btn" onclick="changeQty(-1)">-</button>
+              <div class="qty-val" id="qty">1</div>
+              <button class="qty-btn" onclick="changeQty(1)">+</button>
+            </div>
+            <div class="total-section">TOTAL: <span id="dTotal"></span></div>
+          </div>
+        </div>
+
+        <!-- ACCIONES -->
+        <div class="info-actions">
+          <button class="btn-add-cart" onclick="addToCart()">AÑADIR A CARRITO</button>
+          <button class="btn-whats" onclick="buyWhats()">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
           Comprar por WhatsApp
         </button>
       </div>
@@ -896,10 +913,8 @@ function renderList(){
   })
 }
 
-// FUNCION DE ORDENAMIENTO
 function sortProducts(order) {
-  if(!order) return; // Si selecciona el default, no hace nada o podria recargar
-  
+  if(!order) return;
   if(order === 'asc') {
     products.sort((a,b) => Number(a.price) - Number(b.price));
   } else if(order === 'desc') {
