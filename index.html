@@ -177,36 +177,26 @@ header{
 .search-item img{width:40px;height:40px;object-fit:contain}
 .search-item div { color: #000; font-weight: 500; font-size: 14px; }
 
-/* ===== HERO SECTION (MODIFICADO: MÁS DELGADO) ===== */
+/* ===== HERO SECTION ===== */
 .hero-section {
   background: linear-gradient(135deg, #0a1a3a 0%, #152c5b 100%);
   color: white;
-  /* Padding reducido para que sea más delgado */
   padding: 15px 15px; 
   text-align: center;
   margin-bottom: 0;
 }
 
 .hero-title {
-  font-size: 18px; /* Tamaño ajustado */
+  font-size: 18px; 
   font-weight: 800;
-  margin: 0 0 4px 0;
-  letter-spacing: 0.5px;
-  text-transform: uppercase; /* Todo en mayúsculas */
-}
-.hero-subtitle {
-  font-size: 12px;
-  opacity: 0.9;
   margin: 0;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
+  letter-spacing: 0.5px;
+  text-transform: uppercase; 
 }
 
 @media (min-width: 768px) {
   .hero-section { padding: 20px; }
   .hero-title { font-size: 24px; }
-  .hero-subtitle { font-size: 14px; }
 }
 
 /* ===== BARRA DE FILTROS ===== */
@@ -220,8 +210,17 @@ header{
   max-width: 1400px;
   margin: 0 auto;
   position: sticky;
-  top: 60px; /* Debajo del header */
+  top: 60px; 
   z-index: 900;
+  gap: 10px; /* Espacio entre el texto y el botón */
+}
+
+/* Etiqueta "Ordenar por:" fuera del botón */
+.sort-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #555;
+  text-transform: uppercase;
 }
 
 .sort-container {
@@ -232,6 +231,7 @@ header{
   padding: 8px 12px;
   border-radius: 4px;
   border: 1px solid #ddd;
+  /* El diseño del botón se mantiene igual */
 }
 
 .sort-icon { width: 18px; height: 18px; fill: #555; }
@@ -838,16 +838,15 @@ header{
 <div class="hero-section">
   <div class="hero-content">
     <h2 class="hero-title">TECNOLOGÍA AL ALCANCE DE TODOS</h2>
-    <p class="hero-subtitle">Encuentra las mejores ofertas en hardware y accesorios.</p>
   </div>
 </div>
 
 <!-- BARRA DE FILTROS -->
 <div class="filter-bar">
+  <span class="sort-label">Ordenar por:</span>
   <div class="sort-container">
     <svg class="sort-icon" viewBox="0 0 24 24"><path d="M3 18h6v-2H3v2zM3 6v2h18V6H3zm0 7h12v-2H3v2z"/></svg>
     <select class="sort-select" onchange="sortProducts(this.value)">
-      <option value="">Ordenar por precio</option>
       <option value="asc">Menor a Mayor</option>
       <option value="desc">Mayor a Menor</option>
     </select>
