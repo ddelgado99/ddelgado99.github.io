@@ -2,84 +2,337 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>DOMBET ADMIN</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DOMBET ADMIN PRO</title>
 <style>
-html{zoom:.9}
-body{margin:0;font-family:Arial,sans-serif;background:#f4f6f8}
-header{background:#0a1a3a;padding:16px 22px;color:#fff;display:flex;justify-content:space-between;align-items:center}
-.container{max-width:1200px;margin:40px auto;padding:0 20px}
-.btn{border:none;padding:10px 18px;border-radius:6px;cursor:pointer;font-weight:bold}
-.btn-success{background:#25D366;color:#fff}
-.btn-primary{background:#0a1a3a;color:#fff}
-.btn-danger{background:#d32f2f;color:#fff}
-.btn-warning{background:#ff9800;color:#fff}
-table{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden}
-th,td{padding:14px;border-bottom:1px solid #eee}
-th{background:#f8f9fa}
-img{width:60px;height:60px;object-fit:contain}
-.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);align-items:center;justify-content:center}
-.modal-content{background:#fff;padding:30px;border-radius:12px;width:520px}
-.form-group{margin-bottom:14px}
-.form-control{width:100%;padding:10px;border:1px solid #ccc;border-radius:6px}
+  :root {
+    --primary: #0a1a3a;
+    --primary-hover: #152c5b;
+    --accent: #25D366;
+    --danger: #d32f2f;
+    --warning: #f57c00;
+    --bg: #f0f2f5;
+    --card: #ffffff;
+    --text: #333;
+    --text-light: #666;
+    --border: #e0e0e0;
+    --shadow: 0 4px 20px rgba(0,0,0,0.05);
+  }
+
+  * { box-sizing: border-box; outline: none; }
+
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--primary);
+    padding: 0 30px;
+    height: 70px;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    z-index: 100;
+  }
+
+  .brand { font-size: 24px; font-weight: 800; letter-spacing: 1px; }
+  .brand span { color: var(--accent); }
+
+  /* LAYOUT */
+  .main-content {
+    flex: 1;
+    padding: 30px;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* TOOLBAR */
+  .toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 20px;
+  }
+
+  .search-box {
+    position: relative;
+    flex: 1;
+    max-width: 400px;
+  }
+
+  .search-box input {
+    width: 100%;
+    padding: 12px 20px 12px 40px;
+    border-radius: 30px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    transition: all 0.3s;
+  }
+  .search-box input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(10,26,58,0.1); }
+  .search-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-light); }
+
+  /* TABLE CARD */
+  .card {
+    background: var(--card);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .table-container {
+    overflow-y: auto;
+    flex: 1;
+  }
+
+  table { width: 100%; border-collapse: collapse; }
+  
+  thead th {
+    background: #f8f9fa;
+    color: var(--text-light);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 12px;
+    padding: 18px 24px;
+    text-align: left;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    border-bottom: 2px solid var(--border);
+  }
+
+  tbody td {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+    font-size: 14px;
+  }
+
+  tbody tr:hover { background: #fcfcfc; }
+  
+  .product-img {
+    width: 50px; height: 50px;
+    border-radius: 8px;
+    object-fit: contain;
+    border: 1px solid #eee;
+    background: #fff;
+  }
+
+  .price-tag { font-weight: bold; color: var(--primary); }
+  .discount-tag { 
+    background: #ffebee; color: var(--danger); 
+    padding: 4px 8px; border-radius: 12px; font-size: 11px; font-weight: bold;
+  }
+
+  /* BUTTONS */
+  .btn {
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn:active { transform: scale(0.98); }
+  
+  .btn-primary { background: var(--primary); color: white; }
+  .btn-primary:hover { background: var(--primary-hover); }
+  
+  .btn-success { background: var(--accent); color: white; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3); }
+  .btn-success:hover { filter: brightness(1.1); }
+
+  .btn-icon { padding: 8px; border-radius: 6px; }
+  .btn-edit { background: #fff3e0; color: var(--warning); }
+  .btn-edit:hover { background: var(--warning); color: white; }
+  .btn-delete { background: #ffebee; color: var(--danger); }
+  .btn-delete:hover { background: var(--danger); color: white; }
+  .btn-outline { background: transparent; border: 1px solid rgba(255,255,255,0.3); color: white; }
+  .btn-outline:hover { background: rgba(255,255,255,0.1); }
+
+  /* MODAL */
+  .modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .modal.active { display: flex; opacity: 1; }
+
+  .modal-content {
+    background: var(--card);
+    width: 90%;
+    max-width: 700px; /* Más ancho para aprovechar espacio */
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+    transform: translateY(20px);
+    transition: transform 0.3s;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  .modal.active .modal-content { transform: translateY(0); }
+
+  .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+  .modal-header h2 { margin: 0; color: var(--primary); }
+
+  /* FORM GRID SYSTEM */
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .full-width { grid-column: span 2; }
+
+  .form-group { margin-bottom: 5px; }
+  .form-group label { display: block; margin-bottom: 8px; font-size: 13px; font-weight: 600; color: var(--text-light); }
+  
+  .form-control {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border 0.2s;
+  }
+  .form-control:focus { border-color: var(--primary); }
+  textarea.form-control { resize: vertical; min-height: 80px; }
+
+  .modal-footer {
+    margin-top: 30px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  .btn-cancel { background: #f5f5f5; color: var(--text); }
+  .btn-cancel:hover { background: #e0e0e0; }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: #f1f1f1; }
+  ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: #bbb; }
 </style>
 </head>
-
 <body>
 
 <header>
-  <strong>DOMBET · ADMIN</strong>
-  <button class="btn" onclick="location.href='index.html'">Ir a tienda</button>
+  <div class="brand">DOMBET <span>ADMIN</span></div>
+  <button class="btn btn-outline" onclick="location.href='index.html'">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+    Ir a Tienda
+  </button>
 </header>
 
-<div class="container">
-  <button class="btn btn-success" onclick="openModal()">+ Nuevo Producto</button>
+<div class="main-content">
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="Buscar producto por nombre..." onkeyup="filterProducts()">
+    </div>
+    <button class="btn btn-success" onclick="openModal()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+      Nuevo Producto
+    </button>
+  </div>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Img</th>
-        <th>Nombre</th>
-        <th>Precio</th>
-        <th>Desc.</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody id="list"></tbody>
-  </table>
+  <!-- TABLE -->
+  <div class="card">
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th width="80">Imagen</th>
+            <th>Nombre del Producto</th>
+            <th width="150">Precio</th>
+            <th width="100">Desc.</th>
+            <th width="120" style="text-align:center">Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="list">
+          <!-- JS Render -->
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
 
 <!-- MODAL -->
 <div class="modal" id="modal">
   <div class="modal-content">
-    <h3 id="modalTitle">Producto</h3>
+    <div class="modal-header">
+      <h2 id="modalTitle">Gestión de Producto</h2>
+      <button class="btn-icon" onclick="closeModal()" style="background:none; cursor:pointer;">✕</button>
+    </div>
 
     <input type="hidden" id="pId">
 
-    <div class="form-group">
-      <input class="form-control" id="pName" placeholder="Nombre">
+    <div class="form-grid">
+      <!-- Fila 1: Nombre (Ancho completo) -->
+      <div class="form-group full-width">
+        <label>Nombre del Producto</label>
+        <input class="form-control" id="pName" placeholder="Ej: Laptop HP Pavilion...">
+      </div>
+
+      <!-- Fila 2: Precio y Descuento (Mitad y mitad) -->
+      <div class="form-group">
+        <label>Precio (Gs)</label>
+        <input class="form-control" id="pPrice" type="number" placeholder="0">
+      </div>
+      <div class="form-group">
+        <label>Descuento (%)</label>
+        <input class="form-control" id="pDiscount" type="number" placeholder="0">
+      </div>
+
+      <!-- Fila 3: Descripción (Ancho completo) -->
+      <div class="form-group full-width">
+        <label>Descripción Detallada</label>
+        <textarea class="form-control" id="pDesc" placeholder="Detalles técnicos, características..."></textarea>
+      </div>
+
+      <!-- Fila 4: Imágenes (Grid para aprovechar espacio) -->
+      <div class="form-group full-width">
+        <label>URLs de Imágenes</label>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <input class="form-control" id="imgMain" placeholder="★ Imagen Principal (URL)">
+          <input class="form-control" id="img1" placeholder="Miniatura 1 (URL)">
+          <input class="form-control" id="img2" placeholder="Miniatura 2 (URL)">
+          <input class="form-control" id="img3" placeholder="Miniatura 3 (URL)">
+        </div>
+      </div>
     </div>
 
-    <div class="form-group">
-      <input class="form-control" id="pPrice" type="number" placeholder="Precio">
+    <div class="modal-footer">
+      <button class="btn btn-cancel" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="save()" id="btnSave">Guardar Cambios</button>
     </div>
-
-    <div class="form-group">
-      <input class="form-control" id="pDiscount" type="number" placeholder="Descuento %">
-    </div>
-
-    <div class="form-group">
-      <textarea class="form-control" id="pDesc" placeholder="Descripción"></textarea>
-    </div>
-
-    <div class="form-group">
-      <input class="form-control" id="imgMain" placeholder="Imagen principal (URL)">
-      <input class="form-control" id="img1" placeholder="Imagen miniatura 1 (URL)">
-      <input class="form-control" id="img2" placeholder="Imagen miniatura 2 (URL)">
-      <input class="form-control" id="img3" placeholder="Imagen miniatura 3 (URL)">
-    </div>
-
-    <button class="btn btn-primary" onclick="save()">Guardar</button>
-    <button class="btn" onclick="closeModal()">Cancelar</button>
   </div>
 </div>
 
@@ -87,103 +340,159 @@ img{width:60px;height:60px;object-fit:contain}
 const API = "https://dombet-backend.onrender.com/products"
 let products = []
 
+// Cargar datos
 fetch(API)
   .then(r => r.json())
-  .then(d => { products = d; render() })
+  .then(d => { 
+    products = d; 
+    render(products);
+  })
+  .catch(e => alert("Error cargando productos"))
 
-function render(){
-  list.innerHTML = products.map((p,i)=>`
+function render(data){
+  const list = document.getElementById('list');
+  if(data.length === 0) {
+    list.innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 40px; color:#999;">No se encontraron productos</td></tr>`;
+    return;
+  }
+
+  list.innerHTML = data.map((p,i)=>`
     <tr>
       <td>
-        <img src="${p.image_main || 'https://via.placeholder.com/60'}"
-             onerror="this.src='https://via.placeholder.com/60'">
+        <img class="product-img" src="${p.image_main || 'https://via.placeholder.com/60'}" 
+             onerror="this.src='https://via.placeholder.com/60?text=No+Img'">
       </td>
-      <td>${p.name}</td>
-      <td>Gs ${Number(p.price).toLocaleString()}</td>
-      <td>${p.discount || 0}%</td>
       <td>
-        <button class="btn btn-warning" onclick="edit(${i})">✏</button>
-        <button class="btn btn-danger" onclick="del(${p.id})">🗑</button>
+        <div style="font-weight:600; color:var(--primary)">${p.name}</div>
+        <div style="font-size:12px; color:#888; margin-top:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:250px;">
+          ${p.description || 'Sin descripción'}
+        </div>
+      </td>
+      <td><span class="price-tag">Gs ${Number(p.price).toLocaleString()}</span></td>
+      <td>${p.discount > 0 ? `<span class="discount-tag">-${p.discount}%</span>` : '<span style="color:#ccc">-</span>'}</td>
+      <td style="text-align:center">
+        <button class="btn btn-icon btn-edit" onclick="edit(${p.id})" title="Editar">✏️</button>
+        <button class="btn btn-icon btn-delete" onclick="del(${p.id})" title="Eliminar">🗑️</button>
       </td>
     </tr>
   `).join('')
 }
 
+// Buscador en tiempo real
+function filterProducts() {
+  const term = document.getElementById('searchInput').value.toLowerCase();
+  const filtered = products.filter(p => p.name.toLowerCase().includes(term));
+  render(filtered);
+}
+
 function openModal(){
-  modal.style.display='flex'
-  modalTitle.innerText = "Nuevo Producto"
-  pId.value = ""               // CLAVE
-  pName.value = ""
-  pPrice.value = ""
-  pDiscount.value = ""
-  pDesc.value = ""
-  imgMain.value = ""
-  img1.value = ""
-  img2.value = ""
-  img3.value = ""
+  const modal = document.getElementById('modal');
+  modal.classList.add('active');
+  document.getElementById('modalTitle').innerText = "Nuevo Producto";
+  
+  // Limpiar campos
+  ['pId','pName','pPrice','pDiscount','pDesc','imgMain','img1','img2','img3'].forEach(id => {
+    document.getElementById(id).value = "";
+  });
 }
 
 function closeModal(){
-  modal.style.display='none'
+  document.getElementById('modal').classList.remove('active');
 }
 
-function edit(i){
-  const p = products[i]
-  modalTitle.innerText = "Editar Producto"
-  pId.value = p.id
-  pName.value = p.name
-  pPrice.value = p.price
-  pDiscount.value = p.discount
-  pDesc.value = p.description
-  imgMain.value = p.image_main
-  img1.value = p.image_thumb1
-  img2.value = p.image_thumb2
-  img3.value = p.image_thumb3
-  modal.style.display='flex'
+function edit(id){
+  const p = products.find(prod => prod.id === id);
+  if(!p) return;
+
+  document.getElementById('modalTitle').innerText = "Editar Producto";
+  document.getElementById('pId').value = p.id;
+  document.getElementById('pName').value = p.name;
+  document.getElementById('pPrice').value = p.price;
+  document.getElementById('pDiscount').value = p.discount;
+  document.getElementById('pDesc').value = p.description;
+  document.getElementById('imgMain').value = p.image_main;
+  document.getElementById('img1').value = p.image_thumb1;
+  document.getElementById('img2').value = p.image_thumb2;
+  document.getElementById('img3').value = p.image_thumb3;
+  
+  document.getElementById('modal').classList.add('active');
 }
 
 function save(){
-  if(!pName.value || !pPrice.value){
-    alert("Nombre y precio son obligatorios")
-    return
+  const btn = document.getElementById('btnSave');
+  const pName = document.getElementById('pName').value;
+  const pPrice = document.getElementById('pPrice').value;
+
+  if(!pName || !pPrice){
+    alert("Nombre y precio son obligatorios");
+    return;
   }
+
+  btn.innerText = "Guardando...";
+  btn.disabled = true;
 
   const data = {
-    name: pName.value.trim(),
-    price: Number(pPrice.value),
-    discount: Number(pDiscount.value || 0),
-    description: pDesc.value.trim(),
-    image_main: imgMain.value.trim(),
-    image_thumb1: img1.value.trim(),
-    image_thumb2: img2.value.trim(),
-    image_thumb3: img3.value.trim()
+    name: pName.trim(),
+    price: Number(pPrice),
+    discount: Number(document.getElementById('pDiscount').value || 0),
+    description: document.getElementById('pDesc').value.trim(),
+    image_main: document.getElementById('imgMain').value.trim(),
+    image_thumb1: document.getElementById('img1').value.trim(),
+    image_thumb2: document.getElementById('img2').value.trim(),
+    image_thumb3: document.getElementById('img3').value.trim()
   }
 
-  const id = pId.value.trim()
-  const method = id ? 'PUT' : 'POST'
-  const url = id ? `${API}/${id}` : API
+  const id = document.getElementById('pId').value.trim();
+  const method = id ? 'PUT' : 'POST';
+  const url = id ? `${API}/${id}` : API;
 
-  fetch(url,{
+  fetch(url, {
     method,
     headers:{'Content-Type':'application/json'},
     body:JSON.stringify(data)
   })
-  .then(async r=>{
-    if(!r.ok){
-      const msg = await r.text()
-      alert("Error backend: " + msg)
-      return
+  .then(async r => {
+    if(!r.ok) throw new Error(await r.text());
+    
+    // Actualizar localmente sin recargar toda la página
+    if(id) { // Edit
+      products = products.map(p => p.id == id ? { ...p, ...data, id: Number(id) } : p);
+    } else { // Create (necesitamos recargar para obtener ID o simular)
+       // Para simplificar y asegurar consistencia con backend, recargamos datos
+       return fetch(API).then(r=>r.json()).then(d => products = d);
     }
-    location.reload()
   })
+  .then(() => {
+    render(products);
+    closeModal();
+    btn.innerText = "Guardar Cambios";
+    btn.disabled = false;
+  })
+  .catch(err => {
+    alert("Error: " + err.message);
+    btn.innerText = "Guardar Cambios";
+    btn.disabled = false;
+  });
 }
 
 function del(id){
-  if(confirm("Eliminar producto?")){
-    fetch(`${API}/${id}`,{method:'DELETE'})
-      .then(()=>location.reload())
+  if(confirm("¿Estás seguro de eliminar este producto?")){
+    fetch(`${API}/${id}`, {method:'DELETE'})
+      .then(r => {
+        if(r.ok){
+          products = products.filter(p => p.id !== id);
+          render(products);
+        } else {
+          alert("Error al eliminar");
+        }
+      })
   }
 }
+
+// Cerrar modal al hacer click fuera
+document.getElementById('modal').addEventListener('click', (e) => {
+  if(e.target === document.getElementById('modal')) closeModal();
+});
 </script>
 
 </body>
