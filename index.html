@@ -1,10 +1,17 @@
 <script>
+document.addEventListener("DOMContentLoaded", () => {
+
 /* ======================
    REFERENCIAS DOM
 ====================== */
 const list = document.getElementById("list")
 const searchInput = document.getElementById("searchInput")
 const searchResults = document.getElementById("searchResults")
+
+if(!list){
+  console.error("No existe #list en el HTML")
+  return
+}
 
 let products = []
 let current = null
@@ -18,9 +25,7 @@ fetch("https://dombet-backend.onrender.com/products")
   products = d
   loadFromURL()
 })
-.catch(err => {
-  console.error("Error cargando productos", err)
-})
+.catch(err => console.error("Error cargando productos", err))
 
 /* ======================
    LISTADO
@@ -87,9 +92,7 @@ function openDetail(i, push = true){
 /* ======================
    HOME
 ====================== */
-function goHome(){
-  renderList()
-}
+window.goHome = () => renderList()
 
 /* ======================
    HISTORIAL ← →
@@ -119,38 +122,42 @@ function loadFromURL(){
 /* ======================
    BUSCADOR
 ====================== */
-searchInput.oninput = e => {
-  const t = e.target.value.toLowerCase()
+if(searchInput){
+  searchInput.oninput = e => {
+    const t = e.target.value.toLowerCase()
 
-  if(!t){
-    searchResults.style.display = "none"
-    return
+    if(!t){
+      searchResults.style.display = "none"
+      return
+    }
+
+    const f = products.filter(p =>
+      p.name.toLowerCase().includes(t)
+    )
+
+    searchResults.innerHTML = f.map(p => {
+      const i = products.indexOf(p)
+      return `
+        <div class="search-item" onclick="openDetail(${i});searchResults.style.display='none'">
+          <img src="${p.image_main}">
+          <div>${p.name}</div>
+        </div>`
+    }).join("")
+
+    searchResults.style.display = "block"
   }
-
-  const f = products.filter(p =>
-    p.name.toLowerCase().includes(t)
-  )
-
-  searchResults.innerHTML = f.map(p => {
-    const i = products.indexOf(p)
-    return `
-      <div class="search-item" onclick="openDetail(${i});searchResults.style.display='none'">
-        <img src="${p.image_main}">
-        <div>${p.name}</div>
-      </div>`
-  }).join("")
-
-  searchResults.style.display = "block"
 }
 
 /* ======================
    WHATSAPP
 ====================== */
-function buyWhats(){
+window.buyWhats = () => {
   if(!current) return
   window.open(
     "https://wa.me/595985697384?text=" +
     encodeURIComponent(`Hola! Quiero comprar:\n${current.name}`)
   )
 }
+
+})
 </script>
