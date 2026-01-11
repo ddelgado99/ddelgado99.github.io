@@ -1,48 +1,26 @@
 <script>
-document.addEventListener("DOMContentLoaded", () => {
+let products=[],current=null,imgs=[],imgIndex=0
 
-/* ======================
-   REFERENCIAS DOM
-====================== */
-const list = document.getElementById("list")
-const searchInput = document.getElementById("searchInput")
-const searchResults = document.getElementById("searchResults")
-
-if(!list){
-  console.error("No existe #list en el HTML")
-  return
-}
-
-let products = []
-let current = null
-
-/* ======================
-   FETCH PRODUCTOS
-====================== */
 fetch("https://dombet-backend.onrender.com/products")
-.then(r => r.json())
-.then(d => {
-  products = d
+.then(r=>r.json())
+.then(d=>{
+  products=d
   loadFromURL()
 })
-.catch(err => console.error("Error cargando productos", err))
 
 /* ======================
    LISTADO
 ====================== */
-function renderList(push = true){
-  const detail = document.getElementById("detail")
-  if(detail) detail.remove()
-
-  list.innerHTML = ""
-  list.style.display = "grid"
+function renderList(push=true){
+  list.innerHTML=""
+  list.style.display="grid"
 
   if(push){
-    history.pushState({page:"home"}, "", location.pathname)
+    history.pushState({page:"home"}, "", "/")
   }
 
   products.forEach((p,i)=>{
-    list.innerHTML += `
+    list.innerHTML+=`
       <div class="card" onclick="openDetail(${i})">
         <img src="${p.image_main}">
         <div class="name">${p.name}</div>
@@ -53,16 +31,12 @@ function renderList(push = true){
 }
 
 /* ======================
-   DETALLE
+   DETALLE (simple)
 ====================== */
-function openDetail(i, push = true){
-  current = products[i]
-  if(!current) return
+function openDetail(i,push=true){
+  current=products[i]
 
-  list.style.display = "none"
-
-  const old = document.getElementById("detail")
-  if(old) old.remove()
+  list.style.display="none"
 
   list.insertAdjacentHTML("afterend", `
     <div class="detail" id="detail">
@@ -73,7 +47,7 @@ function openDetail(i, push = true){
         <div class="info">
           <h2>${current.name}</h2>
           <div class="price">Gs. ${Number(current.price).toLocaleString()}</div>
-          <p>${current.description || ""}</p>
+          <p>${current.description||""}</p>
           <button class="btn btn-whats" onclick="buyWhats()">Comprar por WhatsApp</button>
         </div>
       </div>
@@ -82,7 +56,7 @@ function openDetail(i, push = true){
 
   if(push){
     history.pushState(
-      {page:"product", index:i},
+      {page:"product",index:i},
       "",
       `?product=${i}`
     )
@@ -90,18 +64,25 @@ function openDetail(i, push = true){
 }
 
 /* ======================
-   HOME
+   VOLVER
 ====================== */
-window.goHome = () => renderList()
+function goHome(){
+  const d=document.getElementById("detail")
+  if(d) d.remove()
+  renderList()
+}
 
 /* ======================
    HISTORIAL ← →
 ====================== */
-window.onpopstate = e => {
-  if(!e.state || e.state.page === "home"){
+window.onpopstate=e=>{
+  const d=document.getElementById("detail")
+  if(d) d.remove()
+
+  if(!e.state || e.state.page==="home"){
     renderList(false)
-  }else if(e.state.page === "product"){
-    openDetail(e.state.index, false)
+  }else if(e.state.page==="product"){
+    openDetail(e.state.index,false)
   }
 }
 
@@ -109,11 +90,11 @@ window.onpopstate = e => {
    CARGA POR URL (F5)
 ====================== */
 function loadFromURL(){
-  const params = new URLSearchParams(location.search)
-  const p = params.get("product")
+  const params=new URLSearchParams(location.search)
+  const p=params.get("product")
 
-  if(p !== null && products[p]){
-    openDetail(Number(p), false)
+  if(p!==null && products[p]){
+    openDetail(Number(p),false)
   }else{
     renderList(false)
   }
@@ -122,42 +103,34 @@ function loadFromURL(){
 /* ======================
    BUSCADOR
 ====================== */
-if(searchInput){
-  searchInput.oninput = e => {
-    const t = e.target.value.toLowerCase()
-
-    if(!t){
-      searchResults.style.display = "none"
-      return
-    }
-
-    const f = products.filter(p =>
-      p.name.toLowerCase().includes(t)
-    )
-
-    searchResults.innerHTML = f.map(p => {
-      const i = products.indexOf(p)
-      return `
-        <div class="search-item" onclick="openDetail(${i});searchResults.style.display='none'">
-          <img src="${p.image_main}">
-          <div>${p.name}</div>
-        </div>`
-    }).join("")
-
-    searchResults.style.display = "block"
+searchInput.oninput=e=>{
+  const t=e.target.value.toLowerCase()
+  if(!t){
+    searchResults.style.display="none"
+    return
   }
+
+  const f=products.filter(p=>p.name.toLowerCase().includes(t))
+  searchResults.innerHTML=f.map(p=>{
+    const i=products.indexOf(p)
+    return `
+      <div class="search-item" onclick="openDetail(${i});searchResults.style.display='none'">
+        <img src="${p.image_main}">
+        <div>${p.name}</div>
+      </div>`
+  }).join("")
+
+  searchResults.style.display="block"
 }
 
 /* ======================
    WHATSAPP
 ====================== */
-window.buyWhats = () => {
-  if(!current) return
+function buyWhats(){
   window.open(
-    "https://wa.me/595985697384?text=" +
-    encodeURIComponent(`Hola! Quiero comprar:\n${current.name}`)
+    "https://wa.me/595985697384?text="+encodeURIComponent(
+      `Hola! Quiero comprar:\n${current.name}`
+    )
   )
 }
-
-})
 </script>
