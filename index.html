@@ -33,27 +33,30 @@ header{
   gap: 10px;
 }
 
-/* LOGO ALINEADO */
+/* LOGO ALINEADO PERFECTAMENTE */
 .logo{
   cursor:pointer; 
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  width: max-content; /* El ancho se adapta al contenido */
+  width: max-content; /* Se ajusta al contenido */
 }
 .brand{
-  font-size:26px;
+  font-size:28px;
   font-weight:900;
   line-height:1; 
   letter-spacing: 1px;
+  text-align: center;
 }
+/* Técnica para justificar la palabra completa */
 .sub{
-  font-size:10.5px; /* Tamaño ajustado */
-  font-weight: 500;
+  display: flex;
+  justify-content: space-between;
+  width: 100%; /* Ocupa el 100% del ancho del padre (.brand) */
+  font-size: 10px; 
+  font-weight: 600;
   opacity: 0.9;
-  text-align: justify; /* Justificar texto */
-  text-align-last: justify; /* Forzar justificación de la última línea */
-  width: 100%; /* Ocupar todo el ancho del contenedor (definido por .brand) */
+  margin-top: 2px;
 }
 
 /* GRUPO DERECHA (REDES + CARRITO) */
@@ -61,10 +64,9 @@ header{
   display: flex;
   align-items: center;
   gap: 15px;
-  order: 2; /* En movil va a la derecha */
+  order: 2;
 }
 
-/* REDES SOCIALES */
 .social-link {
   display: flex;
   align-items: center;
@@ -104,7 +106,7 @@ header{
 /* BUSCADOR */
 .search-container {
   flex-grow: 1;
-  order: 3; /* En movil baja al final */
+  order: 3;
   width: 100%;
   position: relative;
 }
@@ -140,17 +142,12 @@ header{
 }
 .search-btn svg { fill: #555; width: 20px; height: 20px; }
 
-/* MEDIA QUERY PC (Minimo 768px) */
+/* MEDIA QUERY PC */
 @media (min-width: 768px) {
   header { padding: 15px 30px; flex-wrap: nowrap; gap: 30px; }
-  
-  .brand { font-size: 34px; }
-  .sub { font-size: 13.5px; } /* Ajuste fino para PC */
-
-  /* Buscador al centro (orden 2) */
+  .brand { font-size: 36px; }
+  .sub { font-size: 12.5px; } 
   .search-container { order: 1; width: auto; max-width: 500px; margin: 0 auto; }
-  
-  /* Redes y Carrito a la derecha (orden 3) */
   .header-right { order: 2; gap: 20px; }
   .social-link svg { width: 24px; height: 24px; }
 }
@@ -212,18 +209,26 @@ header{
 .old-price { color: #d32f2f; text-decoration: line-through; font-size: 12px; }
 .current-price { color: #2e7d32; font-size: 16px; font-weight:bold; }
 
-.btn-view{
+/* BOTON AÑADIR EN LISTA */
+.btn-list-add{
   margin-top:auto;
   width:100%;
-  padding:8px;
-  background:#0a1a3a;
+  padding:10px;
+  background:#0a1a3a; /* Azul Marino */
   color:#fff;
   border:none;
   border-radius:6px;
   font-weight: bold;
   font-size: 13px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  transition: background 0.2s;
 }
+.btn-list-add:hover { background: #152c5b; }
+.btn-list-add svg { width: 16px; height: 16px; fill: white; }
 
 /* ===== DETALLE ===== */
 .detail{display:none;padding:15px;}
@@ -397,6 +402,24 @@ header{
 .cart-item-price { color: #2e7d32; font-weight: bold; font-size: 14px; }
 .cart-item-qty { font-size: 11px; color: #777; margin-top: 2px; }
 
+/* BASURERO ROJO */
+.btn-trash {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn-trash svg {
+  width: 20px;
+  height: 20px;
+  fill: #d32f2f; /* Rojo elegante */
+  transition: fill 0.2s;
+}
+.btn-trash:hover svg { fill: #b71c1c; }
+
 .cart-footer {
   padding: 15px;
   border-top: 1px solid #eee;
@@ -416,32 +439,26 @@ header{
 
 <!-- HEADER -->
 <header>
-  <!-- LOGO -->
+  <!-- LOGO ALINEADO -->
   <div class="logo" onclick="goHome()">
     <div class="brand">DOMBET</div>
-    <div class="sub">INFORMÁTICA</div>
+    <div class="sub">
+      <!-- Letras separadas para justificación perfecta -->
+      <span>I</span><span>N</span><span>F</span><span>O</span><span>R</span><span>M</span><span>Á</span><span>T</span><span>I</span><span>C</span><span>A</span>
+    </div>
   </div>
 
-  <!-- GRUPO DERECHA: REDES + CARRITO -->
+  <!-- GRUPO DERECHA -->
   <div class="header-right">
-    <!-- Instagram -->
     <a href="https://instagram.com/TU_USUARIO" target="_blank" class="social-link">
-      <svg viewBox="0 0 24 24">
-        <path d="M7.8,2H16.2C19.4,2 22,4.6 22,7.8V16.2A5.8,5.8 0 0,1 16.2,22H7.8C4.6,22 2,19.4 2,16.2V7.8A5.8,5.8 0 0,1 7.8,2M7.6,4A3.6,3.6 0 0,0 4,7.6V16.4C4,18.39 5.61,20 7.6,20H16.4A3.6,3.6 0 0,0 20,16.4V7.6C20,5.61 18.39,4 16.4,4H7.6M17.25,5.5A1.25,1.25 0 0,1 18.5,6.75A1.25,1.25 0 0,1 17.25,8A1.25,1.25 0 0,1 16,6.75A1.25,1.25 0 0,1 17.25,5.5M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9Z" />
-      </svg>
+      <svg viewBox="0 0 24 24"><path d="M7.8,2H16.2C19.4,2 22,4.6 22,7.8V16.2A5.8,5.8 0 0,1 16.2,22H7.8C4.6,22 2,19.4 2,16.2V7.8A5.8,5.8 0 0,1 7.8,2M7.6,4A3.6,3.6 0 0,0 4,7.6V16.4C4,18.39 5.61,20 7.6,20H16.4A3.6,3.6 0 0,0 20,16.4V7.6C20,5.61 18.39,4 16.4,4H7.6M17.25,5.5A1.25,1.25 0 0,1 18.5,6.75A1.25,1.25 0 0,1 17.25,8A1.25,1.25 0 0,1 16,6.75A1.25,1.25 0 0,1 17.25,5.5M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9Z" /></svg>
     </a>
-    <!-- TikTok -->
     <a href="https://tiktok.com/@TU_USUARIO" target="_blank" class="social-link">
-      <svg viewBox="0 0 24 24">
-        <path d="M12.5,2.5C12.5,2.5 12.5,6.5 12.5,6.5C14.5,6.5 16.5,7.5 17.5,9.5C17.5,9.5 17.5,6.5 17.5,6.5C16.5,4.5 14.5,2.5 12.5,2.5M12.5,10.5C12.5,10.5 12.5,18.5 12.5,18.5C12.5,20.5 10.5,21.5 9.5,21.5C7.5,21.5 6.5,19.5 6.5,17.5C6.5,15.5 8.5,14.5 9.5,14.5C9.5,14.5 9.5,11.5 9.5,11.5C6.5,11.5 3.5,14.5 3.5,17.5C3.5,21.5 6.5,24.5 9.5,24.5C14.5,24.5 15.5,20.5 15.5,17.5C15.5,17.5 15.5,10.5 15.5,10.5C17.5,11.5 18.5,13.5 19.5,15.5C19.5,15.5 22.5,15.5 22.5,15.5C21.5,11.5 18.5,9.5 15.5,8.5C15.5,8.5 15.5,2.5 15.5,2.5C14.5,2.5 13.5,2.5 12.5,2.5Z" transform="translate(0 -2)"/>
-      </svg>
+      <svg viewBox="0 0 24 24"><path d="M12.5,2.5C12.5,2.5 12.5,6.5 12.5,6.5C14.5,6.5 16.5,7.5 17.5,9.5C17.5,9.5 17.5,6.5 17.5,6.5C16.5,4.5 14.5,2.5 12.5,2.5M12.5,10.5C12.5,10.5 12.5,18.5 12.5,18.5C12.5,20.5 10.5,21.5 9.5,21.5C7.5,21.5 6.5,19.5 6.5,17.5C6.5,15.5 8.5,14.5 9.5,14.5C9.5,14.5 9.5,11.5 9.5,11.5C6.5,11.5 3.5,14.5 3.5,17.5C3.5,21.5 6.5,24.5 9.5,24.5C14.5,24.5 15.5,20.5 15.5,17.5C15.5,17.5 15.5,10.5 15.5,10.5C17.5,11.5 18.5,13.5 19.5,15.5C19.5,15.5 22.5,15.5 22.5,15.5C21.5,11.5 18.5,9.5 15.5,8.5C15.5,8.5 15.5,2.5 15.5,2.5C14.5,2.5 13.5,2.5 12.5,2.5Z" transform="translate(0 -2)"/></svg>
     </a>
 
-    <!-- Carrito -->
     <div class="cart-trigger" onclick="toggleCart()">
-      <svg viewBox="0 0 24 24">
-        <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
-      </svg>
+      <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
       <div class="cart-count" id="cartCount">0</div>
     </div>
   </div>
@@ -451,9 +468,7 @@ header{
     <div class="search-box">
       <input id="searchInput" placeholder="Buscar productos..." autocomplete="off">
       <button class="search-btn">
-        <svg viewBox="0 0 24 24">
-          <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-        </svg>
+        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
       </button>
     </div>
     <div class="search-results" id="searchResults"></div>
@@ -477,20 +492,16 @@ header{
 
     <div class="info">
       <h2 id="dName"></h2>
-      
       <div class="detail-prices">
         <span class="detail-old" id="dOldPrice"></span>
         <span class="detail-curr" id="dPrice"></span>
       </div>
-
       <div class="label-title">Detalles:</div>
       <p class="desc-text" id="dDesc"></p>
-
       <div class="shipping-info">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="#2e7d32" style="flex-shrink:0"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
         <span>ENVIOS A TODO EL PARAGUAY A TRAVES DE TRANSPORTADORA</span>
       </div>
-
       <div class="label-title">Cantidad</div>
       <div class="qty-section">
         <div class="qty-controls">
@@ -499,13 +510,8 @@ header{
           <button class="qty-btn" onclick="changeQty(1)">+</button>
         </div>
       </div>
-
-      <div class="total-section">
-        TOTAL: <span id="dTotal"></span>
-      </div>
-
+      <div class="total-section">TOTAL: <span id="dTotal"></span></div>
       <button class="btn-add-cart" onclick="addToCart()">AÑADIR A CARRITO</button>
-      
       <button class="btn-whats" onclick="buyWhats()">
         <svg width="24" height="24" fill="white" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.969.585 1.961.893 3.056.893 3.179 0 5.767-2.587 5.767-5.766.001-3.187-2.585-5.77-6.027-5.78zM12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2zm6.31 14.24c-.26-.13-1.53-.76-1.77-.85-.24-.09-.41-.13-.58.13-.17.26-.67.85-.82 1.02-.15.17-.3.19-.56.06-.26-.13-1.09-.4-2.07-1.28-.76-.68-1.27-1.52-1.42-1.78-.15-.26-.02-.39.11-.52.11-.11.25-.29.37-.43.13-.15.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.13-.58-1.39-.79-1.9-.21-.51-.42-.44-.58-.45l-.49-.01c-.17 0-.45.06-.69.32-.24.26-.92.9-1.01 1.35-.09.46.15 1.58 1.63 3.15 1.48 1.57 3.48 2.45 4.86 2.68.82.14 1.48.06 2.01-.1.59-.18 1.53-.63 1.75-1.23.22-.6.22-1.12.15-1.23-.07-.11-.26-.17-.52-.3z"/></svg>
         Comprar por WhatsApp
@@ -535,6 +541,15 @@ header{
 <script>
 let products=[], current=null, imgs=[], imgIndex=0, qty=1;
 let cart = [];
+
+// CARGAR CARRITO GUARDADO (Persistencia)
+const savedCart = localStorage.getItem('dombet_cart');
+if(savedCart){
+  try {
+    cart = JSON.parse(savedCart);
+    updateCartUI();
+  } catch(e){ console.error("Error cargando carrito", e); }
+}
 
 // CARGA INICIAL
 fetch("https://dombet-backend.onrender.com/products")
@@ -568,6 +583,8 @@ function renderList(){
   window.scrollTo(0,0);
   products.forEach((p,i)=>{
     const oldPrice = p.price * 1.2;
+    // Se cambio el boton "Ver producto" por "Añadir al carrito"
+    // El click en la tarjeta (card) abre el detalle, el click en el boton añade al carrito
     list.innerHTML+=`
       <div class="card" onclick="openDetail(${i})">
         <img src="${p.image_main}">
@@ -576,7 +593,10 @@ function renderList(){
           <span class="old-price">Gs. ${Number(oldPrice).toLocaleString()}</span>
           <span class="current-price">Gs. ${Number(p.price).toLocaleString()}</span>
         </div>
-        <button class="btn-view">Ver producto</button>
+        <button class="btn-list-add" onclick="addToCartFromList(${i}, event)">
+          <svg viewBox="0 0 24 24"><path d="M11 9h2V6h3V4h-3V1h-2v3H8v2h3v3zm-4 9c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2zm-8.9-5h7.45c.75 0 1.41-.41 1.75-1.03l3.86-7.01L19.42 4h-.01l-1.1 2-2.76 5H8.53l-.13-.27L6.16 6l-.95-2-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7l1.1-2z"/></svg>
+          AÑADIR AL CARRITO
+        </button>
       </div>`
   })
 }
@@ -628,6 +648,22 @@ function updateTotalDisplay(){
   document.getElementById("dTotal").innerText = "Gs. " + Number(total).toLocaleString();
 }
 
+// AÑADIR DESDE LISTA (Sin entrar al detalle)
+function addToCartFromList(i, event){
+  event.stopPropagation(); // Evita que se abra el detalle
+  const prod = products[i];
+  const existing = cart.find(item => item.product.name === prod.name);
+  if(existing){
+    existing.qty += 1;
+  } else {
+    cart.push({ product: prod, qty: 1 });
+  }
+  saveCart();
+  updateCartUI();
+  toggleCart(true);
+}
+
+// AÑADIR DESDE DETALLE
 function addToCart(){
   const existing = cart.find(item => item.product.name === current.name);
   if(existing){
@@ -635,8 +671,13 @@ function addToCart(){
   } else {
     cart.push({ product: current, qty: qty });
   }
+  saveCart();
   updateCartUI();
   toggleCart(true);
+}
+
+function saveCart(){
+  localStorage.setItem('dombet_cart', JSON.stringify(cart));
 }
 
 function updateCartUI(){
@@ -658,7 +699,10 @@ function updateCartUI(){
             <div class="cart-item-price">Gs. ${Number(item.product.price).toLocaleString()}</div>
             <div class="cart-item-qty">Cant: ${item.qty} | Sub: Gs. ${Number(itemTotal).toLocaleString()}</div>
           </div>
-          <button onclick="removeFromCart(${index})" style="border:none;background:none;color:red;cursor:pointer;font-size:24px;padding:0 10px;">&times;</button>
+          <button class="btn-trash" onclick="removeFromCart(${index})">
+            <!-- ICONO BASURERO ROJO -->
+            <svg viewBox="0 0 24 24"><path d="M9 3v1H4v2h1v13a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6h1V4h-5V3H9M7 6h10v13H7V6m2 2v9h2V8H9m4 0v9h2V8h-2Z"/></svg>
+          </button>
         </div>
       `;
     });
@@ -669,6 +713,7 @@ function updateCartUI(){
 
 function removeFromCart(index){
   cart.splice(index, 1);
+  saveCart();
   updateCartUI();
 }
 
@@ -687,11 +732,14 @@ document.addEventListener('click', function(e) {
   const panel = document.getElementById('cartPanel');
   const trigger = document.querySelector('.cart-trigger');
   const addBtn = document.querySelector('.btn-add-cart');
+  // Tambien verificar botones de lista
+  const isListBtn = e.target.closest('.btn-list-add');
   
   if(panel.classList.contains('open') && 
      !panel.contains(e.target) && 
      !trigger.contains(e.target) &&
-     (!addBtn || !addBtn.contains(e.target))) {
+     (!addBtn || !addBtn.contains(e.target)) &&
+     !isListBtn) {
     toggleCart(false);
   }
 });
