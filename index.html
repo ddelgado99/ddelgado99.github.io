@@ -58,13 +58,14 @@ header{
   margin-top: 2px;
 }
 
+/* CAMBIO: Z-Index muy alto para asegurar clicabilidad en Inicio */
 .header-right {
   display: flex;
   align-items: center;
   gap: 15px;
   order: 2;
-  position: relative; /* Asegura que esté por encima */
-  z-index: 1002;      /* Mayor que search-container */
+  position: relative; 
+  z-index: 2000; /* Asegura que esté por encima de todo */
 }
 
 .social-link {
@@ -84,7 +85,7 @@ header{
   padding: 5px;
   display: flex;
   align-items: center;
-  z-index: 1003; /* Asegura clicabilidad */
+  pointer-events: auto; /* Fuerza la detección del clic */
 }
 .cart-trigger svg { width: 28px; height: 28px; fill: white; }
 .cart-count {
@@ -238,7 +239,6 @@ header{
   transition: box-shadow 0.2s;
   display: flex;
   flex-direction: column;
-  /* CAMBIO: Borde unificado al color estándar #eee para eliminar el efecto "borde blanco" */
   border: 1px solid #eee; 
   position: relative;
 }
@@ -593,7 +593,8 @@ header{
   max-height: 80vh;
   display: flex;
   flex-direction: column;
-  border: 1px solid #eee;
+  /* CAMBIO: Eliminado el borde blanco */
+  /* border: 1px solid #eee; */
 }
 
 .cart-panel.open {
