@@ -12,7 +12,7 @@
 body{
   margin:0;
   font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background:#f4f4f4;
+  background:#ffffff; /* CAMBIO: Fondo totalmente blanco */
   overflow-x: hidden;
   padding-bottom: 80px;
   color: #333;
@@ -109,10 +109,10 @@ header{
 
 .search-box{
   display: flex;
-  background: #fff;
+  background: #f5f5f5; /* Ligero gris para diferenciar el input del fondo blanco */
   border-radius: 4px;
   overflow: hidden;
-  border: none;
+  border: 1px solid #eee;
   width: 100%;
 }
 
@@ -128,7 +128,7 @@ header{
 }
 
 .search-btn {
-  background: #fff;
+  background: transparent;
   border: none;
   padding: 0 15px;
   cursor: pointer;
@@ -180,7 +180,8 @@ header{
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  border-bottom: 1px solid #eee;
+  /* Borde sutil en lugar de fondo diferente */
+  border-bottom: 1px solid #f0f0f0; 
   max-width: 1400px;
   margin: 0 auto;
 }
@@ -189,10 +190,10 @@ header{
   display: flex;
   align-items: center;
   gap: 8px;
-  background: #f9f9f9;
+  background: #fff;
   padding: 5px 10px;
   border-radius: 20px;
-  border: 1px solid #eee;
+  border: 1px solid #ddd; /* Borde para destacar en fondo blanco */
 }
 
 .sort-icon { width: 18px; height: 18px; fill: #555; }
@@ -229,14 +230,15 @@ header{
   background:#fff;
   border-radius:8px;
   padding:10px;
-  box-shadow:0 1px 3px rgba(0,0,0,.05);
+  /* Sombra sutil para separar del fondo blanco */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06); 
   cursor:pointer;
   transition: box-shadow 0.2s;
   display: flex;
   flex-direction: column;
-  border: 1px solid #eee;
+  border: 1px solid #f0f0f0;
 }
-.card:hover { box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+.card:hover { box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
 
 .card img{
   width:100%;
@@ -290,23 +292,23 @@ header{
   .btn-list-add svg { width: 16px; height: 16px; }
 }
 
-/* ===== DETALLE (NUEVA ESTRUCTURA) ===== */
+/* ===== DETALLE ===== */
 .detail{display:none;padding:0;}
 .detail-box{
   max-width:1400px;
-  margin: 20px auto;
+  margin: 0 auto; /* Sin margen superior para unir con header */
   background:#fff;
   padding: 20px;
-  border-radius: 8px;
-  display: block; /* Cambiado a block para permitir titulo arriba */
+  /* Sin bordes ni sombras fuertes para integrarse al fondo blanco */
+  border-radius: 0; 
+  display: block;
 }
 
 @media (min-width: 768px) {
   .detail { padding: 20px; }
-  .detail-box { padding: 40px; }
+  .detail-box { padding: 40px; border-radius: 8px; } /* En PC si mantenemos un poco de estructura */
 }
 
-/* TITULO PRINCIPAL ARRIBA */
 .detail-title {
   font-size: 22px;
   font-weight: 700;
@@ -321,11 +323,10 @@ header{
     font-size: 34px;
     margin-bottom: 30px;
     padding-bottom: 20px;
-    border-bottom: 1px solid #eee; /* Linea separadora estilo PC */
+    border-bottom: 1px solid #eee;
   }
 }
 
-/* CONTENEDOR DE COLUMNAS (IMAGEN + INFO) */
 .detail-columns {
   display: flex;
   flex-direction: column;
@@ -556,6 +557,7 @@ header{
   max-height: 80vh;
   display: flex;
   flex-direction: column;
+  border: 1px solid #eee;
 }
 
 .cart-panel.open {
