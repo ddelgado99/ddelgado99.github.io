@@ -34,16 +34,16 @@ body{
 header {
   background: #0a1a3a;
   color: #fff;
-  padding: 10px 15px; /* Padding reducido para móvil */
+  padding: 10px 15px;
   display: flex;
-  flex-wrap: nowrap; /* IMPORTANTE: Todo en una línea */
+  flex-wrap: nowrap;
   align-items: center;
   justify-content: space-between;
   position: sticky;
   top: 0;
   z-index: 1000;
   box-shadow: 0 4px 25px rgba(0,0,0,0.2);
-  gap: 10px; /* Espacio entre elementos */
+  gap: 10px;
   height: 70px;
 }
 
@@ -56,17 +56,17 @@ header {
   z-index: 1002;
   animation: elegantBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both;
   text-decoration: none;
-  flex-shrink: 0; /* No permitir que el logo se aplaste */
-  order: 1; /* Posición 1: Izquierda */
+  flex-shrink: 0;
+  order: 1; /* Izquierda */
 }
 
 .logo-text {
   font-family: 'Montserrat', sans-serif;
   color: #ffffff;
   display: flex;
-  flex-direction: column; /* Apilado vertical */
-  align-items: center; /* Centrado horizontalmente entre sí */
-  line-height: 1; /* Altura de línea compacta */
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
 }
 
 .logo-brand {
@@ -91,12 +91,11 @@ header {
   align-items: center;
   gap: 10px;
   z-index: 1002;
-  position: relative; /* Ya no es absoluto */
-  order: 3; /* Posición 3: Derecha */
+  position: relative;
+  order: 3; /* Derecha */
   flex-shrink: 0;
 }
 
-/* ICONO DEL CARRITO */
 .cart-trigger {
   position: relative;
   cursor: pointer;
@@ -128,24 +127,23 @@ header {
 
 /* BUSCADOR (CENTRO) */
 .search-container {
-  flex-grow: 1; /* Ocupa todo el espacio disponible */
-  order: 2; /* Posición 2: Centro */
+  flex-grow: 1;
+  order: 2; /* Centro */
   position: relative;
   z-index: 1001;
-  margin: 0 5px; /* Separación lateral */
-  min-width: 0; /* Permite que el input se encoja si es necesario */
+  margin: 0 5px;
+  min-width: 0;
 }
 
 .search-box {
   display: flex;
-  /* ESTILO PC APLICADO A MÓVIL TAMBIÉN */
   background: #f5f5f5; 
-  border-radius: 6px; /* Bordes redondeados suaves (no píldora) */
+  border-radius: 6px;
   overflow: hidden;
   border: 1px solid #e0e0e0;
   width: 100%;
   transition: all 0.3s ease;
-  height: 36px; /* Altura controlada */
+  height: 36px;
 }
 
 .search-box:focus-within { 
@@ -161,7 +159,7 @@ header {
   background: transparent;
   outline: none;
   font-size: 13px;
-  color: #333; /* Texto oscuro (Estilo PC) */
+  color: #333;
   min-width: 0;
   font-family: 'Montserrat', sans-serif;
   font-weight: 500;
@@ -177,7 +175,7 @@ header {
   align-items: center;
   justify-content: center;
 }
-.search-btn svg { fill: #555; width: 16px; height: 16px; } /* Icono oscuro */
+.search-btn svg { fill: #555; width: 16px; height: 16px; }
 
 /* MEDIA QUERY PARA ESCRITORIO (PC) */
 @media (min-width: 768px) {
@@ -196,7 +194,7 @@ header {
   }
   
   .search-box { 
-    height: 42px; /* Un poco más alto en PC */
+    height: 42px;
   }
   
   .search-box input { font-size: 14px; padding: 0 15px; }
@@ -230,38 +228,46 @@ header {
 .search-item img{width:35px;height:35px;object-fit:contain}
 .search-item div { color: #333; font-weight: 600; font-size: 13px; }
 
-/* ===== HERO SECTION ===== */
+/* ===== HERO SECTION (OPTIMIZADO) ===== */
 .hero-section {
   background: #051025;
-  padding: 10px 0;
+  padding: 12px 0;
   text-align: center;
   border-bottom: 1px solid rgba(255,255,255,0.05);
+  overflow: hidden; /* Evita scroll horizontal */
 }
 
 .hero-title {
-  font-size: 10px;
+  font-size: 9px; /* Tamaño base móvil */
   font-weight: 600;
   margin: 0;
-  letter-spacing: 3px;
+  letter-spacing: 2px; /* Espaciado controlado */
   text-transform: uppercase; 
   color: #a5b4fc;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 15px;
+  gap: 10px; /* Gap reducido */
+  white-space: nowrap; /* FUERZA UNA SOLA LÍNEA */
+  width: 100%;
 }
 
 .hero-title::before, .hero-title::after {
   content: "";
   display: block;
-  width: 40px;
+  width: 25px; /* Líneas más cortas en móvil */
   height: 1px;
   background: rgba(255,255,255,0.15);
+  flex-shrink: 0; /* Evita que las líneas desaparezcan */
 }
 
 @media (min-width: 768px) {
   .hero-section { padding: 15px 0; }
-  .hero-title { font-size: 12px; letter-spacing: 5px; }
+  .hero-title { 
+    font-size: 12px; 
+    letter-spacing: 5px; 
+    gap: 15px;
+  }
   .hero-title::before, .hero-title::after { width: 80px; }
 }
 
@@ -2021,7 +2027,7 @@ lbImgElement.addEventListener('touchend', function(e) {
   
   // Si acabamos de soltar el zoom, esperamos un poco antes de permitir swipe
   if (justZoomed) {
-      setTimeout(() => { justZoomed = false; }, 300);
+      setTimeout(() => { justZoomed = false; }, 800);
   }
   
   lbPanning = false;
