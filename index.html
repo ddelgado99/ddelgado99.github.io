@@ -5,13 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>DOMBET INFORMÁTICA</title>
 
+<!-- FUENTE MONTSERRAT (GOOGLE FONTS) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
 <style>
 /* ===== RESET Y GENERAL ===== */
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
 body{
   margin:0;
-  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Montserrat', sans-serif; /* CAMBIO DE FUENTE */
   background:#ffffff;
   overflow-x: hidden;
   padding-bottom: 80px;
@@ -53,7 +58,7 @@ header{
 }
 .brand{
   font-size:28px;
-  font-weight:900;
+  font-weight:900; /* Montserrat Black/Bold */
   line-height:1; 
   letter-spacing: 1px;
   text-align: center;
@@ -96,7 +101,7 @@ header{
   background: #d32f2f;
   color: white;
   font-size: 11px;
-  font-weight: bold;
+  font-weight: 700;
   width: 18px;
   height: 18px;
   border-radius: 50%;
@@ -132,6 +137,7 @@ header{
   font-size: 15px;
   color: #333;
   min-width: 0;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .search-btn {
@@ -232,7 +238,7 @@ header{
   .hero-title::before, .hero-title::after { width: 50px; }
 }
 
-/* ===== BARRA DE FILTROS (MODIFICADA: ELEGANTE Y COMPACTA) ===== */
+/* ===== BARRA DE FILTROS (ELEGANTE Y COMPACTA) ===== */
 .filter-bar {
   background: #fff;
   padding: 10px 15px;
@@ -249,11 +255,11 @@ header{
 }
 
 .sort-label {
-  font-size: 11px; /* Más pequeño y fino */
+  font-size: 11px; 
   font-weight: 700;
   color: #888;
   text-transform: uppercase;
-  letter-spacing: 1px; /* Espaciado sofisticado */
+  letter-spacing: 1px; 
 }
 
 .sort-container {
@@ -261,7 +267,7 @@ header{
   align-items: center;
   gap: 8px;
   background: #fff;
-  padding: 6px 10px; /* Más compacto */
+  padding: 6px 10px; 
   border-radius: 4px;
   border: 1px solid #ddd;
 }
@@ -276,6 +282,7 @@ header{
   font-weight: 600;
   outline: none;
   cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
 }
 
 /* ===== SECCIÓN DE OFERTAS ===== */
@@ -431,26 +438,36 @@ header{
   font-size:13px;
   height: auto; 
   min-height: 34px;
-  color: #333; 
+  color: #111; /* Negro sólido */
   margin-bottom: 8px; 
   line-height: 1.3;
   word-wrap: break-word;
+  font-weight: 700; /* Montserrat Bold */
 }
 @media (min-width: 768px) { .name { font-size: 14px; min-height: 38px; } }
 
 .price-container { 
   display: flex; 
-  flex-direction: row; 
-  align-items: baseline; 
-  gap: 8px; 
+  flex-direction: column; /* Cambiado a columna para mejor estructura */
+  align-items: flex-start; 
+  gap: 2px; 
   margin-bottom: 8px; 
-  flex-wrap: wrap;
 }
 
-.old-price { color: #999; text-decoration: line-through; font-size: 11px; }
+/* ESTILOS DE PRECIO (LISTADO Y DETALLE) */
+.old-price { 
+  color: #757575; /* Gris */
+  text-decoration: line-through; 
+  font-size: 12px; 
+  font-weight: 500;
+}
 
-.current-price { font-size: 15px; font-weight:bold; }
-.price-red { color: #d32f2f; }
+.current-price { 
+  font-size: 16px; 
+  font-weight: 700; /* Bold */
+  color: #111; /* Negro por defecto */
+}
+.price-red { color: #d32f2f; font-weight: 800; } /* Rojo oscuro para ofertas */
 .price-navy { color: #0a1a3a; }
 
 @media (min-width: 768px) { 
@@ -458,17 +475,21 @@ header{
   .current-price { font-size: 18px; }
 }
 
+/* ETIQUETA DE DESCUENTO (BADGE) */
 .discount-badge {
   position: absolute;
   top: 10px;
   left: 10px;
-  background: #d32f2f;
+  background: #d32f2f; /* Rojo */
   color: white;
   font-size: 10px;
-  font-weight: bold;
-  padding: 3px 6px;
+  font-weight: 700;
+  padding: 4px 8px;
   border-radius: 4px;
   z-index: 10;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .btn-list-add{
@@ -488,6 +509,7 @@ header{
   gap: 4px;
   transition: background 0.2s;
   white-space: nowrap;
+  font-family: 'Montserrat', sans-serif;
 }
 .btn-list-add:hover { background: #152c5b; }
 .btn-list-add svg { width: 14px; height: 14px; fill: white; }
@@ -520,11 +542,12 @@ header{
   }
 }
 
+/* TÍTULO DEL PRODUCTO (DETALLE) */
 .detail-title {
-  font-size: 20px;
-  font-weight: 700;
-  color: #333;
-  margin: 0 0 15px 0;
+  font-size: 24px;
+  font-weight: 700; /* Montserrat Bold */
+  color: #111; /* Negro sólido */
+  margin: 0 0 10px 0;
   line-height: 1.2;
   width: 100%;
   padding-bottom: 10px;
@@ -684,63 +707,102 @@ header{
   z-index: 1;
 }
 
-.info-header { margin-bottom: 10px; }
+.info-header { margin-bottom: 15px; }
 
-.detail-prices { padding-bottom: 8px; border-bottom: 1px solid #eee; }
-.detail-old { color: #999; text-decoration: line-through; font-size: 15px; display: block; margin-bottom: 2px;}
-.detail-curr { font-size: 28px; font-weight: 700; display: block; }
-@media (min-width: 768px) { .detail-curr { font-size: 36px; } }
+/* PRECIOS EN DETALLE */
+.detail-prices { 
+  padding-bottom: 15px; 
+  border-bottom: 1px solid #eee; 
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+}
 
-.info-purchase { margin-bottom: 15px; }
+.detail-old { 
+  color: #757575; 
+  text-decoration: line-through; 
+  font-size: 16px; 
+  font-weight: 500;
+  display: block; 
+}
+
+.detail-curr { 
+  font-size: 28px; 
+  font-weight: 700; 
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+@media (min-width: 768px) { .detail-curr { font-size: 32px; } }
+
+/* BADGE EN DETALLE */
+.detail-badge {
+  background: #d32f2f;
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  vertical-align: middle;
+  letter-spacing: 0.5px;
+}
+
+.info-purchase { margin-bottom: 20px; }
 
 .qty-label {
-  font-size: 11px;
+  font-size: 12px;
   color: #666;
   font-weight: 700;
   text-transform: uppercase;
-  margin-bottom: 4px;
+  margin-bottom: 8px;
   text-align: left;
+  letter-spacing: 0.5px;
 }
 
 .qty-section { 
   display: flex; 
   align-items: center; 
-  gap: 15px; 
-  margin-bottom: 8px;
+  gap: 20px; 
+  margin-bottom: 10px;
 }
 
+/* SELECTOR DE CANTIDAD (REDISEÑADO) */
 .qty-controls { 
   display: inline-flex; 
   align-items: center; 
-  gap: 0; 
-  background: #f0f0f0;
+  background: #fff;
   border: 1px solid #ddd;
-  border-radius: 6px; 
-  padding: 2px;
-  width: max-content;
+  border-radius: 25px; /* Pill shape */
+  overflow: hidden;
+  height: 40px;
 }
 
 .qty-btn {
-  width: 32px; height: 32px;
+  width: 40px; 
+  height: 100%;
   background: transparent;
   color: #333;
   border: none;
   font-size: 18px;
   cursor: pointer;
   display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s;
 }
-.qty-btn:hover { background: rgba(0,0,0,0.05); }
+.qty-btn:hover { background: #f5f5f5; }
+.qty-btn:active { background: #e0e0e0; }
 
 .qty-val { 
   font-size: 16px; 
   font-weight: 600; 
-  width: 30px; 
+  width: 40px; 
   text-align: center; 
   color: #333;
-  border-left: 1px solid #ddd; 
-  border-right: 1px solid #ddd; 
-  height: 20px; 
-  line-height: 20px; 
+  height: 100%; 
+  line-height: 40px; 
+  user-select: none;
 }
 
 .total-section { font-size: 15px; font-weight: 700; color: #333; }
@@ -759,6 +821,7 @@ header{
   display: flex; align-items: center; justify-content: center; gap: 10px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  font-family: 'Montserrat', sans-serif;
 }
 .btn-add-cart { background: #0a1a3a; color: white; transition: background 0.2s; }
 .btn-add-cart:hover { background: #152c5b; }
@@ -772,7 +835,7 @@ header{
 }
 
 .label-title { font-weight: 700; font-size: 13px; color: #333; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
-.desc-text { color: #666; line-height: 1.5; margin-bottom: 20px; font-size: 14px; }
+.desc-text { color: #666; line-height: 1.6; margin-bottom: 20px; font-size: 14px; }
 
 /* CAJA DE ENVÍOS */
 .shipping-info {
@@ -823,7 +886,7 @@ header{
   color: white;
   display: flex; justify-content: space-between; align-items: center;
 }
-.cart-header h3 { margin: 0; font-size: 18px; }
+.cart-header h3 { margin: 0; font-size: 18px; font-weight: 700; }
 .close-cart { background: none; border: none; color: white; font-size: 28px; cursor: pointer; line-height: 1; }
 
 .cart-items {
@@ -841,8 +904,8 @@ header{
 
 .cart-item img { width: 60px; height: 60px; object-fit: contain; border: 1px solid #eee; border-radius: 4px; }
 .cart-item-info { flex: 1; min-width: 0; }
-.cart-item-title { font-size: 13px; font-weight: bold; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.cart-item-price { color: #2e7d32; font-weight: bold; font-size: 14px; }
+.cart-item-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cart-item-price { color: #2e7d32; font-weight: 700; font-size: 14px; }
 .cart-item-qty { font-size: 12px; color: #777; margin-top: 2px; }
 
 .btn-trash {
@@ -867,11 +930,12 @@ header{
   border-top: 1px solid #eee;
   background: #f9f9f9;
 }
-.cart-total { display: flex; justify-content: space-between; font-size: 18px; font-weight: bold; margin-bottom: 15px; }
+.cart-total { display: flex; justify-content: space-between; font-size: 18px; font-weight: 700; margin-bottom: 15px; }
 .btn-checkout {
   width: 100%; padding: 14px; background: #25D366; color: white;
-  border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 15px;
+  border: none; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 15px;
   text-transform: uppercase;
+  font-family: 'Montserrat', sans-serif;
 }
 
 /* ===== LIGHTBOX (CENTRO ESTÉTICO) ===== */
@@ -1076,8 +1140,8 @@ header{
   </div>
 </div>
 
-<!-- BARRA DE FILTROS -->
-<div class="filter-bar">
+<!-- BARRA DE FILTROS (ID AGREGADO PARA OCULTAR EN DETALLE) -->
+<div class="filter-bar" id="filterBar">
   <span class="sort-label">Ordenar por:</span>
   <div class="sort-container">
     <svg class="sort-icon" viewBox="0 0 24 24"><path d="M3 18h6v-2H3v2zM3 6v2h18V6H3zm0 7h12v-2H3v2z"/></svg>
@@ -1121,9 +1185,9 @@ header{
         <h1 class="detail-title" id="dName"></h1>
 
         <div class="info-header">
-          <div class="detail-prices">
-            <span class="detail-old" id="dOldPrice"></span>
-            <span class="detail-curr" id="dPrice"></span>
+          <!-- CONTENEDOR DE PRECIOS MODIFICADO -->
+          <div class="detail-prices" id="detailPricesContainer">
+            <!-- Se llena dinámicamente -->
           </div>
         </div>
 
@@ -1268,6 +1332,10 @@ function renderList(){
   list.innerHTML="";
   detail.style.display="none";
   list.style.display="grid";
+  
+  // MOSTRAR BARRA DE FILTROS EN LISTADO
+  document.getElementById('filterBar').style.display = 'flex';
+
   window.scrollTo(0,0);
   
   const offersSection = document.getElementById('offersSection');
@@ -1292,7 +1360,8 @@ function renderList(){
         <span class="old-price">Gs. ${formatCurrency(price)}</span>
         <span class="current-price price-red">Gs. ${formatCurrency(finalPrice)}</span>
       `;
-      discountBadge = `<div class="discount-badge">-${discount}%</div>`;
+      // BADGE ESTILO "AHORRE X%"
+      discountBadge = `<div class="discount-badge">AHORRE ${discount}%</div>`;
     } else {
       priceHtml = `<span class="current-price price-navy">Gs. ${formatCurrency(price)}</span>`;
     }
@@ -1449,6 +1518,9 @@ function openDetail(i, pushHistory = true){
   list.style.display="none";
   detail.style.display="block";
   
+  // OCULTAR BARRA DE FILTROS EN DETALLE
+  document.getElementById('filterBar').style.display = 'none';
+  
   const offersSection = document.getElementById('offersSection');
   if(offersSection) {
     offersSection.style.display = 'none';
@@ -1459,17 +1531,22 @@ function openDetail(i, pushHistory = true){
   
   const price = Number(current.price);
   const discount = Number(current.discount || 0);
+  const pricesContainer = document.getElementById('detailPricesContainer');
   
+  // LÓGICA DE PRECIOS Y BADGE EN DETALLE
   if (discount > 0) {
     const finalPrice = price - (price * (discount / 100));
-    dOldPrice.innerText = "Gs. " + formatCurrency(price);
-    dOldPrice.style.display = "block";
-    dPrice.innerText = "Gs. " + formatCurrency(finalPrice);
-    dPrice.className = "detail-curr price-red";
+    pricesContainer.innerHTML = `
+      <span class="detail-old">Gs. ${formatCurrency(price)}</span>
+      <div class="detail-curr price-red">
+        Gs. ${formatCurrency(finalPrice)}
+        <span class="detail-badge">AHORRE ${discount}%</span>
+      </div>
+    `;
   } else {
-    dOldPrice.style.display = "none";
-    dPrice.innerText = "Gs. " + formatCurrency(price);
-    dPrice.className = "detail-curr price-navy";
+    pricesContainer.innerHTML = `
+      <span class="detail-curr price-navy">Gs. ${formatCurrency(price)}</span>
+    `;
   }
   
   updateTotalDisplay();
@@ -1883,3 +1960,7 @@ lbImgElement.addEventListener('touchend', function(e) {
 
 </body>
 </html>
+```<!--
+[PROMPT_SUGGESTION]Añade un botón flotante de WhatsApp en la esquina inferior derecha que esté siempre visible.[/PROMPT_SUGGESTION]
+[PROMPT_SUGGESTION]¿Cómo puedo hacer que el carrito guarde los productos en una cookie o localStorage para que no se borren al recargar?[/PROMPT_SUGGESTION]
+-->
