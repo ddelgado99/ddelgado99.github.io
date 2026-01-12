@@ -34,20 +34,20 @@ body{
 header {
   background: #0a1a3a;
   color: #fff;
-  padding: 15px 20px;
+  padding: 10px 15px; /* Padding reducido para móvil */
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap; /* IMPORTANTE: Todo en una línea */
   align-items: center;
-  justify-content: center; /* Centrado móvil */
+  justify-content: space-between;
   position: sticky;
   top: 0;
   z-index: 1000;
   box-shadow: 0 4px 25px rgba(0,0,0,0.2);
-  gap: 15px;
-  min-height: 70px;
+  gap: 10px; /* Espacio entre elementos */
+  height: 70px;
 }
 
-/* LOGO TIPOGRÁFICO */
+/* LOGO TIPOGRÁFICO APILADO */
 .logo-container {
   cursor: pointer;
   display: flex;
@@ -55,44 +55,45 @@ header {
   justify-content: center;
   z-index: 1002;
   animation: elegantBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-  margin: 0 auto;
   text-decoration: none;
-  /* Evita que se rompa en dos líneas */
-  white-space: nowrap; 
+  flex-shrink: 0; /* No permitir que el logo se aplaste */
+  order: 1; /* Posición 1: Izquierda */
 }
 
 .logo-text {
   font-family: 'Montserrat', sans-serif;
   color: #ffffff;
   display: flex;
-  align-items: baseline; /* Alinea la base de las letras */
-  gap: 6px; /* Espacio entre palabras */
+  flex-direction: column; /* Apilado vertical */
+  align-items: center; /* Centrado horizontalmente entre sí */
+  line-height: 1; /* Altura de línea compacta */
 }
 
 .logo-brand {
   font-weight: 800; /* Extra Bold */
-  font-size: 20px;
-  letter-spacing: -0.5px; /* Compacto y fuerte */
+  font-size: 16px;
+  letter-spacing: -0.5px;
   text-transform: uppercase;
 }
 
 .logo-sub {
-  font-weight: 300; /* Light / Fino */
-  font-size: 20px;
-  letter-spacing: 1px; /* Aireado y sofisticado */
+  font-weight: 300; /* Light */
+  font-size: 9px;
+  letter-spacing: 1px;
   text-transform: uppercase;
   opacity: 0.95;
+  margin-top: 2px;
 }
 
 /* HEADER RIGHT (CARRITO) */
 .header-right {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 10px;
   z-index: 1002;
-  position: absolute;
-  right: 20px;
-  top: 20px; 
+  position: relative; /* Ya no es absoluto */
+  order: 3; /* Posición 3: Derecha */
+  flex-shrink: 0;
 }
 
 /* ICONO DEL CARRITO */
@@ -106,17 +107,17 @@ header {
   border: none;
   outline: none;
 }
-.cart-trigger svg { width: 26px; height: 26px; fill: white; pointer-events: none; }
+.cart-trigger svg { width: 24px; height: 24px; fill: white; pointer-events: none; }
 .cart-count {
   position: absolute;
   top: -4px;
   right: -4px;
   background: #d32f2f;
   color: white;
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 700;
-  width: 16px;
-  height: 16px;
+  width: 15px;
+  height: 15px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -125,105 +126,80 @@ header {
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
-/* BUSCADOR */
+/* BUSCADOR (CENTRO) */
 .search-container {
-  width: 100%;
-  order: 3;
+  flex-grow: 1; /* Ocupa todo el espacio disponible */
+  order: 2; /* Posición 2: Centro */
   position: relative;
   z-index: 1001;
-  margin-top: 5px;
+  margin: 0 5px; /* Separación lateral */
+  min-width: 0; /* Permite que el input se encoja si es necesario */
 }
 
 .search-box {
   display: flex;
-  background: rgba(255,255,255,0.15);
-  border-radius: 50px;
+  /* ESTILO PC APLICADO A MÓVIL TAMBIÉN */
+  background: #f5f5f5; 
+  border-radius: 6px; /* Bordes redondeados suaves (no píldora) */
   overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid #e0e0e0;
   width: 100%;
   transition: all 0.3s ease;
-  backdrop-filter: blur(5px);
+  height: 36px; /* Altura controlada */
 }
+
 .search-box:focus-within { 
-  background: rgba(255,255,255,0.25); 
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  border-color: rgba(255,255,255,0.3);
+  background: #ffffff; 
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  border-color: #ccc;
 }
 
 .search-box input {
   flex-grow: 1;
-  padding: 12px 20px;
+  padding: 0 10px;
   border: none;
   background: transparent;
   outline: none;
-  font-size: 14px;
-  color: #fff;
+  font-size: 13px;
+  color: #333; /* Texto oscuro (Estilo PC) */
   min-width: 0;
   font-family: 'Montserrat', sans-serif;
-  font-weight: 400;
+  font-weight: 500;
 }
-.search-box input::placeholder { color: rgba(255,255,255,0.7); }
+.search-box input::placeholder { color: #888; }
 
 .search-btn {
   background: transparent;
   border: none;
-  padding: 0 20px;
+  padding: 0 10px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.search-btn svg { fill: rgba(255,255,255,0.9); width: 18px; height: 18px; }
+.search-btn svg { fill: #555; width: 16px; height: 16px; } /* Icono oscuro */
 
 /* MEDIA QUERY PARA ESCRITORIO (PC) */
 @media (min-width: 768px) {
   header { 
     padding: 15px 50px; 
-    flex-wrap: nowrap; 
-    justify-content: space-between; 
     gap: 40px; 
+    height: auto;
   }
   
-  .logo-container {
-    margin: 0;
-    padding: 0;
-    flex-shrink: 0;
-    order: 1;
-  }
-  
-  /* Ajuste de tamaño de fuente en PC */
-  .logo-brand { font-size: 24px; }
-  .logo-sub { font-size: 24px; }
+  .logo-brand { font-size: 22px; }
+  .logo-sub { font-size: 12px; }
 
   .search-container { 
-    order: 2; 
-    width: 100%;
     max-width: 600px;
     margin: 0;
   }
   
   .search-box { 
-    background: #f5f5f5; 
-    border: 1px solid #e0e0e0; 
-    border-radius: 8px; 
+    height: 42px; /* Un poco más alto en PC */
   }
-  .search-box input { color: #333; }
-  .search-box input::placeholder { color: #888; }
-  .search-btn svg { fill: #555; }
   
-  .header-right { 
-    order: 3; 
-    position: relative; 
-    right: auto; 
-    top: auto;
-    gap: 25px; 
-  }
-}
-
-/* Ajuste para móviles muy pequeños (iPhone SE, etc) */
-@media (max-width: 360px) {
-  .logo-brand, .logo-sub { font-size: 17px; }
-  .logo-text { gap: 4px; }
+  .search-box input { font-size: 14px; padding: 0 15px; }
 }
 
 .search-results{
@@ -232,27 +208,27 @@ header {
   left: 0;
   right: 0;
   background:#fff;
-  border-radius: 0 0 12px 12px;
+  border-radius: 0 0 8px 8px;
   box-shadow:0 10px 30px rgba(0,0,0,.15);
   display:none;
   z-index: 1001;
   max-height: 300px;
   overflow-y: auto;
   border-top: 1px solid #eee;
-  margin-top: 5px;
+  margin-top: 2px;
 }
 .search-item{
   display:flex;
   align-items:center;
   gap:15px;
-  padding:15px;
+  padding:10px;
   cursor:pointer;
   border-bottom: 1px solid #f5f5f5;
   transition: background 0.2s;
 }
 .search-item:hover{background:#f9f9f9}
-.search-item img{width:40px;height:40px;object-fit:contain}
-.search-item div { color: #333; font-weight: 600; font-size: 14px; }
+.search-item img{width:35px;height:35px;object-fit:contain}
+.search-item div { color: #333; font-weight: 600; font-size: 13px; }
 
 /* ===== HERO SECTION ===== */
 .hero-section {
@@ -445,8 +421,8 @@ header {
 .products {
   display: grid;
   grid-template-columns: repeat(2, 1fr); 
-  gap: 10px; /* Gap reducido para evitar cortes en móvil */
-  padding: 10px; /* Padding reducido */
+  gap: 10px; 
+  padding: 10px; 
   max-width: 1400px;
   margin: auto;
 }
@@ -462,7 +438,7 @@ header {
 .card {
   background: #fff;
   border-radius: 12px;
-  padding: 12px; /* Padding interno reducido en móvil */
+  padding: 12px; 
   box-shadow: 0 2px 10px rgba(0,0,0,0.04); 
   cursor: pointer;
   display: flex;
@@ -472,8 +448,8 @@ header {
   height: 100%;
   animation: elegantBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both;
   transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
-  min-width: 0; /* CRUCIAL: Evita que el contenido rompa el grid */
-  overflow: hidden; /* Asegura que nada salga de la tarjeta */
+  min-width: 0; 
+  overflow: hidden; 
 }
 
 .card:hover { 
@@ -485,7 +461,7 @@ header {
 
 .card img {
   width: 100%;
-  height: 140px; /* Altura controlada */
+  height: 140px; 
   object-fit: contain; 
   margin-bottom: 10px;
   mix-blend-mode: multiply;
@@ -496,15 +472,14 @@ header {
 }
 
 .name {
-  font-size: 12px; /* Texto ligeramente más pequeño en móvil */
+  font-size: 12px; 
   min-height: 34px;
   color: #111; 
   margin-bottom: 8px; 
   line-height: 1.3;
   font-weight: 700; 
-  /* Truncado de texto para que no rompa el diseño */
   display: -webkit-box;
-  -webkit-line-clamp: 3; /* Máximo 3 líneas */
+  -webkit-line-clamp: 3; 
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1188,7 +1163,7 @@ header {
 
 <!-- HEADER -->
 <header>
-  <!-- LOGO TIPOGRÁFICO (NUEVO) -->
+  <!-- LOGO TIPOGRÁFICO APILADO -->
   <div class="logo-container" onclick="goHome()">
     <div class="logo-text">
       <span class="logo-brand">DOMBET</span>
@@ -1196,15 +1171,7 @@ header {
     </div>
   </div>
 
-  <!-- CARRITO -->
-  <div class="header-right">
-    <button class="cart-trigger" onclick="toggleCart(true)">
-      <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-      <div class="cart-count" id="cartCount">0</div>
-    </button>
-  </div>
-
-  <!-- BUSCADOR -->
+  <!-- BUSCADOR (CENTRO) -->
   <div class="search-container">
     <div class="search-box">
       <input id="searchInput" placeholder="Buscar productos..." autocomplete="off">
@@ -1213,6 +1180,14 @@ header {
       </button>
     </div>
     <div class="search-results" id="searchResults"></div>
+  </div>
+
+  <!-- CARRITO (DERECHA) -->
+  <div class="header-right">
+    <button class="cart-trigger" onclick="toggleCart(true)">
+      <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+      <div class="cart-count" id="cartCount">0</div>
+    </button>
   </div>
 </header>
 
@@ -1889,8 +1864,8 @@ function handleTouchStart(e) {
 }
 
 function handleTouchEnd(e, callbackNext, callbackPrev) {
-  // CORRECCIÓN CRÍTICA: Si hay zoom (incluso mínimo), NO permitir swipe de imagen
-  if(lbScale > 1.01) return; 
+  // CORRECCIÓN CRÍTICA: Si hay zoom (incluso mínimo) O si acabamos de hacer zoom, NO permitir swipe
+  if(lbScale > 1.01 || justZoomed) return; 
   
   touchEndX = e.changedTouches[0].screenX;
   if (touchStartX - touchEndX > 50) callbackNext();
@@ -1957,6 +1932,7 @@ function updateZoomTransform(isLightbox) {
 
 /* ===== MOBILE PINCH & PAN LOGIC (NUEVO - NATURAL) ===== */
 const lbImgElement = document.getElementById('lightboxImg');
+let justZoomed = false; // Bandera para evitar swipe accidental
 
 lbImgElement.addEventListener('touchstart', function(e) {
   // SEGURIDAD: Solo permitir si el lightbox está visible
@@ -1965,6 +1941,7 @@ lbImgElement.addEventListener('touchstart', function(e) {
   if (e.touches.length === 2) {
     // Inicio Pinch (2 dedos)
     lbPanning = false;
+    justZoomed = true; // Estamos haciendo zoom
     lbStartDist = Math.hypot(
       e.touches[0].pageX - e.touches[1].pageX,
       e.touches[0].pageY - e.touches[1].pageY
@@ -2040,6 +2017,11 @@ lbImgElement.addEventListener('touchend', function(e) {
     lbImgElement.style.transition = "transform 0.3s ease";
     lbImgElement.style.transform = `translate(0px, 0px) scale(1)`;
     setTimeout(() => { lbImgElement.style.transition = "transform 0.05s linear"; }, 300);
+  }
+  
+  // Si acabamos de soltar el zoom, esperamos un poco antes de permitir swipe
+  if (justZoomed) {
+      setTimeout(() => { justZoomed = false; }, 300);
   }
   
   lbPanning = false;
