@@ -1,67 +1,80 @@
 <script>
-const API = "https://dombet-backend.onrender.com";
-const SESSION_KEY = "dombet_admin_session";
+document.addEventListener("DOMContentLoaded", () => {
 
-const prodName = document.getElementById("prodName");
-const prodDesc = document.getElementById("prodDesc");
-const prodImgFile = document.getElementById("prodImgFile");
-const imgPreview = document.getElementById("imgPreview");
-const adminList = document.getElementById("adminList");
+  const API = "https://dombet-backend.onrender.com";
+  const SESSION_KEY = "dombet_admin_session";
 
-// =======================
-// IMAGE PREVIEW
-// =======================
-prodImgFile.addEventListener("change", () => {
-  if (!prodImgFile.files.length) return;
-  imgPreview.style.display = "block";
-  imgPreview.src = URL.createObjectURL(prodImgFile.files[0]);
-});
+  const prodName = document.getElementById("prodName");
+  const prodDesc = document.getElementById("prodDesc");
+  const prodImgFile = document.getElementById("prodImgFile");
+  const imgPreview = document.getElementById("imgPreview");
+  const adminList = document.getElementById("adminList");
 
-// =======================
-// SAVE PRODUCT (ONE REQUEST)
-// =======================
-async function saveProduct() {
-  if (!prodName.value || !prodImgFile.files.length) {
-    alert("Nombre e imagen obligatorios");
-    return;
-  }
+  // =======================
+  // IMAGE PREVIEW
+  // =======================
+  prodImgFile.addEventListener("change", () => {
+    if (!prodImgFile.files.length) return;
 
-  const fd = new FormData();
-  fd.append("name", prodName.value);
-  fd.append("description", prodDesc.value);
-  fd.append("image", prodImgFile.files[0]);
-
-  const res = await fetch(API + "/products", {
-    method: "POST",
-    body: fd
+    imgPreview.style.display = "block";
+    imgPreview.src = URL.createObjectURL(prodImgFile.files[0]);
   });
 
-  if (!res.ok) {
-    alert("Error guardando producto");
-    return;
+  // =======================
+  // SAVE PRODUCT (ONE REQUEST)
+  // =======================
+  window.saveProduct = async function () {
+    if (!prodName.value || !prodImgFile.files.length) {
+      alert("Nombre e imagen obligatorios");
+      return;
+    }
+
+    const fd = new FormData();
+    fd.append("name", prodName.value);
+    fd.append("description", prodDesc.value);
+    fd.append("image", prodImgFile.files[0]);
+
+    try {
+      const res = await fetch(API + "/products", {
+        method: "POST",
+        body: fd
+      });
+
+      if (!res.ok) throw new Error("Error guardando producto");
+
+      alert("Producto guardado ✅");
+
+      prodName.value = "";
+      prodDesc.value = "";
+      prodImgFile.value = "";
+      imgPreview.style.display = "none";
+
+      loadProducts();
+
+    } catch (err) {
+      console.error(err);
+      alert("Error guardando producto");
+    }
+  };
+
+  // =======================
+  // LOAD PRODUCTS
+  // =======================
+  function loadProducts() {
+    fetch(API + "/products")
+      .then(r => r.json())
+      .then(d => {
+        adminList.innerHTML = d.map(p => `
+          <div class="product-item">
+            <img src="${p.image_main}" class="p-img">
+            <div>${p.name}</div>
+          </div>
+        `).join("");
+      });
   }
 
-  alert("Producto guardado ✅");
-  prodName.value = "";
-  prodDesc.value = "";
-  prodImgFile.value = "";
-  imgPreview.style.display = "none";
+  // carga inicial
   loadProducts();
-}
 
-// =======================
-// LOAD PRODUCTS
-// =======================
-function loadProducts() {
-  fetch(API + "/products")
-    .then(r => r.json())
-    .then(d => {
-      adminList.innerHTML = d.map(p => `
-        <div class="product-item">
-          <img src="${p.image_main}" class="p-img">
-          <div>${p.name}</div>
-        </div>
-      `).join("");
-    });
-}
+});
 </script>
