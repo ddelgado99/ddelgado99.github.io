@@ -60,31 +60,6 @@ header {
   order: 1; /* Izquierda */
 }
 
-.logo-text {
-  font-family: 'Montserrat', sans-serif;
-  color: #ffffff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  line-height: 1;
-}
-
-.logo-brand {
-  font-weight: 800; /* Extra Bold */
-  font-size: 16px;
-  letter-spacing: -0.5px;
-  text-transform: uppercase;
-}
-
-.logo-sub {
-  font-weight: 300; /* Light */
-  font-size: 9px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  opacity: 0.95;
-  margin-top: 2px;
-}
-
 /* HEADER RIGHT (CARRITO) */
 .header-right {
   display: flex;
@@ -184,9 +159,6 @@ header {
     gap: 40px; 
     height: auto;
   }
-  
-  .logo-brand { font-size: 22px; }
-  .logo-sub { font-size: 12px; }
 
   .search-container { 
     max-width: 600px;
@@ -1171,10 +1143,8 @@ header {
 <header>
   <!-- LOGO TIPOGRÁFICO APILADO -->
   <div class="logo-container" onclick="goHome()">
-    <div class="logo-text">
-      <span class="logo-brand">DOMBET</span>
-      <span class="logo-sub">INFORMÁTICA</span>
-    </div>
+    <!-- Esta etiqueta img con id="dynamicLogo" es la clave -->
+    <img id="dynamicLogo" src="https://i.ibb.co/gZgKrhX4/logo-png.png" alt="DOMBET" style="height: 50px; object-fit: contain;">
   </div>
 
   <!-- BUSCADOR (CENTRO) -->
@@ -1372,6 +1342,20 @@ fetch("https://dombet-backend.onrender.com/products")
     renderList();
   }
 });
+
+// Cargar Logo Dinámico desde la Base de Datos
+fetch("https://dombet-backend.onrender.com/settings/logo")
+  .then(r => r.json())
+  .then(d => {
+    if (d.url) {
+      // Busca la imagen del logo por su ID y actualiza la fuente
+      const logoImg = document.getElementById('dynamicLogo');
+      if(logoImg) {
+          logoImg.src = d.url;
+      }
+    }
+  })
+  .catch(e => console.log("Usando logo por defecto"));
 
 window.onpopstate = function(event) {
   const params = new URLSearchParams(window.location.search);
