@@ -437,9 +437,12 @@ function renderAdminList(items = products) {
       priceHtml = `<div class="p-price-normal">Gs. ${formatCurrency(price)}</div>`;
     }
 
+    // Usamos image_main para la miniatura
+    const imgMain = p.image_main ? p.image_main : 'https://via.placeholder.com/45?text=X';
+
     container.innerHTML += `
       <div class="product-item">
-        <img src="${p.image_main}" class="p-img">
+        <img src="${imgMain}" class="p-img">
         <div class="p-info">
           <div class="p-name">${p.name}</div>
           ${priceHtml}
@@ -485,9 +488,12 @@ function editProduct(id) {
   document.getElementById('prodPrice').value = Number(p.price).toLocaleString('es-PY');
   document.getElementById('prodDiscount').value = p.discount;
   document.getElementById('prodImg').value = p.image_main;
+  
+  // Manejo correcto de nulos para que no aparezca "null" en el input
   document.getElementById('prodThumb1').value = p.image_thumb1 || "";
   document.getElementById('prodThumb2').value = p.image_thumb2 || "";
   document.getElementById('prodThumb3').value = p.image_thumb3 || "";
+  
   document.getElementById('prodDesc').value = p.description;
   document.getElementById('formTitle').innerText = "Editar Producto";
   updatePricePreview();
@@ -495,6 +501,7 @@ function editProduct(id) {
 
 function saveProduct() {
   const id = document.getElementById('prodId').value;
+  // Quitamos los puntos de miles para enviar solo el número al backend
   const rawPrice = document.getElementById('prodPrice').value.replace(/\./g, '');
   
   const data = {
@@ -502,6 +509,7 @@ function saveProduct() {
     price: rawPrice,
     discount: document.getElementById('prodDiscount').value,
     image_main: document.getElementById('prodImg').value,
+    // Enviamos los campos exactos que espera la base de datos
     image_thumb1: document.getElementById('prodThumb1').value,
     image_thumb2: document.getElementById('prodThumb2').value,
     image_thumb3: document.getElementById('prodThumb3').value,
