@@ -1425,10 +1425,13 @@ function renderList(){
       priceHtml = `<span class="current-price price-navy">Gs. ${formatCurrency(price)}</span>`;
     }
 
+    // FALLBACK DE IMAGEN SI ES NULL
+    const imgMain = p.image_main ? p.image_main : 'https://via.placeholder.com/300?text=Sin+Imagen';
+
     list.innerHTML+=`
       <div class="card" onclick="openDetail(${i})">
         ${discountBadge}
-        <img src="${p.image_main}">
+        <img src="${imgMain}">
         <div class="name">${p.name}</div>
         <div class="price-container">
           ${priceHtml}
@@ -1479,10 +1482,12 @@ function updateCarouselBatch() {
     const price = Number(p.price);
     const discount = Number(p.discount);
     const finalPrice = price - (price * (discount / 100));
+    const imgMain = p.image_main ? p.image_main : 'https://via.placeholder.com/200?text=Sin+Imagen';
+    
     return `
       <div class="offer-card" onclick="openDetail(${originalIndex})">
         <div class="offer-badge">-${discount}%</div>
-        <img src="${p.image_main}">
+        <img src="${imgMain}">
         <div class="offer-name">${p.name}</div>
         <div class="offer-price-box">
           <span class="offer-old">Gs. ${formatCurrency(price)}</span>
@@ -1566,7 +1571,12 @@ function openDetail(i, pushHistory = true){
   current=products[i];
   if(pushHistory) history.pushState({index: i}, '', '?p='+i);
 
+  // LÓGICA DE IMÁGENES ACTUALIZADA
   imgs=[current.image_main,current.image_thumb1,current.image_thumb2,current.image_thumb3].filter(Boolean);
+  
+  // Si no hay imágenes, usar placeholder
+  if(imgs.length === 0) imgs = ['https://via.placeholder.com/500?text=Sin+Imagen'];
+
   imgIndex=0;
   qty=1;
   
@@ -1719,9 +1729,12 @@ function updateCartUI(){
       const itemTotal = finalPrice * item.qty;
       total += itemTotal;
       
+      // Fallback imagen carrito
+      const imgMain = item.product.image_main ? item.product.image_main : 'https://via.placeholder.com/70?text=Sin+Imagen';
+
       cartItems.innerHTML += `
         <div class="cart-item">
-          <img src="${item.product.image_main}">
+          <img src="${imgMain}">
           <div class="cart-item-info">
             <div class="cart-item-title">${item.product.name}</div>
             <div class="cart-item-price">Gs. ${formatCurrency(finalPrice)}</div>
@@ -1792,8 +1805,9 @@ searchInput.oninput=e=>{
   const f=products.filter(p=>p.name.toLowerCase().includes(t))
   searchResults.innerHTML=f.map(p=>{
     const i=products.indexOf(p)
+    const imgMain = p.image_main ? p.image_main : 'https://via.placeholder.com/35?text=Sin+Imagen';
     return `<div class="search-item" onclick="openDetail(${i});searchResults.style.display='none'">
-      <img src="${p.image_main}">
+      <img src="${imgMain}">
       <div>${p.name}</div>
     </div>`
   }).join('')
