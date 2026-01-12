@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ADMIN DOMBET</title>
 
 <style>
@@ -85,9 +85,10 @@ header{
   border-radius:4px;
 }
 .editor{
-  width:380px;
+  width:400px;
   padding:15px;
   background:var(--surface);
+  overflow:auto;
 }
 input,textarea{
   width:100%;
@@ -97,16 +98,20 @@ input,textarea{
   color:var(--text);
   margin-bottom:10px;
 }
-.img-preview{
+.preview-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(80px,1fr));
+  gap:8px;
+}
+.preview-grid img{
   width:100%;
-  max-height:160px;
+  height:80px;
   object-fit:contain;
-  border:1px dashed var(--border);
-  display:none;
+  background:#fff;
+  border-radius:4px;
 }
 .btn-danger{
   background:var(--accent);
-  margin-top:10px;
 }
 </style>
 </head>
@@ -133,8 +138,8 @@ input,textarea{
     <input id="prodName" placeholder="Nombre">
     <textarea id="prodDesc" rows="4" placeholder="Descripción"></textarea>
 
-    <input type="file" id="prodImgFile" accept="image/*">
-    <img id="imgPreview" class="img-preview">
+    <input type="file" id="prodImgFile" accept="image/*" multiple>
+    <div class="preview-grid" id="imgPreview"></div>
 
     <button onclick="saveProduct()">GUARDAR</button>
     <button class="btn-danger" onclick="deleteProduct()">BORRAR</button>
@@ -171,45 +176,53 @@ if(sessionStorage.getItem(SESSION)){
   loadProducts();
 }
 
-// PREVIEW
+// PREVIEW MULTIPLE
 prodImgFile.onchange=()=>{
-  if(!prodImgFile.files.length)return;
-  imgPreview.src = URL.createObjectURL(prodImgFile.files[0]);
-  imgPreview.style.display="block";
+  imgPreview.innerHTML="";
+  [...prodImgFile.files].forEach(f=>{
+    const img=document.createElement("img");
+    img.src=URL.createObjectURL(f);
+    imgPreview.appendChild(img);
+  });
 };
 
-// CREAR / EDITAR
+// CREATE / UPDATE
 async function saveProduct(){
+  if(!prodName.value) return alert("Nombre requerido");
+
   const fd = new FormData();
   fd.append("name",prodName.value);
   fd.append("description",prodDesc.value);
-  if(prodImgFile.files.length){
-    fd.append("image",prodImgFile.files[0]);
-  }
+
+  [...prodImgFile.files].forEach(f=>{
+    fd.append("images",f);
+  });
 
   const method = prodId.value ? "PUT" : "POST";
-  const url = prodId.value ? `${API}/products/${prodId.value}` : `${API}/products`;
+  const url = prodId.value
+    ? `${API}/products/${prodId.value}`
+    : `${API}/products`;
 
   const res = await fetch(url,{method,body:fd});
-  if(!res.ok){alert("Error");return;}
+  if(!res.ok) return alert("Error");
 
   resetForm();
   loadProducts();
 }
 
-// BORRAR + SUPABASE
+// DELETE
 async function deleteProduct(){
   if(!prodId.value) return;
   if(!confirm("¿Borrar producto?")) return;
 
   const res = await fetch(`${API}/products/${prodId.value}`,{method:"DELETE"});
-  if(!res.ok){alert("Error al borrar");return;}
+  if(!res.ok) return alert("Error al borrar");
 
   resetForm();
   loadProducts();
 }
 
-// LISTAR
+// LOAD
 function loadProducts(){
   fetch(API+"/products")
   .then(r=>r.json())
@@ -223,13 +236,18 @@ function loadProducts(){
   });
 }
 
-// EDITAR
+// EDIT
 function editProduct(p){
-  prodId.value = p.id;
-  prodName.value = p.name;
-  prodDesc.value = p.description;
-  imgPreview.src = p.image_main;
-  imgPreview.style.display="block";
+  prodId.value=p.id;
+  prodName.value=p.name;
+  prodDesc.value=p.description;
+
+  imgPreview.innerHTML="";
+  (p.images||[]).forEach(url=>{
+    const img=document.createElement("img");
+    img.src=url;
+    imgPreview.appendChild(img);
+  });
 }
 
 // RESET
@@ -238,7 +256,7 @@ function resetForm(){
   prodName.value="";
   prodDesc.value="";
   prodImgFile.value="";
-  imgPreview.style.display="none";
+  imgPreview.innerHTML="";
 }
 </script>
 
