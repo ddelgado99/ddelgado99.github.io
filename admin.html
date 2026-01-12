@@ -1,321 +1,57 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>ADMIN DOMBET</title>
-
-<style>
-* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-:root {
-  --primary:#1976d2;
-  --primary-dark:#0d47a1;
-  --accent:#ef5350;
-  --success:#66bb6a;
-  --bg:#121212;
-  --surface:#1e1e1e;
-  --text:#e0e0e0;
-  --text-secondary:#b0b0b0;
-  --border:#333;
-  --input-bg:#2c2c2c;
-}
-
-body {
-  margin:0;
-  font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  height:100vh;
-  display:flex;
-  flex-direction:column;
-  overflow:hidden;
-}
-
-/* LOGIN */
-#loginScreen {
-  position:fixed;
-  inset:0;
-  background:var(--bg);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  z-index:9999;
-}
-
-.login-card {
-  background:var(--surface);
-  padding:40px;
-  border-radius:12px;
-  width:90%;
-  max-width:350px;
-  text-align:center;
-  border:1px solid var(--border);
-}
-
-.login-title {
-  font-size:24px;
-  font-weight:900;
-  color:var(--primary);
-  margin-bottom:20px;
-}
-
-.login-input {
-  width:100%;
-  padding:12px;
-  margin-bottom:15px;
-  background:var(--input-bg);
-  border:1px solid var(--border);
-  color:var(--text);
-  border-radius:6px;
-}
-
-.btn-login {
-  width:100%;
-  padding:12px;
-  background:var(--primary);
-  color:#fff;
-  border:none;
-  border-radius:6px;
-  font-weight:700;
-  cursor:pointer;
-}
-
-.login-error {
-  color:var(--accent);
-  font-size:13px;
-  display:none;
-}
-
-/* ADMIN */
-#adminContent {
-  display:none;
-  flex-direction:column;
-  height:100%;
-}
-
-header {
-  background:var(--surface);
-  border-bottom:1px solid var(--border);
-  height:60px;
-  display:flex;
-  align-items:center;
-  padding:0 20px;
-}
-
-.brand {
-  font-weight:900;
-  color:var(--primary);
-}
-
-.main-container {
-  display:flex;
-  flex:1;
-  overflow:hidden;
-}
-
-.product-list {
-  flex:1;
-  overflow-y:auto;
-  padding:20px;
-  border-right:1px solid var(--border);
-}
-
-.product-item {
-  background:var(--surface);
-  padding:12px;
-  border-radius:8px;
-  margin-bottom:10px;
-  display:flex;
-  gap:15px;
-  align-items:center;
-  border:1px solid var(--border);
-}
-
-.p-img {
-  width:45px;
-  height:45px;
-  object-fit:contain;
-  background:#fff;
-  border-radius:4px;
-}
-
-.editor-panel {
-  width:400px;
-  background:var(--surface);
-  padding:20px;
-  overflow-y:auto;
-}
-
-.form-group { margin-bottom:15px; }
-
-.form-label {
-  font-size:11px;
-  font-weight:700;
-  color:var(--text-secondary);
-  margin-bottom:6px;
-  display:block;
-}
-
-.form-input {
-  width:100%;
-  padding:10px;
-  background:var(--input-bg);
-  border:1px solid var(--border);
-  border-radius:4px;
-  color:var(--text);
-}
-
-.btn-save {
-  width:100%;
-  padding:14px;
-  background:var(--primary);
-  color:#fff;
-  border:none;
-  border-radius:6px;
-  font-weight:700;
-  cursor:pointer;
-}
-
-.img-preview {
-  margin-top:10px;
-  width:100%;
-  max-height:160px;
-  object-fit:contain;
-  border:1px dashed var(--border);
-  display:none;
-}
-</style>
-</head>
-
-<body>
-
-<div id="loginScreen">
-  <div class="login-card">
-    <div class="login-title">DOMBET ADMIN</div>
-    <input id="loginUser" class="login-input" placeholder="Usuario">
-    <input id="loginPass" type="password" class="login-input" placeholder="Contraseña">
-    <button class="btn-login" onclick="doLogin()">ENTRAR</button>
-    <div id="loginError" class="login-error">Credenciales incorrectas</div>
-  </div>
-</div>
-
-<div id="adminContent">
-  <header>
-    <div class="brand">DOMBET ADMIN</div>
-  </header>
-
-  <div class="main-container">
-    <div class="product-list" id="adminList"></div>
-
-    <div class="editor-panel">
-      <div class="form-group">
-        <label class="form-label">Nombre</label>
-        <input id="prodName" class="form-input">
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">Imagen Principal</label>
-        <input type="file" id="prodImgFile" class="form-input" accept="image/*">
-        <input type="hidden" id="prodImg">
-        <img id="imgPreview" class="img-preview">
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">Descripción</label>
-        <textarea id="prodDesc" class="form-input" rows="4"></textarea>
-      </div>
-
-      <button class="btn-save" onclick="saveProduct()">GUARDAR</button>
-    </div>
-  </div>
-</div>
-
 <script>
 const API = "https://dombet-backend.onrender.com";
 const SESSION_KEY = "dombet_admin_session";
 
-const loginScreen = document.getElementById("loginScreen");
-const adminContent = document.getElementById("adminContent");
-const loginUser = document.getElementById("loginUser");
-const loginPass = document.getElementById("loginPass");
-const loginError = document.getElementById("loginError");
-
 const prodName = document.getElementById("prodName");
 const prodDesc = document.getElementById("prodDesc");
-const prodImg = document.getElementById("prodImg");
 const prodImgFile = document.getElementById("prodImgFile");
 const imgPreview = document.getElementById("imgPreview");
 const adminList = document.getElementById("adminList");
 
-function doLogin() {
-  if (loginUser.value === "admin" && loginPass.value === "3lma3stro") {
-    sessionStorage.setItem(SESSION_KEY, "active");
-    loginScreen.style.display = "none";
-    adminContent.style.display = "flex";
-    loadProducts();
-  } else {
-    loginError.style.display = "block";
+// =======================
+// IMAGE PREVIEW
+// =======================
+prodImgFile.addEventListener("change", () => {
+  if (!prodImgFile.files.length) return;
+  imgPreview.style.display = "block";
+  imgPreview.src = URL.createObjectURL(prodImgFile.files[0]);
+});
+
+// =======================
+// SAVE PRODUCT (ONE REQUEST)
+// =======================
+async function saveProduct() {
+  if (!prodName.value || !prodImgFile.files.length) {
+    alert("Nombre e imagen obligatorios");
+    return;
   }
-}
 
-if (sessionStorage.getItem(SESSION_KEY)) {
-  loginScreen.style.display = "none";
-  adminContent.style.display = "flex";
-  loadProducts();
-}
-
-async function uploadImage(file) {
   const fd = new FormData();
-  fd.append("image", file);
+  fd.append("name", prodName.value);
+  fd.append("description", prodDesc.value);
+  fd.append("image", prodImgFile.files[0]);
 
-  const res = await fetch(API + "/upload-image", {
+  const res = await fetch(API + "/products", {
     method: "POST",
     body: fd
   });
 
-  if (!res.ok) throw new Error("Error subiendo imagen");
-  const data = await res.json();
-  return data.url;
-}
-
-prodImgFile.addEventListener("change", async () => {
-  if (!prodImgFile.files.length) return;
-
-  imgPreview.style.display = "block";
-  imgPreview.src = URL.createObjectURL(prodImgFile.files[0]);
-
-  try {
-    prodImg.value = await uploadImage(prodImgFile.files[0]);
-  } catch (e) {
-    alert("Error subiendo imagen");
-  }
-});
-
-function saveProduct() {
-  if (!prodImg.value) {
-    alert("Subí una imagen primero");
+  if (!res.ok) {
+    alert("Error guardando producto");
     return;
   }
 
-  fetch(API + "/products", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      name: prodName.value,
-      description: prodDesc.value,
-      image_main: prodImg.value
-    })
-  }).then(() => {
-    alert("Guardado");
-    prodName.value = "";
-    prodDesc.value = "";
-    prodImg.value = "";
-    imgPreview.style.display = "none";
-    loadProducts();
-  });
+  alert("Producto guardado ✅");
+  prodName.value = "";
+  prodDesc.value = "";
+  prodImgFile.value = "";
+  imgPreview.style.display = "none";
+  loadProducts();
 }
 
+// =======================
+// LOAD PRODUCTS
+// =======================
 function loadProducts() {
   fetch(API + "/products")
     .then(r => r.json())
@@ -329,6 +65,3 @@ function loadProducts() {
     });
 }
 </script>
-
-</body>
-</html>
