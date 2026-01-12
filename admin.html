@@ -193,8 +193,6 @@ header {
 .form-textarea { resize: vertical; min-height: 80px; font-family: inherit; }
 
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.thumbs-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 5px; }
-.thumbs-grid .form-input { font-size: 11px; padding: 8px; }
 
 .price-preview { font-size: 12px; color: var(--text-secondary); margin-top: 4px; font-weight: 600; }
 .price-preview span { color: var(--success); }
@@ -308,18 +306,12 @@ header {
         </div>
       </div>
 
+      <!-- CAJA ÚNICA DE IMÁGENES -->
       <div class="form-group">
-        <label class="form-label">Imagen Principal (URL)</label>
-        <input class="form-input" id="prodImg" placeholder="https://...">
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">Imágenes Extra (Opcional)</label>
-        <div class="thumbs-grid">
-          <input class="form-input" id="prodThumb1" placeholder="Thumb 1 URL">
-          <input class="form-input" id="prodThumb2" placeholder="Thumb 2 URL">
-          <input class="form-input" id="prodThumb3" placeholder="Thumb 3 URL">
-        </div>
+        <label class="form-label">Imágenes (Pega la lista de enlaces aquí)</label>
+        <textarea class="form-input" id="prodImages" rows="5" placeholder="Pega aquí todos los enlaces de ImgBB...
+La primera línea será la imagen principal.
+Las siguientes serán las miniaturas."></textarea>
       </div>
 
       <div class="form-group">
@@ -471,10 +463,10 @@ function resetForm() {
   document.getElementById('prodName').value = "";
   document.getElementById('prodPrice').value = "";
   document.getElementById('prodDiscount').value = "";
-  document.getElementById('prodImg').value = "";
-  document.getElementById('prodThumb1').value = "";
-  document.getElementById('prodThumb2').value = "";
-  document.getElementById('prodThumb3').value = "";
+  
+  // LIMPIAR LA CAJA ÚNICA DE IMÁGENES
+  document.getElementById('prodImages').value = "";
+  
   document.getElementById('prodDesc').value = "";
   document.getElementById('formTitle').innerText = "Nuevo Producto";
   document.getElementById('pricePreview').innerHTML = "";
@@ -483,16 +475,15 @@ function resetForm() {
 function editProduct(id) {
   const p = products.find(x => x.id === id);
   if(!p) return;
+  
   document.getElementById('prodId').value = p.id;
   document.getElementById('prodName').value = p.name;
   document.getElementById('prodPrice').value = Number(p.price).toLocaleString('es-PY');
   document.getElementById('prodDiscount').value = p.discount;
-  document.getElementById('prodImg').value = p.image_main;
   
-  // Manejo correcto de nulos para que no aparezca "null" en el input
-  document.getElementById('prodThumb1').value = p.image_thumb1 || "";
-  document.getElementById('prodThumb2').value = p.image_thumb2 || "";
-  document.getElementById('prodThumb3').value = p.image_thumb3 || "";
+  // JUNTAR TODAS LAS IMÁGENES EN EL TEXTAREA PARA EDITAR
+  const allImages = [p.image_main, p.image_thumb1, p.image_thumb2, p.image_thumb3].filter(Boolean);
+  document.getElementById('prodImages').value = allImages.join('\n');
   
   document.getElementById('prodDesc').value = p.description;
   document.getElementById('formTitle').innerText = "Editar Producto";
@@ -501,18 +492,25 @@ function editProduct(id) {
 
 function saveProduct() {
   const id = document.getElementById('prodId').value;
-  // Quitamos los puntos de miles para enviar solo el número al backend
   const rawPrice = document.getElementById('prodPrice').value.replace(/\./g, '');
   
+  // 1. OBTENER TODAS LAS IMÁGENES DEL TEXTAREA
+  const rawImages = document.getElementById('prodImages').value;
+  
+  // 2. SEPARAR POR SALTOS DE LÍNEA O ESPACIOS Y FILTRAR SOLO URLs VÁLIDAS
+  const urls = rawImages.split(/\s+/).filter(u => u.trim().startsWith('http'));
+
+  // 3. ASIGNAR AUTOMÁTICAMENTE (La primera es Main, el resto Thumbs)
   const data = {
     name: document.getElementById('prodName').value,
     price: rawPrice,
     discount: document.getElementById('prodDiscount').value,
-    image_main: document.getElementById('prodImg').value,
-    // Enviamos los campos exactos que espera la base de datos
-    image_thumb1: document.getElementById('prodThumb1').value,
-    image_thumb2: document.getElementById('prodThumb2').value,
-    image_thumb3: document.getElementById('prodThumb3').value,
+    
+    image_main: urls[0] || null,      // Primera línea
+    image_thumb1: urls[1] || null,    // Segunda línea
+    image_thumb2: urls[2] || null,    // Tercera línea
+    image_thumb3: urls[3] || null,    // Cuarta línea
+    
     description: document.getElementById('prodDesc').value
   };
 
