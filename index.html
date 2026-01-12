@@ -31,67 +31,57 @@ body{
 }
 
 /* ===== HEADER ===== */
-header{
-  background:#0a1a3a;
-  color:#fff;
-  padding:15px 20px; /* Un poco más de espacio */
-  display:flex;
-  flex-wrap: wrap;
-  align-items:center;
-  justify-content:space-between;
-  position:sticky;
-  top:0;
-  z-index:1000;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.15); /* Sombra más sofisticada */
-  gap: 15px;
-}
-
-/* LOGO REDISEÑADO: MODERNO Y SOFISTICADO */
-.logo{
-  cursor:pointer; 
-  flex-shrink: 0;
+header {
+  background: #0a1a3a;
+  color: #fff;
+  padding: 15px 20px;
   display: flex;
-  flex-direction: column;
-  width: max-content;
-  animation: elegantBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-  position: relative;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center; /* Centrado por defecto en móvil */
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 25px rgba(0,0,0,0.2); /* Sombra más profunda */
+  gap: 15px;
+  min-height: 70px;
+}
+
+/* LOGO SVG CONTAINER */
+.logo-container {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 1002;
-  border-bottom: 2px solid transparent;
-  transition: border-color 0.3s;
+  animation: elegantBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  /* En móvil, el logo ocupa su espacio natural en el centro */
+  margin: 0 auto; 
+  padding-top: 5px;
 }
 
-.brand{
-  font-size: 26px;
-  font-weight: 800; /* Extra Bold */
-  line-height: 0.9; 
-  letter-spacing: -0.5px; /* Letras más juntas para modernidad */
-  text-align: left;
-  background: linear-gradient(to right, #ffffff, #e0e7ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-.sub{
+/* SVG ESTILOS */
+.logo-svg {
+  width: 42px; /* Tamaño móvil */
+  height: 42px;
+  fill: #ffffff;
   display: block;
-  width: 100%;
-  font-size: 9px; 
-  font-weight: 300; /* Light para contraste */
-  opacity: 0.9;
-  margin-top: 4px;
-  letter-spacing: 4px; /* Mucho espaciado para elegancia */
-  text-transform: uppercase;
-  text-align: justify;
-  text-align-last: justify;
+  transition: transform 0.3s ease;
+}
+.logo-container:hover .logo-svg {
+  transform: scale(1.05);
 }
 
+/* HEADER RIGHT (CARRITO) */
 .header-right {
   display: flex;
   align-items: center;
   gap: 15px;
-  order: 2;
-  position: relative;
-  z-index: 1002; 
+  z-index: 1002;
+  /* EN MÓVIL: Posición absoluta para no afectar el centrado del logo */
+  position: absolute;
+  right: 20px;
+  top: 20px; 
 }
 
 /* ICONO DEL CARRITO */
@@ -124,28 +114,34 @@ header{
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
+/* BUSCADOR */
 .search-container {
-  flex-grow: 1;
-  order: 3;
   width: 100%;
+  order: 3; /* Abajo en móvil */
   position: relative;
   z-index: 1001;
+  margin-top: 5px;
 }
 
-.search-box{
+.search-box {
   display: flex;
-  background: rgba(255,255,255,0.1); /* Transparencia moderna */
-  border-radius: 6px;
+  background: rgba(255,255,255,0.15); /* Más sutil */
+  border-radius: 50px; /* Bordes totalmente redondeados para elegancia */
   overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.2);
+  border: 1px solid rgba(255,255,255,0.1);
   width: 100%;
-  transition: background 0.3s;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
 }
-.search-box:focus-within { background: rgba(255,255,255,0.2); }
+.search-box:focus-within { 
+  background: rgba(255,255,255,0.25); 
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  border-color: rgba(255,255,255,0.3);
+}
 
-.search-box input{
+.search-box input {
   flex-grow: 1;
-  padding: 10px 15px;
+  padding: 12px 20px;
   border: none;
   background: transparent;
   outline: none;
@@ -155,46 +151,66 @@ header{
   font-family: 'Montserrat', sans-serif;
   font-weight: 400;
 }
-.search-box input::placeholder { color: rgba(255,255,255,0.6); }
+.search-box input::placeholder { color: rgba(255,255,255,0.7); }
 
 .search-btn {
   background: transparent;
   border: none;
-  padding: 0 15px;
+  padding: 0 20px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.search-btn svg { fill: rgba(255,255,255,0.8); width: 18px; height: 18px; }
+.search-btn svg { fill: rgba(255,255,255,0.9); width: 18px; height: 18px; }
 
 /* MEDIA QUERY PARA ESCRITORIO (PC) */
 @media (min-width: 768px) {
   header { 
     padding: 15px 50px; 
     flex-wrap: nowrap; 
+    justify-content: space-between; /* Distribución normal */
     gap: 40px; 
-    position: sticky;
   }
   
-  .brand { font-size: 32px; }
-  .sub { font-size: 11px; letter-spacing: 6px; } 
+  /* Logo a la izquierda */
+  .logo-container {
+    margin: 0;
+    padding: 0;
+    flex-shrink: 0;
+    order: 1;
+  }
   
+  .logo-svg {
+    width: 46px; /* Tamaño Desktop */
+    height: 46px;
+  }
+
+  /* Buscador al centro */
   .search-container { 
-    order: unset; 
-    position: relative;
-    left: auto; top: auto; transform: none;
+    order: 2; 
     width: 100%;
-    max-width: 500px;
+    max-width: 600px; /* Un poco más ancho */
     margin: 0;
   }
   
-  .search-box { background: #f5f5f5; border: 1px solid #eee; }
+  .search-box { 
+    background: #f5f5f5; 
+    border: 1px solid #e0e0e0; 
+    border-radius: 8px; /* Menos redondeado en PC si se prefiere, o mantener 50px */
+  }
   .search-box input { color: #333; }
-  .search-box input::placeholder { color: #999; }
-  .search-btn svg { fill: #666; }
+  .search-box input::placeholder { color: #888; }
+  .search-btn svg { fill: #555; }
   
-  .header-right { order: unset; gap: 25px; }
+  /* Carrito a la derecha (Reset de posición absoluta) */
+  .header-right { 
+    order: 3; 
+    position: relative; 
+    right: auto; 
+    top: auto;
+    gap: 25px; 
+  }
 }
 
 .search-results{
@@ -203,13 +219,14 @@ header{
   left: 0;
   right: 0;
   background:#fff;
-  border-radius: 0 0 6px 6px;
-  box-shadow:0 10px 25px rgba(0,0,0,.15);
+  border-radius: 0 0 12px 12px;
+  box-shadow:0 10px 30px rgba(0,0,0,.15);
   display:none;
   z-index: 1001;
   max-height: 300px;
   overflow-y: auto;
   border-top: 1px solid #eee;
+  margin-top: 5px;
 }
 .search-item{
   display:flex;
@@ -1146,13 +1163,18 @@ header{
 
 <!-- HEADER -->
 <header>
-  <div class="logo" onclick="goHome()">
-    <div class="brand">DOMBET</div>
-    <div class="sub">
-      <span>I</span><span>N</span><span>F</span><span>O</span><span>R</span><span>M</span><span>Á</span><span>T</span><span>I</span><span>C</span><span>A</span>
-    </div>
+  <!-- LOGO SVG (Centrado en móvil, Izquierda en PC) -->
+  <div class="logo-container" onclick="goHome()">
+    <svg class="logo-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" aria-label="DOMBET Informática">
+      <g transform="translate(0,192) scale(0.1,-0.1)" fill="#ffffff">
+        <!-- HE AÑADIDO UN PATH DE EJEMPLO (ESCUDO/D) PARA QUE SE VEA ALGO. 
+             REEMPLAZA EL CONTENIDO DE ESTE PATH CON EL DE TU SVG ORIGINAL SI ES DIFERENTE -->
+        <path d="M400 1700 l0 -1500 600 0 c400 0 600 200 600 750 0 550 -200 750 -600 750 l-600 0z m300 -300 l300 0 c200 0 300 -100 300 -450 0 -350 -100 -450 -300 -450 l-300 0 0 900z"/>
+      </g>
+    </svg>
   </div>
 
+  <!-- CARRITO (Derecha absoluta en móvil, Derecha relativa en PC) -->
   <div class="header-right">
     <button class="cart-trigger" onclick="toggleCart(true)">
       <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
@@ -1160,6 +1182,7 @@ header{
     </button>
   </div>
 
+  <!-- BUSCADOR (Abajo centrado en móvil, Centro en PC) -->
   <div class="search-container">
     <div class="search-box">
       <input id="searchInput" placeholder="Buscar productos..." autocomplete="off">
