@@ -232,7 +232,7 @@ header{
   .hero-title::before, .hero-title::after { width: 50px; }
 }
 
-/* ===== BARRA DE FILTROS ===== */
+/* ===== BARRA DE FILTROS (MODIFICADA: ELEGANTE Y COMPACTA) ===== */
 .filter-bar {
   background: #fff;
   padding: 10px 15px;
@@ -249,10 +249,11 @@ header{
 }
 
 .sort-label {
-  font-size: 13px;
-  font-weight: 600;
-  color: #555;
+  font-size: 11px; /* Más pequeño y fino */
+  font-weight: 700;
+  color: #888;
   text-transform: uppercase;
+  letter-spacing: 1px; /* Espaciado sofisticado */
 }
 
 .sort-container {
@@ -260,17 +261,17 @@ header{
   align-items: center;
   gap: 8px;
   background: #fff;
-  padding: 8px 12px;
+  padding: 6px 10px; /* Más compacto */
   border-radius: 4px;
   border: 1px solid #ddd;
 }
 
-.sort-icon { width: 18px; height: 18px; fill: #555; }
+.sort-icon { width: 16px; height: 16px; fill: #555; }
 
 .sort-select {
   border: none;
   background: transparent;
-  font-size: 14px;
+  font-size: 13px;
   color: #333;
   font-weight: 600;
   outline: none;
@@ -888,7 +889,7 @@ header{
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  touch-action: pan-y;
+  touch-action: none; /* Importante para el zoom manual */
   
   /* CLAVE: Padding izquierdo igual al ancho de la barra lateral (90px) 
      para que el contenido se centre en el espacio restante */
@@ -899,7 +900,8 @@ header{
 @media (max-width: 767px) {
   .lightbox {
     padding-left: 0;
-    padding-bottom: 90px; /* Espacio para barra inferior */
+    padding-bottom: 0; 
+    justify-content: center;
   }
 }
 
@@ -910,7 +912,15 @@ header{
   max-height: 90vh;
   object-fit: contain;
   animation: zoom 0.3s;
-  transition: transform 0.3s ease;
+  transition: transform 0.1s linear; /* Más rápido para el pinch */
+  transform-origin: center center;
+}
+
+@media (max-width: 767px) {
+  .lightbox-content {
+    max-width: 100%;
+    max-height: calc(100vh - 100px); /* Espacio para thumbs abajo */
+  }
 }
 
 @keyframes zoom {
@@ -973,17 +983,21 @@ header{
   border-right: 1px solid #eee;
 }
 
-/* En móvil, las miniaturas vuelven abajo */
+/* En móvil, las miniaturas van al CENTRO ABAJO */
 @media (max-width: 767px) {
   .lightbox-thumbs {
     flex-direction: row;
     width: 100%;
-    height: auto;
+    height: 80px; /* Altura fija */
     top: auto;
     bottom: 0;
+    left: 0;
     border-right: none;
     border-top: 1px solid #eee;
-    justify-content: flex-start;
+    justify-content: center; /* Centradas */
+    align-items: center;
+    padding: 10px;
+    background: rgba(255,255,255,0.95);
   }
   .lb-prev { left: 10px; } /* Reset flecha en móvil */
 }
@@ -1018,8 +1032,9 @@ header{
   gap: 5px;
   z-index: 12003;
 }
+/* OCULTAR CONTROLES DE ZOOM EN MÓVIL */
 @media (max-width: 767px) {
-  .lb-zoom-controls { left: 10px; top: 60px; }
+  .lb-zoom-controls { display: none; }
 }
 
 </style>
@@ -1067,8 +1082,8 @@ header{
   <div class="sort-container">
     <svg class="sort-icon" viewBox="0 0 24 24"><path d="M3 18h6v-2H3v2zM3 6v2h18V6H3zm0 7h12v-2H3v2z"/></svg>
     <select class="sort-select" onchange="sortProducts(this.value)">
-      <option value="asc">Menor a Mayor</option>
-      <option value="desc">Mayor a Menor</option>
+      <option value="asc">Precio más bajo</option>
+      <option value="desc">Precio más alto</option>
     </select>
   </div>
 </div>
@@ -1168,14 +1183,17 @@ header{
 <div id="lightbox" class="lightbox">
   <span class="close-lightbox" onclick="closeLightbox()">&times;</span>
   
-  <!-- CONTROLES ZOOM LIGHTBOX -->
+  <!-- CONTROLES ZOOM LIGHTBOX (Solo PC) -->
   <div class="lb-zoom-controls" onclick="event.stopPropagation()">
     <button class="zoom-btn" onclick="changeZoom(0.5, true)">+</button>
     <button class="zoom-btn" onclick="changeZoom(-0.5, true)">-</button>
   </div>
 
   <a class="lb-arrow lb-prev" onclick="changeLightboxImg(-1, event)">&#10094;</a>
-  <img class="lightbox-content" id="lightboxImg" ondblclick="toggleZoom(event, true)">
+  
+  <!-- IMAGEN LIGHTBOX (Sin ondblclick para móvil) -->
+  <img class="lightbox-content" id="lightboxImg" ondblclick="if(window.innerWidth > 768) toggleZoom(event, true)">
+  
   <a class="lb-arrow lb-next" onclick="changeLightboxImg(1, event)">&#10095;</a>
   <div class="lightbox-thumbs" id="lightboxThumbs"></div>
 </div>
@@ -1197,9 +1215,16 @@ let animationId;
 let trackWidth = 0;
 let itemWidth = 0;
 
-// Variables de Zoom
+// Variables de Zoom PC
 let currentZoom = 1;
 let currentLbZoom = 1;
+
+// Variables de Zoom Móvil (Pinch & Pan)
+let lbScale = 1;
+let lbPanning = false;
+let lbPointX = 0, lbPointY = 0;
+let lbStartX = 0, lbStartY = 0;
+let lbStartDist = 0;
 
 // Cargar carrito guardado
 const savedCart = localStorage.getItem('dombet_cart');
@@ -1465,6 +1490,12 @@ function setImg(i){
   // Reset zooms al cambiar imagen
   currentZoom = 1;
   currentLbZoom = 1;
+  
+  // Reset Mobile Zoom
+  lbScale = 1;
+  lbPointX = 0;
+  lbPointY = 0;
+
   updateZoomTransform(false);
   updateZoomTransform(true);
 
@@ -1648,8 +1679,14 @@ function openLightbox() {
   lb.style.display = 'flex';
   lbImg.src = imgs[imgIndex];
   
-  // Reset zoom al abrir
+  // Reset zoom PC
   currentLbZoom = 1;
+  
+  // Reset zoom Mobile
+  lbScale = 1;
+  lbPointX = 0;
+  lbPointY = 0;
+  
   updateZoomTransform(true);
 
   lbThumbs.innerHTML = "";
@@ -1687,15 +1724,18 @@ document.addEventListener('keydown', function(e) {
   }
 });
 
-/* SWIPE LOGIC */
+/* SWIPE LOGIC (MODIFICADO PARA NO INTERFERIR CON ZOOM) */
 let touchStartX = 0;
 let touchEndX = 0;
 
 function handleTouchStart(e) {
+  if(e.touches.length > 1) return; // Ignorar si son 2 dedos (zoom)
   touchStartX = e.changedTouches[0].screenX;
 }
 
 function handleTouchEnd(e, callbackNext, callbackPrev) {
+  if(lbScale > 1) return; // Si hay zoom, no hacer swipe de imagen
+  
   touchEndX = e.changedTouches[0].screenX;
   if (touchStartX - touchEndX > 50) callbackNext();
   if (touchEndX - touchStartX > 50) callbackPrev();
@@ -1710,8 +1750,9 @@ lightbox.addEventListener('touchstart', handleTouchStart);
 lightbox.addEventListener('touchend', e => handleTouchEnd(e, () => changeLightboxImg(1), () => changeLightboxImg(-1)));
 
 
-/* ===== NUEVA LÓGICA DE ZOOM (BOTONES Y DOBLE CLIC) ===== */
+/* ===== ZOOM LOGIC (PC & MOBILE) ===== */
 
+// Zoom PC (Botones)
 function changeZoom(delta, isLightbox = false) {
   if(event) event.stopPropagation();
   
@@ -1728,6 +1769,7 @@ function changeZoom(delta, isLightbox = false) {
   }
 }
 
+// Zoom PC (Doble Click)
 function toggleZoom(event, isLightbox = false) {
   if(event) event.stopPropagation();
   
@@ -1743,12 +1785,99 @@ function toggleZoom(event, isLightbox = false) {
 function updateZoomTransform(isLightbox) {
   if(isLightbox) {
     const img = document.getElementById('lightboxImg');
-    if(img) img.style.transform = `scale(${currentLbZoom})`;
+    if(img) {
+      // Si es móvil, usamos las variables de touch, si es PC usamos currentLbZoom
+      if(window.innerWidth <= 768) {
+         img.style.transform = `translate(${lbPointX}px, ${lbPointY}px) scale(${lbScale})`;
+      } else {
+         img.style.transform = `scale(${currentLbZoom})`;
+      }
+    }
   } else {
     const img = document.getElementById('mainImg');
     if(img) img.style.transform = `scale(${currentZoom})`;
   }
 }
+
+/* ===== MOBILE PINCH & PAN LOGIC (NUEVO) ===== */
+const lbImgElement = document.getElementById('lightboxImg');
+
+lbImgElement.addEventListener('touchstart', function(e) {
+  // SEGURIDAD: Solo permitir si el lightbox está visible
+  if(document.getElementById('lightbox').style.display !== 'flex') return;
+
+  if (e.touches.length === 2) {
+    // Inicio Pinch (2 dedos)
+    lbPanning = false;
+    lbStartDist = Math.hypot(
+      e.touches[0].pageX - e.touches[1].pageX,
+      e.touches[0].pageY - e.touches[1].pageY
+    );
+  } else if (e.touches.length === 1 && lbScale > 1) {
+    // Inicio Pan (1 dedo y ya hay zoom)
+    lbPanning = true;
+    lbStartX = e.touches[0].pageX - lbPointX;
+    lbStartY = e.touches[0].pageY - lbPointY;
+  }
+});
+
+lbImgElement.addEventListener('touchmove', function(e) {
+  // SEGURIDAD: Solo permitir si el lightbox está visible
+  if(document.getElementById('lightbox').style.display !== 'flex') return;
+
+  e.preventDefault(); // Evitar scroll del navegador
+
+  if (e.touches.length === 2) {
+    // Moviendo Pinch
+    const dist = Math.hypot(
+      e.touches[0].pageX - e.touches[1].pageX,
+      e.touches[0].pageY - e.touches[1].pageY
+    );
+    
+    // Calcular nuevo scale relativo
+    const delta = dist / lbStartDist;
+    let newScale = lbScale * delta;
+    
+    // Limites visuales temporales
+    if (newScale < 1) newScale = 1;
+    if (newScale > 4) newScale = 4;
+    
+    // Aplicar visualmente (sin guardar en lbScale aún para evitar saltos)
+    lbImgElement.style.transform = `translate(${lbPointX}px, ${lbPointY}px) scale(${newScale})`;
+    
+    // Guardamos referencia para el touchend
+    lbImgElement.dataset.tempScale = newScale;
+
+  } else if (e.touches.length === 1 && lbPanning && lbScale > 1) {
+    // Moviendo Pan
+    lbPointX = e.touches[0].pageX - lbStartX;
+    lbPointY = e.touches[0].pageY - lbStartY;
+    lbImgElement.style.transform = `translate(${lbPointX}px, ${lbPointY}px) scale(${lbScale})`;
+  }
+});
+
+lbImgElement.addEventListener('touchend', function(e) {
+  // SEGURIDAD: Solo permitir si el lightbox está visible
+  if(document.getElementById('lightbox').style.display !== 'flex') return;
+
+  // Si estábamos haciendo pinch, guardamos el scale final
+  if (lbImgElement.dataset.tempScale) {
+    lbScale = parseFloat(lbImgElement.dataset.tempScale);
+    delete lbImgElement.dataset.tempScale;
+  }
+
+  // Rebote si es menor a 1
+  if (lbScale < 1) {
+    lbScale = 1;
+    lbPointX = 0;
+    lbPointY = 0;
+    lbImgElement.style.transition = "transform 0.3s ease";
+    lbImgElement.style.transform = `translate(0px, 0px) scale(1)`;
+    setTimeout(() => { lbImgElement.style.transition = "transform 0.1s linear"; }, 300);
+  }
+  
+  lbPanning = false;
+});
 
 </script>
 
