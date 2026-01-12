@@ -2,104 +2,535 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>DOMBET ADMIN</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ADMIN DOMBET</title>
+
 <style>
-body{margin:0;font-family:Segoe UI;background:#121212;color:#fff;display:flex;height:100vh}
-.left{flex:1;padding:15px;overflow:auto}
-.right{width:380px;padding:15px;background:#1e1e1e}
-input,textarea,button{width:100%;padding:10px;margin-bottom:10px}
-button{background:#1976d2;color:#fff;border:0;border-radius:6px;font-weight:700}
-.danger{background:#ef5350}
-.product{display:flex;gap:10px;align-items:center;background:#1e1e1e;padding:10px;border-radius:6px;margin-bottom:10px;cursor:pointer}
-.product img{width:45px;height:45px;object-fit:contain;background:#fff}
-.preview{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.preview img{height:80px;object-fit:contain;background:#fff;border-radius:6px}
+/* ===== GENERAL (DARK MODE) ===== */
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+:root {
+  /* Azul más oscuro y profesional */
+  --primary: #1976d2; 
+  --primary-dark: #0d47a1;
+  
+  --accent: #ef5350; /* Rojo suave */
+  --success: #66bb6a; /* Verde suave */
+  --bg: #121212; /* Fondo muy oscuro */
+  --surface: #1e1e1e; /* Fondo de tarjetas/paneles */
+  --text: #e0e0e0; /* Texto claro */
+  --text-secondary: #b0b0b0;
+  --border: #333333;
+  --input-bg: #2c2c2c;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* SCROLLBAR OSCURO */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: #444; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #555; }
+
+/* ===== PANTALLA DE LOGIN ===== */
+#loginScreen {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: var(--bg);
+  z-index: 20000;
+  display: flex; justify-content: center; align-items: center;
+  transition: opacity 0.3s;
+}
+
+.login-card {
+  background: var(--surface);
+  padding: 40px;
+  border-radius: 12px;
+  width: 90%; max-width: 350px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  border: 1px solid var(--border);
+}
+
+.login-title { font-size: 24px; font-weight: 900; color: var(--primary); margin-bottom: 20px; letter-spacing: 1px; }
+
+.login-input { 
+  width: 100%; padding: 12px; margin-bottom: 15px; 
+  background: var(--input-bg); border: 1px solid var(--border); 
+  color: var(--text); border-radius: 6px; outline: none; font-size: 15px; 
+}
+.login-input:focus { border-color: var(--primary); }
+
+.btn-login { 
+  width: 100%; padding: 12px; background: var(--primary); 
+  color: white; border: none; border-radius: 6px; 
+  font-weight: 700; cursor: pointer; font-size: 15px; 
+}
+.btn-login:hover { background: var(--primary-dark); }
+.login-error { color: var(--accent); font-size: 13px; margin-top: 10px; display: none; }
+
+/* ===== CONTENIDO ADMIN (Oculto por defecto) ===== */
+#adminContent {
+  display: none; /* Se activa con JS */
+  flex-direction: column;
+  height: 100%;
+}
+
+/* ===== HEADER ADMIN ===== */
+header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 20px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  gap: 15px;
+}
+
+.header-left { display: flex; align-items: center; gap: 20px; flex: 1; min-width: 0; }
+.brand { font-size: 20px; font-weight: 900; letter-spacing: 1px; white-space: nowrap; color: var(--primary); }
+
+/* BUSCADOR */
+.admin-search-box {
+  display: flex;
+  background: var(--input-bg);
+  border-radius: 4px;
+  overflow: hidden;
+  width: 100%;
+  max-width: 300px;
+  height: 36px;
+  border: 1px solid var(--border);
+  transition: 0.2s;
+}
+.admin-search-box:focus-within { border-color: var(--primary); }
+.admin-search-box input {
+  flex-grow: 1; border: none; padding: 0 10px; font-size: 14px; outline: none;
+  color: var(--text); background: transparent; min-width: 0;
+}
+.admin-search-box input::placeholder { color: var(--text-secondary); }
+.admin-search-icon { display: flex; align-items: center; padding: 0 10px; color: var(--text-secondary); }
+.admin-search-icon svg { width: 16px; height: 16px; fill: currentColor; }
+
+.header-actions { display: flex; gap: 10px; flex-shrink: 0; }
+
+.btn-header {
+  background: var(--input-bg); color: var(--text); text-decoration: none;
+  padding: 0 15px; height: 36px; border-radius: 4px; font-size: 13px; font-weight: 700;
+  transition: 0.2s; white-space: nowrap; display: flex; align-items: center; gap: 8px; 
+  border: 1px solid var(--border); cursor: pointer;
+}
+.btn-header svg { width: 18px; height: 18px; fill: currentColor; }
+.btn-header:hover { background: #333; }
+
+.btn-logout { background: rgba(239, 83, 80, 0.1); color: var(--accent); border-color: rgba(239, 83, 80, 0.3); }
+.btn-logout:hover { background: rgba(239, 83, 80, 0.2); }
+
+/* ===== LAYOUT ===== */
+.main-container { display: flex; flex: 1; overflow: hidden; }
+
+/* LISTA (IZQUIERDA) */
+.product-list { 
+  flex: 1; overflow-y: auto; padding: 20px; 
+  border-right: 1px solid var(--border); 
+}
+
+.product-item {
+  background: var(--surface); padding: 12px; border-radius: 8px; margin-bottom: 10px;
+  display: flex; align-items: center; gap: 15px; border: 1px solid var(--border);
+  transition: transform 0.2s;
+}
+.product-item:hover { transform: translateY(-2px); border-color: var(--primary); }
+
+.p-img { width: 45px; height: 45px; object-fit: contain; border: 1px solid var(--border); border-radius: 4px; background: #fff; }
+.p-info { flex: 1; min-width: 0; }
+.p-name { font-weight: 700; font-size: 14px; color: var(--text); margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.p-price-container { display: flex; flex-direction: column; gap: 2px; }
+.p-price-original { font-size: 11px; color: var(--text-secondary); text-decoration: line-through; }
+.p-price-final { font-size: 13px; color: var(--success); font-weight: 600; }
+.p-price-normal { font-size: 13px; color: var(--primary); font-weight: 600; }
+.p-actions { display: flex; gap: 8px; }
+
+/* BOTONES DE ACCIÓN (IDENTICOS EN PC Y MÓVIL) */
+.btn-icon { 
+  width: 36px; height: 36px; border-radius: 6px; border: none; 
+  cursor: pointer; display: flex; align-items: center; justify-content: center; 
+  transition: 0.2s; flex-shrink: 0;
+}
+.btn-icon svg { width: 18px; height: 18px; fill: currentColor; }
+
+.btn-edit { background: rgba(25, 118, 210, 0.15); color: var(--primary); }
+.btn-edit:hover { background: rgba(25, 118, 210, 0.3); }
+
+.btn-del { background: rgba(239, 83, 80, 0.15); color: var(--accent); }
+.btn-del:hover { background: rgba(239, 83, 80, 0.3); }
+
+/* FORMULARIO (DERECHA) */
+.editor-panel {
+  width: 400px;
+  background: var(--surface); padding: 20px; overflow-y: auto;
+  display: flex; flex-direction: column; box-shadow: -2px 0 10px rgba(0,0,0,0.2);
+}
+
+.form-header { font-size: 18px; font-weight: 700; margin-bottom: 20px; color: var(--primary); border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+.form-group { margin-bottom: 15px; }
+.form-label { display: block; font-size: 11px; font-weight: 700; color: var(--text-secondary); margin-bottom: 6px; text-transform: uppercase; }
+.form-input { 
+  width: 100%; padding: 10px; background: var(--input-bg); 
+  border: 1px solid var(--border); border-radius: 4px; 
+  font-size: 14px; color: var(--text); outline: none; transition: 0.2s; 
+}
+.form-input:focus { border-color: var(--primary); }
+.form-textarea { resize: vertical; min-height: 80px; font-family: inherit; }
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.thumbs-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 5px; }
+.thumbs-grid .form-input { font-size: 11px; padding: 8px; }
+
+.price-preview { font-size: 12px; color: var(--text-secondary); margin-top: 4px; font-weight: 600; }
+.price-preview span { color: var(--success); }
+
+.btn-save { 
+  width: 100%; padding: 14px; background: var(--primary); 
+  color: white; border: none; border-radius: 6px; 
+  font-weight: 700; cursor: pointer; margin-top: 15px; font-size: 14px;
+}
+.btn-save:hover { background: var(--primary-dark); }
+.btn-clear { 
+  width: 100%; padding: 12px; background: transparent; 
+  color: var(--text-secondary); border: 1px solid var(--border); 
+  border-radius: 6px; font-weight: 600; cursor: pointer; margin-top: 10px; font-size: 13px;
+}
+.btn-clear:hover { background: rgba(255,255,255,0.05); color: var(--text); }
+
+/* ===== RESPONSIVE (MÓVIL) ===== */
+@media (max-width: 768px) {
+  .main-container { flex-direction: column; }
+  
+  /* Lista arriba */
+  .product-list { 
+    height: 45vh; 
+    border-right: none; 
+    border-bottom: 1px solid var(--border); 
+    padding: 15px;
+  }
+  
+  /* Editor abajo */
+  .editor-panel { 
+    width: 100%; 
+    height: 55vh; 
+    box-shadow: none;
+    padding: 15px;
+  }
+
+  header { padding: 0 15px; gap: 10px; }
+  .brand { display: none; } /* Ocultar marca para dar espacio */
+  .admin-search-box { max-width: 100%; }
+  
+  /* Botones del header: Solo iconos en móvil para evitar desborde */
+  .btn-header { padding: 0 10px; }
+  .btn-text { display: none; } 
+  
+  /* Inputs más cómodos para el dedo */
+  .form-input { padding: 12px; font-size: 16px; } 
+}
 </style>
 </head>
 <body>
 
-<div class="left" id="list"></div>
+<!-- PANTALLA DE LOGIN -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-title">DOMBET ADMIN</div>
+    <input type="text" id="loginUser" class="login-input" placeholder="Usuario">
+    <input type="password" id="loginPass" class="login-input" placeholder="Contraseña">
+    <button class="btn-login" onclick="doLogin()">ENTRAR</button>
+    <div class="login-error" id="loginError">Credenciales incorrectas</div>
+  </div>
+</div>
 
-<div class="right">
-<input type="hidden" id="id">
-<input id="name" placeholder="Nombre">
-<textarea id="desc" placeholder="Descripción"></textarea>
+<!-- CONTENIDO DEL ADMIN (Protegido) -->
+<div id="adminContent">
+  <header>
+    <div class="header-left">
+      <div class="brand">DOMBET ADMIN</div>
+      <div class="admin-search-box">
+        <div class="admin-search-icon">
+          <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+        </div>
+        <input id="adminSearch" placeholder="Buscar producto..." oninput="filterAdminList()" autocomplete="off">
+      </div>
+    </div>
+    <div class="header-actions">
+      <a href="index.html" class="btn-header">
+        <svg viewBox="0 0 24 24"><path d="M12 2l-5.5 9h11z"/><path d="M0 0h24v24H0z" fill="none"/><path d="M3 13h18v8H3z"/></svg>
+        <span class="btn-text">TIENDA</span>
+      </a>
+      <button onclick="doLogout()" class="btn-header btn-logout">
+        <svg viewBox="0 0 24 24"><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
+        <span class="btn-text">SALIR</span>
+      </button>
+    </div>
+  </header>
 
-<input type="file" id="images" multiple accept="image/*">
-<div class="preview" id="preview"></div>
+  <div class="main-container">
+    <!-- LISTA -->
+    <div class="product-list" id="adminList"></div>
 
-<button onclick="save()">GUARDAR</button>
-<button class="danger" onclick="del()">BORRAR</button>
+    <!-- EDITOR -->
+    <div class="editor-panel">
+      <div class="form-header" id="formTitle">Nuevo Producto</div>
+      <input type="hidden" id="prodId">
+      
+      <div class="form-group">
+        <label class="form-label">Nombre del Producto</label>
+        <input class="form-input" id="prodName" placeholder="Ej: Laptop HP...">
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Precio (Gs)</label>
+          <input class="form-input" id="prodPrice" type="text" placeholder="0" oninput="formatPriceInput(this)">
+          <div class="price-preview" id="pricePreview"></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Descuento (%)</label>
+          <input class="form-input" id="prodDiscount" type="number" placeholder="0" oninput="updatePricePreview()">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Imagen Principal (URL)</label>
+        <input class="form-input" id="prodImg" placeholder="https://...">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Imágenes Extra (Opcional)</label>
+        <div class="thumbs-grid">
+          <input class="form-input" id="prodThumb1" placeholder="Thumb 1 URL">
+          <input class="form-input" id="prodThumb2" placeholder="Thumb 2 URL">
+          <input class="form-input" id="prodThumb3" placeholder="Thumb 3 URL">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Descripción</label>
+        <textarea class="form-input form-textarea" id="prodDesc" placeholder="Detalles técnicos..."></textarea>
+      </div>
+
+      <button class="btn-save" onclick="saveProduct()">GUARDAR CAMBIOS</button>
+      <button class="btn-clear" onclick="resetForm()">LIMPIAR / NUEVO</button>
+    </div>
+  </div>
 </div>
 
 <script>
-const API="https://dombet-backend.onrender.com";
+// ===== SISTEMA DE LOGIN (SESSION STORAGE) =====
+const SESSION_KEY = 'dombet_admin_session';
 
-const list=document.getElementById("list");
-const id=document.getElementById("id");
-const name=document.getElementById("name");
-const desc=document.getElementById("desc");
-const images=document.getElementById("images");
-const preview=document.getElementById("preview");
-
-images.onchange=()=>{
-  preview.innerHTML="";
-  [...images.files].forEach(f=>{
-    const i=document.createElement("img");
-    i.src=URL.createObjectURL(f);
-    preview.appendChild(i);
-  });
+window.onload = function() {
+  if(sessionStorage.getItem(SESSION_KEY) === 'active') {
+    showAdminPanel();
+  }
 };
 
-async function load(){
-  const d=await fetch(API+"/products").then(r=>r.json());
-  list.innerHTML=d.map(p=>`
-    <div class="product" onclick='edit(${JSON.stringify(p)})'>
-      <img src="${p.image_main}">
-      <div>${p.name}</div>
-    </div>
-  `).join("");
-}
-load();
+function doLogin() {
+  const user = document.getElementById('loginUser').value;
+  const pass = document.getElementById('loginPass').value;
+  const errorMsg = document.getElementById('loginError');
 
-function edit(p){
-  id.value=p.id;
-  name.value=p.name;
-  desc.value=p.description;
-  preview.innerHTML="";
-  [p.image_main,p.image_thumb1,p.image_thumb2,p.image_thumb3]
-    .filter(Boolean)
-    .forEach(u=>{
-      const i=document.createElement("img");
-      i.src=u;
-      preview.appendChild(i);
-    });
+  if(user === 'admin' && pass === '3lma3stro') {
+    sessionStorage.setItem(SESSION_KEY, 'active');
+    showAdminPanel();
+    errorMsg.style.display = 'none';
+  } else {
+    errorMsg.style.display = 'block';
+  }
 }
 
-async function save(){
-  const fd=new FormData();
-  fd.append("name",name.value);
-  fd.append("description",desc.value);
-  [...images.files].forEach(f=>fd.append("images",f));
-
-  const url=id.value?`${API}/products/${id.value}`:`${API}/products`;
-  const method=id.value?"PUT":"POST";
-
-  const r=await fetch(url,{method,body:fd});
-  if(!r.ok){alert("Error");return;}
-  reset();load();
+function doLogout() {
+  sessionStorage.removeItem(SESSION_KEY);
+  location.reload();
 }
 
-async function del(){
-  if(!id.value||!confirm("¿Borrar?"))return;
-  await fetch(`${API}/products/${id.value}`,{method:"DELETE"});
-  reset();load();
+function showAdminPanel() {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('adminContent').style.display = 'flex';
+  loadProducts();
 }
 
-function reset(){
-  id.value="";name.value="";desc.value="";
-  images.value="";preview.innerHTML="";
+document.getElementById('loginPass').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') doLogin();
+});
+
+// ===== LÓGICA DEL ADMIN =====
+let products = [];
+
+function loadProducts() {
+  fetch("https://dombet-backend.onrender.com/products")
+  .then(r => r.json())
+  .then(d => {
+    products = d;
+    renderAdminList();
+  });
+}
+
+function formatCurrency(value) {
+  return Number(value).toLocaleString('es-PY');
+}
+
+function formatPriceInput(input) {
+  let value = input.value.replace(/\D/g, '');
+  if (value) {
+    value = Number(value).toLocaleString('es-PY');
+  }
+  input.value = value;
+  updatePricePreview();
+}
+
+function updatePricePreview() {
+  const priceInput = document.getElementById('prodPrice').value.replace(/\./g, '');
+  const discountInput = document.getElementById('prodDiscount').value;
+  const previewDiv = document.getElementById('pricePreview');
+  
+  const price = Number(priceInput) || 0;
+  const discount = Number(discountInput) || 0;
+  
+  if (price > 0) {
+    if (discount > 0) {
+      const finalPrice = price - (price * (discount / 100));
+      previewDiv.innerHTML = `Final: <span>Gs. ${formatCurrency(finalPrice)}</span> (-${discount}%)`;
+    } else {
+      previewDiv.innerHTML = `Final: <span>Gs. ${formatCurrency(price)}</span>`;
+    }
+  } else {
+    previewDiv.innerHTML = '';
+  }
+}
+
+function renderAdminList(items = products) {
+  const container = document.getElementById('adminList');
+  container.innerHTML = "";
+  items.forEach(p => {
+    const price = Number(p.price);
+    const discount = Number(p.discount || 0);
+    let priceHtml = '';
+
+    if (discount > 0) {
+      const finalPrice = price - (price * (discount / 100));
+      priceHtml = `
+        <div class="p-price-container">
+          <span class="p-price-original">Gs. ${formatCurrency(price)}</span>
+          <span class="p-price-final">Gs. ${formatCurrency(finalPrice)} (-${discount}%)</span>
+        </div>
+      `;
+    } else {
+      priceHtml = `<div class="p-price-normal">Gs. ${formatCurrency(price)}</div>`;
+    }
+
+    container.innerHTML += `
+      <div class="product-item">
+        <img src="${p.image_main}" class="p-img">
+        <div class="p-info">
+          <div class="p-name">${p.name}</div>
+          ${priceHtml}
+        </div>
+        <div class="p-actions">
+          <button class="btn-icon btn-edit" onclick="editProduct(${p.id})">
+            <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+          </button>
+          <button class="btn-icon btn-del" onclick="deleteProduct(${p.id})">
+            <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+          </button>
+        </div>
+      </div>
+    `;
+  });
+}
+
+function filterAdminList() {
+  const term = document.getElementById('adminSearch').value.toLowerCase();
+  const filtered = products.filter(p => p.name.toLowerCase().includes(term));
+  renderAdminList(filtered);
+}
+
+function resetForm() {
+  document.getElementById('prodId').value = "";
+  document.getElementById('prodName').value = "";
+  document.getElementById('prodPrice').value = "";
+  document.getElementById('prodDiscount').value = "";
+  document.getElementById('prodImg').value = "";
+  document.getElementById('prodThumb1').value = "";
+  document.getElementById('prodThumb2').value = "";
+  document.getElementById('prodThumb3').value = "";
+  document.getElementById('prodDesc').value = "";
+  document.getElementById('formTitle').innerText = "Nuevo Producto";
+  document.getElementById('pricePreview').innerHTML = "";
+}
+
+function editProduct(id) {
+  const p = products.find(x => x.id === id);
+  if(!p) return;
+  document.getElementById('prodId').value = p.id;
+  document.getElementById('prodName').value = p.name;
+  document.getElementById('prodPrice').value = Number(p.price).toLocaleString('es-PY');
+  document.getElementById('prodDiscount').value = p.discount;
+  document.getElementById('prodImg').value = p.image_main;
+  document.getElementById('prodThumb1').value = p.image_thumb1 || "";
+  document.getElementById('prodThumb2').value = p.image_thumb2 || "";
+  document.getElementById('prodThumb3').value = p.image_thumb3 || "";
+  document.getElementById('prodDesc').value = p.description;
+  document.getElementById('formTitle').innerText = "Editar Producto";
+  updatePricePreview();
+}
+
+function saveProduct() {
+  const id = document.getElementById('prodId').value;
+  const rawPrice = document.getElementById('prodPrice').value.replace(/\./g, '');
+  
+  const data = {
+    name: document.getElementById('prodName').value,
+    price: rawPrice,
+    discount: document.getElementById('prodDiscount').value,
+    image_main: document.getElementById('prodImg').value,
+    image_thumb1: document.getElementById('prodThumb1').value,
+    image_thumb2: document.getElementById('prodThumb2').value,
+    image_thumb3: document.getElementById('prodThumb3').value,
+    description: document.getElementById('prodDesc').value
+  };
+
+  const method = id ? 'PUT' : 'POST';
+  const url = id ? `https://dombet-backend.onrender.com/products/${id}` : `https://dombet-backend.onrender.com/products`;
+
+  fetch(url, {
+    method: method,
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  })
+  .then(r => r.json())
+  .then(() => {
+    alert("Guardado correctamente");
+    resetForm();
+    loadProducts();
+  })
+  .catch(e => alert("Error: " + e));
+}
+
+function deleteProduct(id) {
+  if(!confirm("¿Seguro que quieres eliminar este producto?")) return;
+  fetch(`https://dombet-backend.onrender.com/products/${id}`, { method: 'DELETE' })
+  .then(() => {
+    loadProducts();
+  });
 }
 </script>
 
