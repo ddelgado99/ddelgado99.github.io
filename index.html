@@ -5,186 +5,2006 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>DOMBET INFORMÁTICA</title>
 
+<!-- FUENTE MONTSERRAT (GOOGLE FONTS) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+/* ===== RESET Y GENERAL ===== */
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
 body{
   margin:0;
-  font-family:Arial, sans-serif;
-  background:#fff;
-  color:#111;
-  padding-bottom:80px;
+  font-family: 'Montserrat', sans-serif;
+  background:#ffffff;
+  overflow-x: hidden;
+  padding-bottom: 80px;
+  color: #333;
 }
 
-/* ================= HEADER ================= */
+/* ANIMACIÓN REBOTE (ENTRADA) */
+@keyframes elegantBounce {
+  0% { opacity: 0; transform: scale(0.9); }
+  70% { transform: scale(1.03); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* ===== HEADER ===== */
 header{
   background:#0a1a3a;
   color:#fff;
-  padding:14px 24px;
-  display:grid;
-  grid-template-columns:auto 1fr auto;
+  padding:15px 20px; /* Un poco más de espacio */
+  display:flex;
+  flex-wrap: wrap;
   align-items:center;
-  gap:20px;
+  justify-content:space-between;
   position:sticky;
   top:0;
   z-index:1000;
-  box-shadow:0 4px 20px rgba(0,0,0,.15);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15); /* Sombra más sofisticada */
+  gap: 15px;
 }
 
-/* LOGO */
+/* LOGO REDISEÑADO: MODERNO Y SOFISTICADO */
 .logo{
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-}
-.logo img{
-  height:46px;
-  width:auto;
-  object-fit:contain;
+  cursor:pointer; 
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  width: max-content;
+  animation: elegantBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  position: relative;
+  z-index: 1002;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.3s;
 }
 
-/* BUSCADOR CENTRADO */
-.search-container{
-  width:100%;
-  max-width:520px;
-  margin:auto;
+.brand{
+  font-size: 26px;
+  font-weight: 800; /* Extra Bold */
+  line-height: 0.9; 
+  letter-spacing: -0.5px; /* Letras más juntas para modernidad */
+  text-align: left;
+  background: linear-gradient(to right, #ffffff, #e0e7ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.sub{
+  display: block;
+  width: 100%;
+  font-size: 9px; 
+  font-weight: 300; /* Light para contraste */
+  opacity: 0.9;
+  margin-top: 4px;
+  letter-spacing: 4px; /* Mucho espaciado para elegancia */
+  text-transform: uppercase;
+  text-align: justify;
+  text-align-last: justify;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  order: 2;
+  position: relative;
+  z-index: 1002; 
+}
+
+/* ICONO DEL CARRITO */
+.cart-trigger {
+  position: relative;
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  outline: none;
+}
+.cart-trigger svg { width: 26px; height: 26px; fill: white; pointer-events: none; }
+.cart-count {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: #d32f2f;
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.search-container {
+  flex-grow: 1;
+  order: 3;
+  width: 100%;
+  position: relative;
+  z-index: 1001;
 }
 
 .search-box{
-  display:flex;
-  background:#f5f5f5;
-  border-radius:6px;
-  overflow:hidden;
-  border:1px solid #eee;
+  display: flex;
+  background: rgba(255,255,255,0.1); /* Transparencia moderna */
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.2);
+  width: 100%;
+  transition: background 0.3s;
 }
+.search-box:focus-within { background: rgba(255,255,255,0.2); }
+
 .search-box input{
-  flex:1;
-  padding:11px 14px;
-  border:none;
-  outline:none;
-  font-size:14px;
+  flex-grow: 1;
+  padding: 10px 15px;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 14px;
+  color: #fff;
+  min-width: 0;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
 }
-.search-btn{
-  border:none;
-  background:transparent;
-  padding:0 14px;
-  cursor:pointer;
+.search-box input::placeholder { color: rgba(255,255,255,0.6); }
+
+.search-btn {
+  background: transparent;
+  border: none;
+  padding: 0 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.search-btn svg { fill: rgba(255,255,255,0.8); width: 18px; height: 18px; }
+
+/* MEDIA QUERY PARA ESCRITORIO (PC) */
+@media (min-width: 768px) {
+  header { 
+    padding: 15px 50px; 
+    flex-wrap: nowrap; 
+    gap: 40px; 
+    position: sticky;
+  }
+  
+  .brand { font-size: 32px; }
+  .sub { font-size: 11px; letter-spacing: 6px; } 
+  
+  .search-container { 
+    order: unset; 
+    position: relative;
+    left: auto; top: auto; transform: none;
+    width: 100%;
+    max-width: 500px;
+    margin: 0;
+  }
+  
+  .search-box { background: #f5f5f5; border: 1px solid #eee; }
+  .search-box input { color: #333; }
+  .search-box input::placeholder { color: #999; }
+  .search-btn svg { fill: #666; }
+  
+  .header-right { order: unset; gap: 25px; }
 }
 
-/* CARRITO DERECHA */
-.header-right{
-  display:flex;
-  justify-content:flex-end;
-}
-
-.cart-trigger{
-  background:none;
-  border:none;
-  cursor:pointer;
-  position:relative;
-}
-.cart-trigger svg{
-  width:26px;
-  height:26px;
-  fill:#fff;
-}
-.cart-count{
+.search-results{
   position:absolute;
-  top:-5px;
-  right:-6px;
-  background:#d32f2f;
-  color:#fff;
-  font-size:10px;
-  font-weight:700;
-  width:16px;
-  height:16px;
-  border-radius:50%;
+  top:100%;
+  left: 0;
+  right: 0;
+  background:#fff;
+  border-radius: 0 0 6px 6px;
+  box-shadow:0 10px 25px rgba(0,0,0,.15);
+  display:none;
+  z-index: 1001;
+  max-height: 300px;
+  overflow-y: auto;
+  border-top: 1px solid #eee;
+}
+.search-item{
   display:flex;
   align-items:center;
-  justify-content:center;
+  gap:15px;
+  padding:15px;
+  cursor:pointer;
+  border-bottom: 1px solid #f5f5f5;
+  transition: background 0.2s;
+}
+.search-item:hover{background:#f9f9f9}
+.search-item img{width:40px;height:40px;object-fit:contain}
+.search-item div { color: #333; font-weight: 600; font-size: 14px; }
+
+/* ===== HERO SECTION ===== */
+.hero-section {
+  background: #051025;
+  padding: 10px 0;
+  text-align: center;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
-/* ================= HERO ================= */
-.hero-section{
-  background:#051025;
-  padding:12px 0;
-  text-align:center;
+.hero-title {
+  font-size: 10px;
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: 3px;
+  text-transform: uppercase; 
+  color: #a5b4fc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
 }
-.hero-title{
-  font-size:11px;
-  font-weight:700;
-  letter-spacing:4px;
-  color:#a5b4fc;
-  text-transform:uppercase;
+
+.hero-title::before, .hero-title::after {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 1px;
+  background: rgba(255,255,255,0.15);
 }
 
-/* ================= MOBILE ================= */
-@media(max-width:767px){
+@media (min-width: 768px) {
+  .hero-section { padding: 15px 0; }
+  .hero-title { font-size: 12px; letter-spacing: 5px; }
+  .hero-title::before, .hero-title::after { width: 80px; }
+}
 
-  header{
-    grid-template-columns:1fr;
-    text-align:center;
-    gap:12px;
-  }
+/* ===== BARRA DE FILTROS ===== */
+.filter-bar {
+  background: #fff;
+  padding: 10px 15px;
+  display: none; /* OCULTO POR DEFECTO */
+  justify-content: flex-end;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  max-width: 1400px;
+  margin: 0 auto;
+  position: sticky;
+  top: 70px; /* Ajustado por el header más alto */
+  z-index: 900;
+  gap: 10px;
+}
 
-  .logo{
-    justify-content:center;
-  }
+.sort-label {
+  font-size: 11px; 
+  font-weight: 700;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px; 
+}
 
-  .logo img{
-    height:42px;
-  }
+.sort-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  padding: 6px 10px; 
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
 
-  .search-container{
-    max-width:100%;
-  }
+.sort-icon { width: 16px; height: 16px; fill: #555; }
 
-  .header-right{
-    position:absolute;
-    right:16px;
-    top:16px;
-  }
+.sort-select {
+  border: none;
+  background: transparent;
+  font-size: 13px;
+  color: #333;
+  font-weight: 600;
+  outline: none;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+}
 
-  .hero-title{
-    font-size:10px;
-    letter-spacing:2px;
-    padding:0 20px;
-    line-height:1.4;
+/* ===== SECCIÓN DE OFERTAS ===== */
+.offers-section {
+  background: #f9f9f9;
+  padding: 30px 0;
+  overflow: hidden;
+  border-bottom: 1px solid #eee;
+  display: none;
+  user-select: none;
+}
+
+.offers-header {
+  max-width: 1400px;
+  margin: 0 auto 20px auto;
+  padding: 0 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.offers-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: #111;
+  text-transform: uppercase;
+  letter-spacing: -0.5px;
+  margin: 0;
+}
+
+.offers-track-container {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  cursor: grab;
+  touch-action: pan-y; 
+}
+.offers-track-container:active {
+  cursor: grabbing;
+}
+
+.offers-track {
+  display: flex;
+  gap: 20px;
+  width: max-content;
+  padding: 0 15px;
+  will-change: transform;
+}
+
+.offer-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+  border: 1px solid #f0f0f0;
+  width: 200px;
+  flex-shrink: 0;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.3s ease;
+}
+.offer-card:hover { transform: translateY(-5px); }
+
+.offer-card img {
+  width: 100%;
+  height: 140px;
+  object-fit: contain;
+  margin-bottom: 12px;
+  pointer-events: none;
+}
+
+.offer-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+  height: 36px;
+  overflow: hidden;
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.offer-price-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.offer-old { font-size: 11px; text-decoration: line-through; color: #999; font-weight: 500; }
+.offer-new { font-size: 16px; font-weight: 800; color: #d32f2f; }
+
+.offer-badge {
+  position: absolute;
+  top: 10px; left: 10px;
+  background: #d32f2f; color: white;
+  font-size: 10px; font-weight: 700;
+  padding: 4px 8px; border-radius: 4px;
+  z-index: 2;
+  box-shadow: 0 2px 5px rgba(211, 47, 47, 0.3);
+}
+
+@media (min-width: 768px) {
+  .offer-card { width: 240px; }
+  .offer-card img { height: 160px; }
+  .offer-name { font-size: 14px; }
+  .offer-new { font-size: 18px; }
+}
+
+
+/* ===== LISTADO ===== */
+.products{
+  display:grid;
+  grid-template-columns: repeat(2, 1fr); 
+  gap: 15px;
+  padding: 15px;
+  max-width: 1400px;
+  margin: auto;
+}
+
+@media (min-width: 768px) {
+  .products { 
+    gap: 30px; 
+    padding: 40px; 
+    grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); 
   }
 }
+
+.card{
+  background:#fff;
+  border-radius:12px;
+  padding:15px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.04); 
+  cursor:pointer;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #f0f0f0; 
+  position: relative;
+  height: 100%;
+  animation: elegantBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+}
+
+.card:hover { 
+  box-shadow: 0 15px 30px rgba(0,0,0,0.1); 
+  transform: translateY(-5px) scale(1.02); 
+  z-index: 10;
+  border-color: #e0e0e0;
+}
+
+.card img{
+  width:100%;
+  height:150px;
+  object-fit:contain; 
+  margin-bottom: 15px;
+  mix-blend-mode: multiply;
+}
+@media (min-width: 768px) { .card img { height: 200px; padding: 10px; } }
+
+.name{
+  font-size:13px;
+  height: auto; 
+  min-height: 36px;
+  color: #111; 
+  margin-bottom: 10px; 
+  line-height: 1.4;
+  word-wrap: break-word;
+  font-weight: 700; 
+}
+@media (min-width: 768px) { .name { font-size: 15px; min-height: 42px; } }
+
+.price-container { 
+  display: flex; 
+  flex-direction: column; 
+  align-items: flex-start; 
+  gap: 2px; 
+  margin-bottom: 12px; 
+}
+
+/* ESTILOS DE PRECIO (LISTADO Y DETALLE) */
+.old-price { 
+  color: #9ca3af; 
+  text-decoration: line-through; 
+  font-size: 12px; 
+  font-weight: 500;
+}
+
+.current-price { 
+  font-size: 17px; 
+  font-weight: 700; 
+  color: #111; 
+}
+.price-red { color: #d32f2f; font-weight: 800; } 
+.price-navy { color: #0a1a3a; }
+
+@media (min-width: 768px) { 
+  .old-price { font-size: 13px; }
+  .current-price { font-size: 19px; }
+}
+
+/* ETIQUETA DE DESCUENTO (BADGE) */
+.discount-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: #d32f2f; 
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 4px;
+  z-index: 10;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 5px rgba(211, 47, 47, 0.25);
+}
+
+.btn-list-add{
+  margin-top:auto;
+  width:100%;
+  padding: 10px;
+  background:#0a1a3a;
+  color:#fff;
+  border:none;
+  border-radius:6px;
+  font-weight: 600;
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.2s;
+  white-space: nowrap;
+  font-family: 'Montserrat', sans-serif;
+}
+.btn-list-add:hover { background: #152c5b; transform: translateY(-1px); }
+.btn-list-add svg { width: 14px; height: 14px; fill: white; }
+
+@media (min-width: 768px) {
+  .btn-list-add { padding: 12px; font-size: 13px; gap: 8px; }
+  .btn-list-add svg { width: 16px; height: 16px; }
+}
+
+/* ===== DETALLE ===== */
+.detail{
+  display:none;
+  padding: 0;
+  margin-top: 0;
+}
+.detail-box{
+  max-width:1400px;
+  margin: 0 auto;
+  background:#fff;
+  padding: 20px;
+  border-radius: 0; 
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .detail { padding: 0 40px; } 
+  .detail-box { 
+    padding: 40px; 
+    border-radius: 0; 
+  }
+}
+
+/* TÍTULO DEL PRODUCTO (DETALLE) */
+.detail-title {
+  font-size: 26px;
+  font-weight: 800; 
+  color: #111; 
+  margin: 0 0 15px 0;
+  line-height: 1.2;
+  width: 100%;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+  letter-spacing: -0.5px;
+}
+
+@media (min-width: 768px) {
+  .detail-title {
+    font-size: 36px;
+    margin-bottom: 25px;
+  }
+}
+
+.detail-columns {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+@media (min-width: 768px) {
+  .detail-columns {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 50px;
+  }
+}
+
+/* GALERIA */
+.gallery{
+  flex: 1.2; 
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+@media (min-width: 768px) {
+  .gallery { flex-direction: row; }
+}
+
+/* THUMBS (Vista Detalle Normal) */
+.thumbs{
+  display:none; 
+  gap:10px;
+  justify-content: center; 
+  overflow-x: auto; 
+  order: 2;
+  padding: 5px 0;
+}
+
+@media (min-width: 768px) {
+  .thumbs {
+    display: flex; 
+    flex-direction: column;
+    order: 1;
+    justify-content: flex-start;
+    width: 80px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 500px;
+  }
+}
+
+.thumbs img{
+  width:70px;height:70px;object-fit:contain;
+  border:1px solid #eee;
+  border-radius:6px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: border-color 0.2s;
+}
+.thumbs img.active{border-color:#0a1a3a; border-width: 2px;}
+
+/* MAIN IMG */
+.main-img{
+  flex: 1;
+  width:100%;
+  height: 300px;
+  position:relative;
+  display: flex; align-items: center; justify-content: center;
+  background: #fff;
+  order: 1;
+  touch-action: pan-y;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+@media (min-width: 768px) { 
+  .main-img { height: 500px; order: 2; }
+}
+
+.main-img img{
+  max-width:100%; 
+  max-height:100%; 
+  object-fit:contain; 
+  transition: transform 0.3s ease;
+  cursor: pointer; 
+}
+
+/* FLECHAS DE NAVEGACIÓN */
+.arrow{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  background: rgba(255,255,255,0.8);
+  color: #111;
+  border: 1px solid #eee;
+  font-size: 24px;
+  font-weight: 300;
+  width: 40px; 
+  height: 40px;
+  border-radius: 50%;
+  cursor:pointer;
+  z-index: 2;
+  display: none; 
+  align-items: center; justify-content: center;
+  transition: all 0.2s ease;
+  padding: 0;
+  opacity: 0; 
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+@media (min-width: 768px) { 
+  .arrow { display: flex; } 
+  .main-img:hover .arrow { opacity: 1; }
+}
+
+.arrow:hover { background: #fff; transform: translateY(-50%) scale(1.1); }
+.arrow.left{left: 10px;}
+.arrow.right{right: 10px;}
+
+/* ESTILOS BOTONES ZOOM (SOLO PARA LIGHTBOX AHORA) */
+.zoom-btn {
+  background: rgba(255,255,255,0.9);
+  color: #000;
+  border: 1px solid #eee;
+  font-size: 24px;
+  font-weight: 300;
+  width: 44px; height: 44px;
+  cursor: pointer;
+  display: flex;
+  align-items: center; justify-content: center;
+  transition: all 0.2s;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.zoom-btn:hover { background: #fff; transform: scale(1.05); }
+
+/* ===== INFO COLUMN ===== */
+.info{
+  flex:1; 
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+}
+
+.info-header { margin-bottom: 20px; }
+
+/* PRECIOS EN DETALLE */
+.detail-prices { 
+  padding-bottom: 20px; 
+  border-bottom: 1px solid #eee; 
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.detail-old { 
+  color: #9ca3af; 
+  text-decoration: line-through; 
+  font-size: 18px; 
+  font-weight: 500;
+  display: block; 
+}
+
+.detail-curr { 
+  font-size: 32px; 
+  font-weight: 800; 
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  letter-spacing: -1px;
+}
+@media (min-width: 768px) { .detail-curr { font-size: 40px; } }
+
+/* BADGE EN DETALLE */
+.detail-badge {
+  background: #d32f2f;
+  color: white;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 6px 10px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  vertical-align: middle;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 5px rgba(211, 47, 47, 0.3);
+}
+
+.info-purchase { margin-bottom: 25px; }
+
+.qty-label {
+  font-size: 12px;
+  color: #666;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  text-align: left;
+  letter-spacing: 1px;
+}
+
+.qty-section { 
+  display: flex; 
+  align-items: center; 
+  gap: 25px; 
+  margin-bottom: 15px;
+}
+
+/* SELECTOR DE CANTIDAD (REDISEÑADO: RECTÁNGULO CORTO REDONDEADO) */
+.qty-controls { 
+  display: inline-flex; 
+  align-items: center; 
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px; 
+  overflow: hidden;
+  height: 40px; 
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.qty-btn {
+  width: 40px; 
+  height: 100%;
+  background: transparent;
+  color: #333;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s;
+}
+.qty-btn:hover { background: #f9fafb; }
+.qty-btn:active { background: #f3f4f6; }
+
+.qty-val { 
+  font-size: 16px; 
+  font-weight: 600; 
+  width: 40px; 
+  text-align: center; 
+  color: #111;
+  height: 100%; 
+  line-height: 40px; 
+  user-select: none;
+  border-left: 1px solid #f3f4f6;
+  border-right: 1px solid #f3f4f6;
+}
+
+.total-section { font-size: 16px; font-weight: 700; color: #111; }
+
+.info-actions { margin-bottom: 30px; }
+
+.btn-add-cart, .btn-whats {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-bottom: 12px;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-family: 'Montserrat', sans-serif;
+  transition: all 0.2s;
+}
+.btn-add-cart { background: #0a1a3a; color: white; box-shadow: 0 4px 10px rgba(10, 26, 58, 0.2); }
+.btn-add-cart:hover { background: #152c5b; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(10, 26, 58, 0.3); }
+
+.btn-whats { background: #25D366; color: white; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.2); }
+.btn-whats:hover { background: #22c35e; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(37, 211, 102, 0.3); }
+.btn-whats svg { width: 24px; height: 24px; fill: white; }
+
+.info-details { 
+  border-top: 1px solid #eee; 
+  padding-top: 25px; 
+}
+
+.label-title { font-weight: 800; font-size: 13px; color: #111; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+.desc-text { color: #555; line-height: 1.7; margin-bottom: 25px; font-size: 15px; font-weight: 400; }
+
+/* CAJA DE ENVÍOS */
+.shipping-info {
+  background: #f0fdf4;
+  color: #15803d;
+  padding: 12px 15px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid #dcfce7;
+}
+
+/* ===== CARRITO FLOTANTE Y OVERLAY ===== */
+.cart-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(2px);
+  z-index: 9998;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.cart-overlay.open { display: block; opacity: 1; }
+
+.cart-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 90%;
+  max-width: 420px;
+  height: 100%;
+  background: #fff;
+  z-index: 9999;
+  box-shadow: -5px 0 25px rgba(0,0,0,0.15);
+  transform: translateX(100%);
+  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.cart-panel.open { transform: translateX(0); }
+
+.cart-header {
+  padding: 20px;
+  background: #0a1a3a;
+  color: white;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.cart-header h3 { margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -0.5px; }
+.close-cart { background: none; border: none; color: white; font-size: 30px; cursor: pointer; line-height: 1; opacity: 0.8; transition: opacity 0.2s; }
+.close-cart:hover { opacity: 1; }
+
+.cart-items {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+}
+.cart-empty-msg { text-align: center; color: #999; margin-top: 60px; font-size: 16px; font-weight: 500; }
+
+.cart-item {
+  display: flex; gap: 15px; margin-bottom: 20px;
+  border-bottom: 1px solid #f0f0f0; padding-bottom: 15px;
+}
+.cart-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+.cart-item img { width: 70px; height: 70px; object-fit: contain; border: 1px solid #eee; border-radius: 6px; padding: 5px; }
+.cart-item-info { flex: 1; min-width: 0; }
+.cart-item-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #111; }
+.cart-item-price { color: #2e7d32; font-weight: 700; font-size: 15px; }
+.cart-item-qty { font-size: 13px; color: #777; margin-top: 4px; }
+
+.btn-trash {
+  border: none;
+  background: #fee2e2;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 32px; height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  transition: background 0.2s;
+}
+.btn-trash svg {
+  width: 18px;
+  height: 18px;
+  fill: #ef4444;
+}
+.btn-trash:hover { background: #fecaca; }
+
+.cart-footer {
+  padding: 25px;
+  border-top: 1px solid #eee;
+  background: #f9fafb;
+}
+.cart-total { display: flex; justify-content: space-between; font-size: 20px; font-weight: 800; margin-bottom: 20px; color: #111; }
+.btn-checkout {
+  width: 100%; padding: 16px; background: #25D366; color: white;
+  border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 16px;
+  text-transform: uppercase;
+  font-family: 'Montserrat', sans-serif;
+  box-shadow: 0 4px 10px rgba(37, 211, 102, 0.2);
+  transition: all 0.2s;
+}
+.btn-checkout:hover { background: #22c35e; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(37, 211, 102, 0.3); }
+
+/* ===== LIGHTBOX (CENTRO ESTÉTICO) ===== */
+.lightbox {
+  display: none;
+  position: fixed;
+  z-index: 12000;
+  padding-top: 0;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #ffffff;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  touch-action: none; 
+  padding-left: 90px; 
+}
+
+@media (max-width: 767px) {
+  .lightbox {
+    padding-left: 0;
+    padding-bottom: 0; 
+    justify-content: center;
+  }
+}
+
+.lightbox-content {
+  margin: auto; 
+  display: block;
+  max-width: 90%;
+  max-height: 90vh;
+  object-fit: contain;
+  animation: zoom 0.3s;
+  transition: transform 0.05s linear; /* TRANSICIÓN SUAVE PARA PINCH */
+  transform-origin: center center;
+  will-change: transform;
+}
+
+@media (max-width: 767px) {
+  .lightbox-content {
+    max-width: 100%;
+    max-height: calc(100vh - 100px); 
+  }
+}
+
+@keyframes zoom {
+  from {transform:scale(0.9); opacity: 0;} 
+  to {transform:scale(1); opacity: 1;}
+}
+
+.close-lightbox {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  color: #333;
+  font-size: 50px;
+  font-weight: 200;
+  transition: 0.3s;
+  cursor: pointer;
+  z-index: 12001;
+  line-height: 1;
+}
+.close-lightbox:hover { color: #000; transform: rotate(90deg); }
+
+.lb-arrow {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 60px; height: 60px;
+  background: none;
+  color: #333;
+  font-weight: 200;
+  font-size: 60px;
+  transition: 0.3s ease;
+  user-select: none;
+  display: none;
+  align-items: center; justify-content: center;
+  z-index: 12002;
+}
+.lb-arrow:hover { transform: translateY(-50%) scale(1.1); }
+@media (min-width: 768px) { .lb-arrow { display: flex; } }
+
+.lb-prev { left: 110px; } 
+.lb-next { right: 20px; }
+
+/* ESTILOS MINIATURAS LIGHTBOX (VERTICAL A LA IZQUIERDA) */
+.lightbox-thumbs {
+  display: flex;
+  flex-direction: column; 
+  gap: 15px;
+  margin-top: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 100%;
+  width: 90px;
+  justify-content: center;
+  padding: 20px 10px;
+  background: #f9f9f9;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 12002;
+  border-right: 1px solid #eee;
+}
+
+@media (max-width: 767px) {
+  .lightbox-thumbs {
+    flex-direction: row;
+    width: 100%;
+    height: 80px; 
+    top: auto;
+    bottom: 0;
+    left: 0;
+    border-right: none;
+    border-top: 1px solid #eee;
+    justify-content: center; 
+    align-items: center;
+    padding: 10px;
+    background: rgba(255,255,255,0.95);
+  }
+  .lb-prev { left: 10px; } 
+}
+
+.lightbox-thumbs img {
+  width: 60px; 
+  height: 60px;
+  object-fit: contain;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  opacity: 0.6;
+  background: #fff;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.lightbox-thumbs img.active {
+  border-color: #0a1a3a;
+  opacity: 1;
+  border-width: 2px;
+  transform: scale(1.05);
+}
+
+/* CONTROLES ZOOM LIGHTBOX */
+.lb-zoom-controls {
+  position: absolute;
+  top: 20px;
+  left: 110px; 
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 12003;
+}
+@media (max-width: 767px) {
+  .lb-zoom-controls { display: none; }
+}
+
 </style>
 </head>
 
 <body>
 
+<!-- HEADER -->
 <header>
   <div class="logo" onclick="goHome()">
-    <img src="img/logo-dombet.png" alt="DOMBET Informática">
-  </div>
-
-  <div class="search-container">
-    <div class="search-box">
-      <input placeholder="Buscar productos...">
-      <button class="search-btn">🔍</button>
+    <div class="brand">DOMBET</div>
+    <div class="sub">
+      <span>I</span><span>N</span><span>F</span><span>O</span><span>R</span><span>M</span><span>Á</span><span>T</span><span>I</span><span>C</span><span>A</span>
     </div>
   </div>
 
   <div class="header-right">
-    <button class="cart-trigger">
-      <svg viewBox="0 0 24 24">
-        <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2z"/>
-      </svg>
-      <div class="cart-count">0</div>
+    <button class="cart-trigger" onclick="toggleCart(true)">
+      <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+      <div class="cart-count" id="cartCount">0</div>
     </button>
+  </div>
+
+  <div class="search-container">
+    <div class="search-box">
+      <input id="searchInput" placeholder="Buscar productos..." autocomplete="off">
+      <button class="search-btn">
+        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      </button>
+    </div>
+    <div class="search-results" id="searchResults"></div>
   </div>
 </header>
 
+<!-- HERO SECTION -->
 <div class="hero-section">
-  <h2 class="hero-title">TECNOLOGÍA AL ALCANCE DE TODOS</h2>
+  <div class="hero-content">
+    <h2 class="hero-title">TECNOLOGÍA AL ALCANCE DE TODOS</h2>
+  </div>
 </div>
+
+<!-- BARRA DE FILTROS (ID AGREGADO PARA OCULTAR EN DETALLE) -->
+<div class="filter-bar" id="filterBar" style="display:none;"> <!-- OCULTO POR DEFECTO -->
+  <span class="sort-label">Ordenar por:</span>
+  <div class="sort-container">
+    <svg class="sort-icon" viewBox="0 0 24 24"><path d="M3 18h6v-2H3v2zM3 6v2h18V6H3zm0 7h12v-2H3v2z"/></svg>
+    <select class="sort-select" onchange="sortProducts(this.value)">
+      <option value="asc">Precio más bajo</option>
+      <option value="desc">Precio más alto</option>
+    </select>
+  </div>
+</div>
+
+<!-- SECCIÓN DE OFERTAS -->
+<div class="offers-section" id="offersSection">
+  <div class="offers-header">
+    <h3 class="offers-title">OFERTAS DESTACADAS</h3>
+  </div>
+  <div class="offers-track-container" id="offersContainer">
+    <div class="offers-track" id="offersTrack">
+      <!-- Las ofertas se inyectan aquí con JS -->
+    </div>
+  </div>
+</div>
+
+<div class="products" id="list"></div>
+
+<div class="detail" id="detail">
+  <div class="detail-box">
+    <div class="detail-columns">
+      <div class="gallery">
+        <div class="thumbs" id="thumbs"></div>
+        <div class="main-img" id="mainImgContainer" onclick="openLightbox()">
+          
+          <!-- ZOOM CONTROLS REMOVED FROM HERE -->
+
+          <button class="arrow left" onclick="prevImg(); event.stopPropagation()">‹</button>
+          <img id="mainImg"> <!-- ondblclick REMOVED -->
+          <button class="arrow right" onclick="nextImg(); event.stopPropagation()">›</button>
+        </div>
+      </div>
+
+      <div class="info">
+        <h1 class="detail-title" id="dName"></h1>
+
+        <div class="info-header">
+          <!-- CONTENEDOR DE PRECIOS MODIFICADO -->
+          <div class="detail-prices" id="detailPricesContainer">
+            <!-- Se llena dinámicamente -->
+          </div>
+        </div>
+
+        <div class="info-purchase">
+          <div class="qty-label">Cantidad</div>
+          <div class="qty-section">
+            <div class="qty-controls">
+              <button class="qty-btn" onclick="changeQty(-1)">-</button>
+              <div class="qty-val" id="qty">1</div>
+              <button class="qty-btn" onclick="changeQty(1)">+</button>
+            </div>
+            <div class="total-section">TOTAL: <span id="dTotal"></span></div>
+          </div>
+        </div>
+
+        <div class="info-actions">
+          <button class="btn-add-cart" onclick="addToCart()">AÑADIR A CARRITO</button>
+          <button class="btn-whats" onclick="buyWhats()">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+            Comprar por WhatsApp
+          </button>
+        </div>
+
+        <div class="info-details">
+          <div class="label-title">ESPECIFICACIONES TÉCNICAS</div>
+          <p class="desc-text" id="dDesc"></p>
+          <div class="shipping-info">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="#15803d" style="flex-shrink:0"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+            <span>ENVIOS A TODO EL PARAGUAY A TRAVES DE TRANSPORTADORA</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- OVERLAY Y PANEL DEL CARRITO -->
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart(false)"></div>
+<div class="cart-panel" id="cartPanel">
+  <div class="cart-header">
+    <h3>Mi Carrito</h3>
+    <button class="close-cart" onclick="toggleCart(false)">×</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty-msg">Tu carrito está vacío</div>
+  </div>
+  <div class="cart-footer">
+    <div class="cart-total">
+      <span>Total:</span>
+      <span id="cartTotalDisplay">Gs. 0</span>
+    </div>
+    <button class="btn-checkout" onclick="buyCartWhats()">FINALIZAR PEDIDO (WhatsApp)</button>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" class="lightbox">
+  <span class="close-lightbox" onclick="closeLightbox()">&times;</span>
+  
+  <!-- CONTROLES ZOOM LIGHTBOX (Solo PC) -->
+  <div class="lb-zoom-controls" onclick="event.stopPropagation()">
+    <button class="zoom-btn" onclick="changeZoom(0.5, true)">+</button>
+    <button class="zoom-btn" onclick="changeZoom(-0.5, true)">-</button>
+  </div>
+
+  <a class="lb-arrow lb-prev" onclick="changeLightboxImg(-1, event)">&#10094;</a>
+  
+  <!-- IMAGEN LIGHTBOX (Sin ondblclick para móvil) -->
+  <img class="lightbox-content" id="lightboxImg" ondblclick="if(window.innerWidth > 768) toggleZoom(event, true)">
+  
+  <a class="lb-arrow lb-next" onclick="changeLightboxImg(1, event)">&#10095;</a>
+  <div class="lightbox-thumbs" id="lightboxThumbs"></div>
+</div>
+
+<script>
+let products=[], current=null, imgs=[], imgIndex=0, qty=1;
+let cart = [];
+let discountProducts = [];
+let animationLoopCount = 0;
+
+// Variables para la animación JS
+let carouselPos = 0;
+let carouselSpeed = 0.3; 
+let isDragging = false;
+let startX = 0;
+let currentTranslate = 0;
+let prevTranslate = 0;
+let animationId;
+let trackWidth = 0;
+let itemWidth = 0;
+
+// Variables de Zoom PC
+let currentZoom = 1;
+let currentLbZoom = 1;
+
+// Variables de Zoom Móvil (Pinch & Pan)
+let lbScale = 1;
+let lbPanning = false;
+let lbPointX = 0, lbPointY = 0;
+let lbStartX = 0, lbStartY = 0;
+let lbStartDist = 0;
+
+// Cargar carrito guardado
+const savedCart = localStorage.getItem('dombet_cart');
+if(savedCart){
+  try {
+    cart = JSON.parse(savedCart);
+    updateCartUI();
+  } catch(e){ console.error("Error cargando carrito", e); }
+}
+
+fetch("https://dombet-backend.onrender.com/products")
+.then(r=>r.json())
+.then(d=>{
+  products=d;
+  initOffers(); 
+  
+  const params = new URLSearchParams(window.location.search);
+  const pIndex = params.get('p');
+  if(pIndex !== null && products[pIndex]){
+    openDetail(parseInt(pIndex), false);
+  } else {
+    renderList();
+  }
+});
+
+window.onpopstate = function(event) {
+  const params = new URLSearchParams(window.location.search);
+  const pIndex = params.get('p');
+  if(pIndex !== null && products[pIndex]){
+    openDetail(parseInt(pIndex), false);
+  } else {
+    renderList();
+  }
+};
+
+function formatCurrency(value) {
+  return Number(value).toLocaleString('es-PY');
+}
+
+function renderList(){
+  list.innerHTML="";
+  detail.style.display="none";
+  list.style.display="grid";
+  
+  // MOSTRAR BARRA DE FILTROS EN LISTADO
+  document.getElementById('filterBar').style.display = 'flex';
+
+  window.scrollTo(0,0);
+  
+  const offersSection = document.getElementById('offersSection');
+  if(offersSection) {
+    if(discountProducts.length > 0) {
+        offersSection.style.display = 'block';
+        updateCarouselBatch();
+    } else {
+        offersSection.style.display = 'none';
+    }
+  }
+
+  products.forEach((p,i)=>{
+    const price = Number(p.price);
+    const discount = Number(p.discount || 0);
+    let priceHtml = '';
+    let discountBadge = '';
+
+    if (discount > 0) {
+      const finalPrice = price - (price * (discount / 100));
+      priceHtml = `
+        <span class="old-price">Gs. ${formatCurrency(price)}</span>
+        <span class="current-price price-red">Gs. ${formatCurrency(finalPrice)}</span>
+      `;
+      // BADGE ESTILO "AHORRE X%"
+      discountBadge = `<div class="discount-badge">AHORRE ${discount}%</div>`;
+    } else {
+      priceHtml = `<span class="current-price price-navy">Gs. ${formatCurrency(price)}</span>`;
+    }
+
+    list.innerHTML+=`
+      <div class="card" onclick="openDetail(${i})">
+        ${discountBadge}
+        <img src="${p.image_main}">
+        <div class="name">${p.name}</div>
+        <div class="price-container">
+          ${priceHtml}
+        </div>
+        <button class="btn-list-add" onclick="addToCartFromList(${i}, event)">
+          <svg viewBox="0 0 24 24"><path d="M11 9h2V6h3V4h-3V1h-2v3H8v2h3v3zm-4 9c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2zm-8.9-5h7.45c.75 0 1.41-.41 1.75-1.03l3.86-7.01L19.42 4h-.01l-1.1 2-2.76 5H8.53l-.13-.27L6.16 6l-.95-2-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7l1.1-2z"/></svg>
+          AÑADIR AL CARRITO
+        </button>
+      </div>`
+  })
+}
+
+/* ===== LÓGICA DEL CARRUSEL DE OFERTAS ===== */
+function initOffers() {
+  discountProducts = products.filter(p => p.discount > 0);
+  const section = document.getElementById('offersSection');
+  const trackContainer = document.getElementById('offersContainer');
+  const track = document.getElementById('offersTrack');
+
+  if (discountProducts.length === 0) return;
+
+  trackContainer.addEventListener('touchstart', touchStart);
+  trackContainer.addEventListener('touchmove', touchMove);
+  trackContainer.addEventListener('touchend', touchEnd);
+  
+  trackContainer.addEventListener('mousedown', touchStart);
+  trackContainer.addEventListener('mousemove', touchMove);
+  trackContainer.addEventListener('mouseup', touchEnd);
+  trackContainer.addEventListener('mouseleave', () => {
+    if(isDragging) touchEnd();
+  });
+
+  animationId = requestAnimationFrame(animateCarousel);
+}
+
+function updateCarouselBatch() {
+  const track = document.getElementById('offersTrack');
+  if(!track || discountProducts.length === 0) return;
+  
+  let itemsToRender = [...discountProducts];
+  while (itemsToRender.length < 10) {
+      itemsToRender = [...itemsToRender, ...discountProducts];
+  }
+
+  let content = '';
+  const createCard = (p) => {
+    const originalIndex = products.indexOf(p);
+    const price = Number(p.price);
+    const discount = Number(p.discount);
+    const finalPrice = price - (price * (discount / 100));
+    return `
+      <div class="offer-card" onclick="openDetail(${originalIndex})">
+        <div class="offer-badge">-${discount}%</div>
+        <img src="${p.image_main}">
+        <div class="offer-name">${p.name}</div>
+        <div class="offer-price-box">
+          <span class="offer-old">Gs. ${formatCurrency(price)}</span>
+          <span class="offer-new">Gs. ${formatCurrency(finalPrice)}</span>
+        </div>
+      </div>
+    `;
+  };
+
+  const setHTML = itemsToRender.map(createCard).join('');
+  track.innerHTML = setHTML + setHTML; 
+  
+  setTimeout(() => {
+    trackWidth = track.scrollWidth / 2;
+  }, 100);
+}
+
+function animateCarousel() {
+  if (!isDragging) {
+    carouselPos -= carouselSpeed;
+    checkBoundary(); 
+    setSliderPosition();
+  }
+  animationId = requestAnimationFrame(animateCarousel);
+}
+
+function checkBoundary() {
+  if (trackWidth === 0) return; 
+  if (carouselPos <= -trackWidth) {
+    carouselPos += trackWidth;
+    if(isDragging) prevTranslate += trackWidth; 
+  }
+  if (carouselPos > 0) {
+    carouselPos -= trackWidth;
+    if(isDragging) prevTranslate -= trackWidth; 
+  }
+}
+
+function setSliderPosition() {
+  const track = document.getElementById('offersTrack');
+  if(track) track.style.transform = `translateX(${carouselPos}px)`;
+}
+
+function touchStart(event) {
+  isDragging = true;
+  startX = getPositionX(event);
+  prevTranslate = carouselPos;
+}
+
+function touchMove(event) {
+  if (isDragging) {
+    if(event.type === 'touchmove') {}
+    const currentPosition = getPositionX(event);
+    const diff = currentPosition - startX;
+    carouselPos = prevTranslate + diff;
+    checkBoundary(); 
+    setSliderPosition();
+  }
+}
+
+function touchEnd() {
+  isDragging = false;
+}
+
+function getPositionX(event) {
+  return event.type.includes('mouse') ? event.pageX : event.touches[0].clientX;
+}
+
+function sortProducts(order) {
+  if(!order) return;
+  const getPrice = p => p.discount > 0 ? p.price * (1 - p.discount/100) : p.price;
+  if(order === 'asc') {
+    products.sort((a,b) => getPrice(a) - getPrice(b));
+  } else if(order === 'desc') {
+    products.sort((a,b) => getPrice(b) - getPrice(a));
+  }
+  renderList();
+}
+
+function openDetail(i, pushHistory = true){
+  current=products[i];
+  if(pushHistory) history.pushState({index: i}, '', '?p='+i);
+
+  imgs=[current.image_main,current.image_thumb1,current.image_thumb2,current.image_thumb3].filter(Boolean);
+  imgIndex=0;
+  qty=1;
+  
+  // Reset Zoom
+  currentZoom = 1;
+  updateZoomTransform(false);
+
+  list.style.display="none";
+  detail.style.display="block";
+  
+  // OCULTAR BARRA DE FILTROS EN DETALLE
+  document.getElementById('filterBar').style.display = 'none';
+  
+  const offersSection = document.getElementById('offersSection');
+  if(offersSection) {
+    offersSection.style.display = 'none';
+  }
+
+  dName.innerText=current.name;
+  dDesc.innerText=current.description||"Sin descripción detallada.";
+  
+  const price = Number(current.price);
+  const discount = Number(current.discount || 0);
+  const pricesContainer = document.getElementById('detailPricesContainer');
+  
+  // LÓGICA DE PRECIOS Y BADGE EN DETALLE
+  if (discount > 0) {
+    const finalPrice = price - (price * (discount / 100));
+    pricesContainer.innerHTML = `
+      <span class="detail-old">Gs. ${formatCurrency(price)}</span>
+      <div class="detail-curr price-red">
+        Gs. ${formatCurrency(finalPrice)}
+        <span class="detail-badge">AHORRE ${discount}%</span>
+      </div>
+    `;
+  } else {
+    pricesContainer.innerHTML = `
+      <span class="detail-curr price-navy">Gs. ${formatCurrency(price)}</span>
+    `;
+  }
+  
+  updateTotalDisplay();
+  updateQtyDisplay();
+
+  mainImg.src=imgs[0];
+  thumbs.innerHTML="";
+  imgs.forEach((img,idx)=>{
+    thumbs.innerHTML+=`<img src="${img}" class="${idx===0?'active':''}" onclick="setImg(${idx})">`
+  });
+  
+  window.scrollTo(0,0);
+}
+
+function setImg(i){
+  imgIndex=i;
+  
+  // Reset zooms al cambiar imagen
+  currentZoom = 1;
+  currentLbZoom = 1;
+  
+  // Reset Mobile Zoom
+  lbScale = 1;
+  lbPointX = 0;
+  lbPointY = 0;
+
+  updateZoomTransform(false);
+  updateZoomTransform(true);
+
+  mainImg.src=imgs[i];
+  updateThumbs();
+  
+  const lb = document.getElementById('lightbox');
+  if(lb.style.display === 'flex') {
+    document.getElementById('lightboxImg').src = imgs[i];
+    updateLightboxThumbs();
+  }
+}
+
+function prevImg(){setImg((imgIndex-1+imgs.length)%imgs.length)}
+function nextImg(){setImg((imgIndex+1)%imgs.length)}
+function updateThumbs(){[...thumbs.children].forEach((t,i)=>t.classList.toggle('active',i===imgIndex))}
+
+function changeQty(val){
+  qty += val;
+  if(qty < 1) qty = 1;
+  updateQtyDisplay();
+  updateTotalDisplay();
+}
+function updateQtyDisplay(){ document.getElementById("qty").innerText = qty; }
+function updateTotalDisplay(){
+  const price = Number(current.price);
+  const discount = Number(current.discount || 0);
+  const finalPrice = discount > 0 ? price * (1 - discount/100) : price;
+  const total = finalPrice * qty;
+  document.getElementById("dTotal").innerText = "Gs. " + formatCurrency(total);
+}
+
+/* --- LÓGICA DEL CARRITO --- */
+
+function addToCartFromList(i, event){
+  event.stopPropagation();
+  const prod = products[i];
+  const existing = cart.find(item => item.product.name === prod.name);
+  if(existing){
+    existing.qty += 1;
+  } else {
+    cart.push({ product: prod, qty: 1 });
+  }
+  saveCart();
+  updateCartUI();
+  toggleCart(true);
+}
+
+function addToCart(){
+  const existing = cart.find(item => item.product.name === current.name);
+  if(existing){
+    existing.qty += qty;
+  } else {
+    cart.push({ product: current, qty: qty });
+  }
+  saveCart();
+  updateCartUI();
+  toggleCart(true);
+}
+
+function saveCart(){
+  localStorage.setItem('dombet_cart', JSON.stringify(cart));
+}
+
+function removeFromCart(index, event){
+  if(event) event.stopPropagation();
+  cart.splice(index, 1);
+  saveCart();
+  updateCartUI();
+}
+
+function updateCartUI(){
+  cartCount.innerText = cart.reduce((acc, item) => acc + item.qty, 0);
+  cartItems.innerHTML = "";
+  let total = 0;
+  
+  if(cart.length === 0){
+    cartItems.innerHTML = '<div class="cart-empty-msg">Tu carrito está vacío</div>';
+  } else {
+    cart.forEach((item, index) => {
+      const price = Number(item.product.price);
+      const discount = Number(item.product.discount || 0);
+      const finalPrice = discount > 0 ? price * (1 - discount/100) : price;
+      
+      const itemTotal = finalPrice * item.qty;
+      total += itemTotal;
+      
+      cartItems.innerHTML += `
+        <div class="cart-item">
+          <img src="${item.product.image_main}">
+          <div class="cart-item-info">
+            <div class="cart-item-title">${item.product.name}</div>
+            <div class="cart-item-price">Gs. ${formatCurrency(finalPrice)}</div>
+            <div class="cart-item-qty">Cant: ${item.qty} | Sub: Gs. ${formatCurrency(itemTotal)}</div>
+          </div>
+          <button class="btn-trash" onclick="removeFromCart(${index}, event)">
+            <svg viewBox="0 0 24 24"><path d="M9 3v1H4v2h1v13a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6h1V4h-5V3H9M7 6h10v13H7V6m2 2v9h2V8H9m4 0v9h2V8h-2Z"/></svg>
+          </button>
+        </div>
+      `;
+    });
+  }
+  
+  cartTotalDisplay.innerText = "Gs. " + formatCurrency(total);
+}
+
+function toggleCart(show){
+  const panel = document.getElementById('cartPanel');
+  const overlay = document.getElementById('cartOverlay');
+  
+  if(show){
+    panel.classList.add('open');
+    overlay.classList.add('open');
+  } else {
+    panel.classList.remove('open');
+    overlay.classList.remove('open');
+  }
+}
+
+function buyWhats(){
+  const price = Number(current.price);
+  const discount = Number(current.discount || 0);
+  const finalPrice = discount > 0 ? price * (1 - discount/100) : price;
+  const total = finalPrice * qty;
+  
+  const msg = `Hola! Quiero comprar:\n*${current.name}*\nCantidad: ${qty}\nTotal: Gs. ${formatCurrency(total)}`;
+  window.open("https://wa.me/595985697384?text="+encodeURIComponent(msg));
+}
+
+function buyCartWhats(){
+  if(cart.length === 0) return;
+  let msg = "Hola! Quiero finalizar mi pedido del carrito:\n\n";
+  let total = 0;
+  cart.forEach(item => {
+    const price = Number(item.product.price);
+    const discount = Number(item.product.discount || 0);
+    const finalPrice = discount > 0 ? price * (1 - discount/100) : price;
+    const sub = finalPrice * item.qty;
+    total += sub;
+    msg += `- ${item.product.name} (x${item.qty}): Gs. ${formatCurrency(sub)}\n`;
+  });
+  msg += `\n*TOTAL FINAL: Gs. ${formatCurrency(total)}*`;
+  window.open("https://wa.me/595985697384?text="+encodeURIComponent(msg));
+}
+
+function goHome(){
+  history.pushState(null, '', window.location.pathname);
+  renderList();
+  const offersSection = document.getElementById('offersSection');
+  if(offersSection && products.some(p => p.discount > 0)) {
+    offersSection.style.display = 'block';
+  }
+}
+
+searchInput.oninput=e=>{
+  const t=e.target.value.toLowerCase()
+  if(!t){searchResults.style.display='none';return}
+  const f=products.filter(p=>p.name.toLowerCase().includes(t))
+  searchResults.innerHTML=f.map(p=>{
+    const i=products.indexOf(p)
+    return `<div class="search-item" onclick="openDetail(${i});searchResults.style.display='none'">
+      <img src="${p.image_main}">
+      <div>${p.name}</div>
+    </div>`
+  }).join('')
+  searchResults.style.display='block'
+}
+
+document.addEventListener('click', function(e) {
+  if (!document.querySelector('.search-container').contains(e.target)) {
+    searchResults.style.display = 'none';
+  }
+});
+
+/* ===== LIGHTBOX LOGIC ===== */
+function openLightbox() {
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lightboxImg');
+  const lbThumbs = document.getElementById('lightboxThumbs');
+  
+  lb.style.display = 'flex';
+  lbImg.src = imgs[imgIndex];
+  
+  // Reset zoom PC
+  currentLbZoom = 1;
+  
+  // Reset zoom Mobile
+  lbScale = 1;
+  lbPointX = 0;
+  lbPointY = 0;
+  
+  updateZoomTransform(true);
+
+  lbThumbs.innerHTML = "";
+  imgs.forEach((img, idx) => {
+    lbThumbs.innerHTML += `<img src="${img}" class="${idx===imgIndex?'active':''}" onclick="event.stopPropagation(); setImg(${idx})">`;
+  });
+  
+  document.body.style.overflow = 'hidden';
+}
+
+function updateLightboxThumbs() {
+  const lbThumbs = document.getElementById('lightboxThumbs');
+  if(lbThumbs.children.length > 0) {
+    [...lbThumbs.children].forEach((t,i)=>t.classList.toggle('active',i===imgIndex));
+  }
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function changeLightboxImg(step, event) {
+  if(event) event.stopPropagation();
+  let newIndex = (imgIndex + step + imgs.length) % imgs.length;
+  setImg(newIndex);
+  document.getElementById('lightboxImg').src = imgs[newIndex];
+}
+
+document.addEventListener('keydown', function(e) {
+  if(document.getElementById('lightbox').style.display === 'flex') {
+    if(e.key === 'Escape') closeLightbox();
+    if(e.key === 'ArrowLeft') changeLightboxImg(-1);
+    if(e.key === 'ArrowRight') changeLightboxImg(1);
+  }
+});
+
+/* SWIPE LOGIC (MODIFICADO PARA NO INTERFERIR CON ZOOM) */
+let touchStartX = 0;
+let touchEndX = 0;
+
+function handleTouchStart(e) {
+  if(e.touches.length > 1) return; // Ignorar si son 2 dedos (zoom)
+  touchStartX = e.changedTouches[0].screenX;
+}
+
+function handleTouchEnd(e, callbackNext, callbackPrev) {
+  if(lbScale > 1) return; // Si hay zoom, no hacer swipe de imagen
+  
+  touchEndX = e.changedTouches[0].screenX;
+  if (touchStartX - touchEndX > 50) callbackNext();
+  if (touchEndX - touchStartX > 50) callbackPrev();
+}
+
+const mainImgContainer = document.getElementById('mainImgContainer');
+mainImgContainer.addEventListener('touchstart', handleTouchStart);
+mainImgContainer.addEventListener('touchend', e => handleTouchEnd(e, nextImg, prevImg));
+
+const lightbox = document.getElementById('lightbox');
+lightbox.addEventListener('touchstart', handleTouchStart);
+lightbox.addEventListener('touchend', e => handleTouchEnd(e, () => changeLightboxImg(1), () => changeLightboxImg(-1)));
+
+
+/* ===== ZOOM LOGIC (PC & MOBILE) ===== */
+
+// Zoom PC (Botones)
+function changeZoom(delta, isLightbox = false) {
+  if(event) event.stopPropagation();
+  
+  if(isLightbox) {
+    currentLbZoom += delta;
+    if(currentLbZoom < 1) currentLbZoom = 1;
+    if(currentLbZoom > 3) currentLbZoom = 3;
+    updateZoomTransform(true);
+  } else {
+    currentZoom += delta;
+    if(currentZoom < 1) currentZoom = 1;
+    if(currentZoom > 3) currentZoom = 3;
+    updateZoomTransform(false);
+  }
+}
+
+// Zoom PC (Doble Click)
+function toggleZoom(event, isLightbox = false) {
+  if(event) event.stopPropagation();
+  
+  if(isLightbox) {
+    currentLbZoom = (currentLbZoom === 1) ? 2 : 1;
+    updateZoomTransform(true);
+  } else {
+    currentZoom = (currentZoom === 1) ? 2 : 1;
+    updateZoomTransform(false);
+  }
+}
+
+function updateZoomTransform(isLightbox) {
+  if(isLightbox) {
+    const img = document.getElementById('lightboxImg');
+    if(img) {
+      // Si es móvil, usamos las variables de touch, si es PC usamos currentLbZoom
+      if(window.innerWidth <= 768) {
+         img.style.transform = `translate(${lbPointX}px, ${lbPointY}px) scale(${lbScale})`;
+      } else {
+         img.style.transform = `scale(${currentLbZoom})`;
+      }
+    }
+  } else {
+    const img = document.getElementById('mainImg');
+    if(img) img.style.transform = `scale(${currentZoom})`;
+  }
+}
+
+/* ===== MOBILE PINCH & PAN LOGIC (NUEVO - NATURAL) ===== */
+const lbImgElement = document.getElementById('lightboxImg');
+
+lbImgElement.addEventListener('touchstart', function(e) {
+  // SEGURIDAD: Solo permitir si el lightbox está visible
+  if(document.getElementById('lightbox').style.display !== 'flex') return;
+
+  if (e.touches.length === 2) {
+    // Inicio Pinch (2 dedos)
+    lbPanning = false;
+    lbStartDist = Math.hypot(
+      e.touches[0].pageX - e.touches[1].pageX,
+      e.touches[0].pageY - e.touches[1].pageY
+    );
+  } else if (e.touches.length === 1 && lbScale > 1) {
+    // Inicio Pan (1 dedo y ya hay zoom)
+    lbPanning = true;
+    lbStartX = e.touches[0].pageX - lbPointX;
+    lbStartY = e.touches[0].pageY - lbPointY;
+  }
+});
+
+lbImgElement.addEventListener('touchmove', function(e) {
+  // SEGURIDAD: Solo permitir si el lightbox está visible
+  if(document.getElementById('lightbox').style.display !== 'flex') return;
+
+  e.preventDefault(); // Evitar scroll del navegador
+
+  if (e.touches.length === 2) {
+    // Moviendo Pinch
+    const dist = Math.hypot(
+      e.touches[0].pageX - e.touches[1].pageX,
+      e.touches[0].pageY - e.touches[1].pageY
+    );
+    
+    // Calcular nuevo scale relativo (Más suave)
+    const delta = dist / lbStartDist;
+    let newScale = lbScale * delta;
+    
+    // Limites visuales temporales
+    if (newScale < 1) newScale = 1;
+    if (newScale > 4) newScale = 4;
+    
+    // Aplicar visualmente
+    lbImgElement.style.transform = `translate(${lbPointX}px, ${lbPointY}px) scale(${newScale})`;
+    
+    // Guardamos referencia para el touchend
+    lbImgElement.dataset.tempScale = newScale;
+
+  } else if (e.touches.length === 1 && lbPanning && lbScale > 1) {
+    // Moviendo Pan (1:1 Movement - Natural)
+    const currentX = e.touches[0].pageX;
+    const currentY = e.touches[0].pageY;
+    
+    // Calcular nueva posición basada en el desplazamiento desde el inicio del toque
+    const diffX = currentX - (lbStartX + lbPointX); // Diferencia actual
+    const diffY = currentY - (lbStartY + lbPointY);
+    
+    // Actualizar posición absoluta
+    // Nota: lbStartX ya contiene el offset inicial relativo al punto, así que:
+    lbPointX = currentX - lbStartX;
+    lbPointY = currentY - lbStartY;
+
+    lbImgElement.style.transform = `translate(${lbPointX}px, ${lbPointY}px) scale(${lbScale})`;
+  }
+});
+
+lbImgElement.addEventListener('touchend', function(e) {
+  // SEGURIDAD: Solo permitir si el lightbox está visible
+  if(document.getElementById('lightbox').style.display !== 'flex') return;
+
+  // Si estábamos haciendo pinch, guardamos el scale final
+  if (lbImgElement.dataset.tempScale) {
+    lbScale = parseFloat(lbImgElement.dataset.tempScale);
+    delete lbImgElement.dataset.tempScale;
+  }
+
+  // Rebote si es menor a 1
+  if (lbScale < 1) {
+    lbScale = 1;
+    lbPointX = 0;
+    lbPointY = 0;
+    lbImgElement.style.transition = "transform 0.3s ease";
+    lbImgElement.style.transform = `translate(0px, 0px) scale(1)`;
+    setTimeout(() => { lbImgElement.style.transition = "transform 0.05s linear"; }, 300);
+  }
+  
+  lbPanning = false;
+});
+
+</script>
 
 </body>
 </html>
