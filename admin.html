@@ -29,7 +29,7 @@
 
 body {
   margin: 0;
-  font-family: 'Montserrat', 'Segoe UI', system-ui, sans-serif; /* Fuente actualizada */
+  font-family: 'Montserrat', 'Segoe UI', system-ui, sans-serif;
   background: var(--bg);
   color: var(--text);
   height: 100vh;
@@ -90,11 +90,11 @@ header {
 /* LOGO SVG EN HEADER */
 .brand-logo { height: 40px; width: auto; display: block; }
 
-/* BUSCADOR SOFISTICADO (Estilo Index) */
+/* BUSCADOR SOFISTICADO */
 .admin-search-box {
   display: flex; align-items: center;
-  background: #162a4f; /* Fondo Azul Oscuro Sofisticado */
-  border-radius: 12px; /* Bordes redondeados modernos */
+  background: #162a4f; 
+  border-radius: 12px; 
   width: 100%; max-width: 500px; height: 42px; 
   border: 1px solid #2d4a86;
   padding: 0 15px;
@@ -103,7 +103,7 @@ header {
 .admin-search-box:focus-within {
   background: #1e3a6e;
   border-color: var(--primary);
-  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.3); /* Glow azul cian */
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.3);
 }
 .search-icon-svg { width: 18px; height: 18px; fill: var(--primary); margin-right: 10px; }
 .admin-search-box input {
@@ -198,6 +198,20 @@ header {
 }
 .btn-clear:hover { border-color: var(--text); color: var(--text); }
 
+/* ESTILO PARA LA PREVIA DEL DESCUENTO */
+#discountPreview {
+  display: none; 
+  margin-top: 8px; 
+  font-size: 13px; 
+  color: var(--success); 
+  font-weight: 700; 
+  background: rgba(16, 185, 129, 0.1); 
+  padding: 10px; 
+  border-radius: 6px;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  text-align: center;
+}
+
 @media (max-width: 900px) {
   .main-container { flex-direction: column; }
   .product-list { height: 50vh; border-right: none; border-bottom: 1px solid var(--border); }
@@ -216,11 +230,8 @@ header {
   <symbol id="logo-dombet-admin" viewBox="0 0 300 50">
     <!-- Icon: Microchip Minimalista -->
     <g transform="translate(0, 8)">
-      <!-- Chip Outline -->
       <rect x="0" y="0" width="34" height="34" rx="4" fill="none" stroke="#38bdf8" stroke-width="2.5"/>
-      <!-- Inner Core -->
       <rect x="11" y="11" width="12" height="12" rx="1" fill="#38bdf8"/>
-      <!-- Pins/Traces -->
       <path d="M17 0 V6 M17 28 V34 M0 17 H6 M28 17 H34" stroke="#38bdf8" stroke-width="2.5"/>
       <path d="M7 0 V6 M7 28 V34 M0 7 H6 M28 7 H34" stroke="#38bdf8" stroke-width="2.5"/>
       <path d="M27 0 V6 M27 28 V34 M0 27 H6 M28 27 H34" stroke="#38bdf8" stroke-width="2.5"/>
@@ -229,7 +240,6 @@ header {
     <!-- Text Group -->
     <text x="50" y="32" font-family="'Montserrat', sans-serif" font-weight="800" font-size="24" fill="#38bdf8" letter-spacing="0.5">DOMBET</text>
     <text x="168" y="30" font-family="'Montserrat', sans-serif" font-weight="300" font-size="24" fill="#ffffff">|</text>
-    <!-- Adaptado para ADMIN -->
     <text x="182" y="32" font-family="'Montserrat', sans-serif" font-weight="400" font-size="24" fill="#ffffff" letter-spacing="1">ADMIN</text>
   </symbol>
 </svg>
@@ -238,7 +248,6 @@ header {
   <div class="login-card">
     <svg class="login-logo"><use href="#logo-dombet-admin"></use></svg>
     <input type="text" id="loginUser" class="login-input" placeholder="Usuario">
-    <!-- Se agregó onkeyup para detectar ENTER -->
     <input type="password" id="loginPass" class="login-input" placeholder="Contraseña" onkeyup="if(event.key==='Enter') doLogin()">
     <button class="btn-login" onclick="doLogin()">ENTRAR AL SISTEMA</button>
     <div class="login-error" id="loginError">Credenciales incorrectas</div>
@@ -248,7 +257,6 @@ header {
 <div id="adminContent">
   <header>
     <div class="header-left">
-      <!-- LOGO SVG -->
       <svg class="brand-logo"><use href="#logo-dombet-admin"></use></svg>
       
       <div class="admin-search-box">
@@ -285,11 +293,17 @@ header {
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">Precio (Gs)</label>
-          <input class="form-input" id="prodPrice" type="text" placeholder="0" oninput="formatPriceInput(this)">
+          <!-- Se agrega calculateDiscountPreview() al evento oninput -->
+          <input class="form-input" id="prodPrice" type="text" placeholder="0" oninput="formatPriceInput(this); calculateDiscountPreview()">
         </div>
         <div class="form-group">
           <label class="form-label">Descuento (%)</label>
-          <input class="form-input" id="prodDiscount" type="number" placeholder="0">
+          <!-- Se agrega el evento oninput y el contenedor de previa -->
+          <input class="form-input" id="prodDiscount" type="number" placeholder="0" oninput="calculateDiscountPreview()">
+          
+          <div id="discountPreview">
+            Queda en: Gs. <span id="finalPriceDisplay">0</span>
+          </div>
         </div>
       </div>
 
@@ -356,6 +370,32 @@ function formatPriceInput(input) {
   input.value = value;
 }
 
+// --- NUEVA FUNCIÓN PARA CALCULAR DESCUENTO ---
+function calculateDiscountPreview() {
+  // 1. Obtener precio limpio (sin puntos)
+  const rawPrice = document.getElementById('prodPrice').value.replace(/\./g, '');
+  const price = parseFloat(rawPrice);
+  
+  // 2. Obtener descuento
+  const discount = parseFloat(document.getElementById('prodDiscount').value);
+  
+  const previewBox = document.getElementById('discountPreview');
+  const finalSpan = document.getElementById('finalPriceDisplay');
+
+  // 3. Validar y Calcular
+  if (price > 0 && discount > 0) {
+    const discountAmount = price * (discount / 100);
+    const finalPrice = price - discountAmount;
+    
+    // Mostrar resultado formateado
+    finalSpan.innerText = finalPrice.toLocaleString('es-PY');
+    previewBox.style.display = 'block';
+  } else {
+    // Ocultar si no hay datos suficientes
+    previewBox.style.display = 'none';
+  }
+}
+
 function renderAdminList(items = products) {
   const container = document.getElementById('adminList');
   container.innerHTML = "";
@@ -394,6 +434,9 @@ function resetForm() {
   document.getElementById('prodImages').value = "";
   document.getElementById('prodDesc').value = "";
   document.getElementById('formTitle').innerText = "Nuevo Producto";
+  
+  // Ocultar la previa al limpiar
+  document.getElementById('discountPreview').style.display = 'none';
 }
 
 function editProduct(id) {
@@ -409,6 +452,9 @@ function editProduct(id) {
   
   document.getElementById('prodDesc').value = p.description;
   document.getElementById('formTitle').innerText = "Editar Producto";
+
+  // Calcular la previa inmediatamente al cargar los datos
+  calculateDiscountPreview();
 }
 
 function saveProduct() {
