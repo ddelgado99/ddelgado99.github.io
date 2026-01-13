@@ -30,21 +30,22 @@ body{
   100% { opacity: 1; transform: scale(1); }
 }
 
-/* ===== HEADER ===== */
+/* ===== HEADER (LAYOUT OPTIMIZADO) ===== */
 header {
   background: #0a1a3a;
   color: #fff;
-  padding: 8px 10px;
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  justify-content: space-between;
+  padding: 15px;
   position: sticky;
   top: 0;
   z-index: 1000;
   box-shadow: 0 4px 25px rgba(0,0,0,0.2);
-  gap: 8px;
-  height: 65px;
+  
+  /* Configuración Flex para Móvil (Columna) */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  height: auto; /* Altura automática en móvil */
 }
 
 /* LOGO SVG CONTAINER */
@@ -57,25 +58,27 @@ header {
   animation: elegantBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both;
   text-decoration: none;
   flex-shrink: 0;
-  order: 1; 
-  height: 100%;
+  /* En móvil, el logo manda en el centro */
+  margin: 0 auto;
 }
 
 /* ESTILO DEL SVG EN TIENDA */
 .store-logo {
-  height: 36px; /* Altura ajustada para mantener proporción en móvil */
+  height: 40px; 
   width: auto;
 }
 
-/* HEADER RIGHT (CARRITO) */
+/* HEADER RIGHT (CARRITO) - POSICIÓN ABSOLUTA EN MÓVIL */
 .header-right {
   display: flex;
   align-items: center;
   gap: 5px;
-  z-index: 1002;
-  position: relative;
-  order: 3; 
-  flex-shrink: 0;
+  z-index: 1003;
+  
+  /* Posicionamiento optimizado en móvil */
+  position: absolute;
+  top: 15px;
+  right: 15px;
 }
 
 .cart-trigger {
@@ -88,7 +91,7 @@ header {
   border: none;
   outline: none;
 }
-.cart-trigger svg { width: 26px; height: 26px; fill: white; pointer-events: none; }
+.cart-trigger svg { width: 28px; height: 28px; fill: white; pointer-events: none; }
 .cart-count {
   position: absolute;
   top: -2px;
@@ -107,25 +110,24 @@ header {
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
-/* BUSCADOR (CENTRO) - ESTILO PÍLDORA */
+/* BUSCADOR (CENTRO) - ESTILO RECTÁNGULO REDONDEADO */
 .search-container {
-  flex-grow: 1;
-  order: 2; 
+  width: 100%;
   position: relative;
   z-index: 1001;
-  margin: 0 5px;
-  min-width: 0; 
+  /* En móvil ocupa todo el ancho disponible */
 }
 
 .search-box {
   display: flex;
   background: #f5f5f5; 
-  border-radius: 50px; 
+  /* BORDES REDONDEADOS (RECTÁNGULO SOFISTICADO) */
+  border-radius: 12px; 
   overflow: hidden;
   border: 1px solid #e0e0e0;
   width: 100%;
   transition: all 0.3s ease;
-  height: 38px; 
+  height: 44px; /* Altura cómoda para el dedo */
   align-items: center;
   padding-right: 5px;
 }
@@ -142,7 +144,7 @@ header {
   border: none;
   background: transparent;
   outline: none;
-  font-size: 13px;
+  font-size: 14px;
   color: #333;
   min-width: 0;
   font-family: 'Montserrat', sans-serif;
@@ -153,44 +155,21 @@ header {
 .search-btn {
   background: transparent;
   border: none;
-  padding: 0 8px;
+  padding: 0 12px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
 }
-.search-btn svg { fill: #555; width: 18px; height: 18px; }
+.search-btn svg { fill: #555; width: 20px; height: 20px; }
 
-/* MEDIA QUERY PARA ESCRITORIO (PC) */
-@media (min-width: 768px) {
-  header { 
-    padding: 10px 50px; 
-    gap: 40px; 
-    height: 80px; 
-  }
-  
-  .store-logo {
-    height: 44px; /* Más grande en PC */
-  }
-
-  .search-container { 
-    max-width: 600px;
-    margin: 0;
-  }
-  
-  .search-box { 
-    height: 46px;
-  }
-  
-  .search-box input { font-size: 15px; padding: 0 20px; }
-}
-
+/* RESULTADOS DE BÚSQUEDA */
 .search-results{
   position:absolute;
   top:100%;
-  left: 10px; 
-  right: 10px;
+  left: 0; 
+  right: 0;
   background:#fff;
   border-radius: 12px;
   box-shadow:0 10px 30px rgba(0,0,0,.15);
@@ -205,14 +184,49 @@ header {
   display:flex;
   align-items:center;
   gap:15px;
-  padding:10px;
+  padding:12px;
   cursor:pointer;
   border-bottom: 1px solid #f5f5f5;
   transition: background 0.2s;
 }
 .search-item:hover{background:#f9f9f9}
-.search-item img{width:35px;height:35px;object-fit:contain}
+.search-item img{width:40px;height:40px;object-fit:contain}
 .search-item div { color: #333; font-weight: 600; font-size: 13px; }
+
+/* ===== MEDIA QUERY PARA ESCRITORIO (PC) ===== */
+@media (min-width: 768px) {
+  header { 
+    flex-direction: row; /* Volver a fila en PC */
+    padding: 10px 50px; 
+    gap: 40px; 
+    height: 90px; /* Altura fija en PC */
+    justify-content: space-between;
+  }
+  
+  .logo-container {
+    margin: 0; /* Reset margen */
+  }
+
+  .store-logo {
+    height: 48px; 
+  }
+
+  .header-right {
+    position: static; /* Reset posición absoluta */
+  }
+
+  .search-container { 
+    max-width: 600px;
+    margin: 0 auto; /* Centrado en el espacio disponible */
+    flex-grow: 1;
+  }
+  
+  .search-box { 
+    height: 48px; /* Un poco más alto en PC */
+  }
+  
+  .search-box input { font-size: 15px; padding: 0 20px; }
+}
 
 /* ===== HERO SECTION (OPTIMIZADO) ===== */
 .hero-section {
@@ -268,11 +282,12 @@ header {
   max-width: 1400px;
   margin: 0 auto;
   position: sticky;
-  top: 65px; 
+  /* Ajuste dinámico del sticky según el header */
+  top: 115px; /* Altura aprox header móvil */
   z-index: 900;
   gap: 10px;
 }
-@media (min-width: 768px) { .filter-bar { top: 80px; } }
+@media (min-width: 768px) { .filter-bar { top: 90px; } }
 
 .sort-label {
   font-size: 11px; 
