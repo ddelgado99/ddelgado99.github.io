@@ -34,7 +34,7 @@ body{
 header {
   background: #0a1a3a;
   color: #fff;
-  padding: 8px 10px; /* Padding reducido para ganar espacio en móvil */
+  padding: 8px 10px;
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
@@ -43,7 +43,7 @@ header {
   top: 0;
   z-index: 1000;
   box-shadow: 0 4px 25px rgba(0,0,0,0.2);
-  gap: 8px; /* Gap reducido */
+  gap: 8px;
   height: 65px;
 }
 
@@ -63,9 +63,8 @@ header {
 
 /* ESTILO DEL SVG EN TIENDA */
 .store-logo {
-  height: 42px; /* Tamaño optimizado */
+  height: 36px; /* Altura ajustada para mantener proporción en móvil */
   width: auto;
-  /* El color se define dentro del SVG */
 }
 
 /* HEADER RIGHT (CARRITO) */
@@ -115,25 +114,25 @@ header {
   position: relative;
   z-index: 1001;
   margin: 0 5px;
-  min-width: 0; /* Permite que el input se encoja si es necesario */
+  min-width: 0; 
 }
 
 .search-box {
   display: flex;
   background: #f5f5f5; 
-  border-radius: 50px; /* PÍLDORA REDONDEADA */
+  border-radius: 50px; 
   overflow: hidden;
   border: 1px solid #e0e0e0;
   width: 100%;
   transition: all 0.3s ease;
-  height: 38px; /* Altura cómoda para móvil */
+  height: 38px; 
   align-items: center;
   padding-right: 5px;
 }
 
 .search-box:focus-within { 
   background: #ffffff; 
-  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.3); /* Glow sutil */
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.3); 
   border-color: #38bdf8;
 }
 
@@ -172,7 +171,7 @@ header {
   }
   
   .store-logo {
-    height: 50px; 
+    height: 44px; /* Más grande en PC */
   }
 
   .search-container { 
@@ -190,7 +189,7 @@ header {
 .search-results{
   position:absolute;
   top:100%;
-  left: 10px; /* Ajuste para coincidir con la curva */
+  left: 10px; 
   right: 10px;
   background:#fff;
   border-radius: 12px;
@@ -269,7 +268,7 @@ header {
   max-width: 1400px;
   margin: 0 auto;
   position: sticky;
-  top: 65px; /* Ajustado a la altura del header móvil */
+  top: 65px; 
   z-index: 900;
   gap: 10px;
 }
@@ -1155,28 +1154,25 @@ header {
 
 <body>
 
-<!-- SVG DEFINITION (LOGO CORREGIDO: CHIP + TEXTO ABAJO) -->
+<!-- SVG DEFINITION (LOGO: DOMBET | MARKET + MICROCHIP) -->
 <svg style="display: none;">
-  <symbol id="logo-dombet" viewBox="0 0 220 50">
-    <!-- Icono: Chip/Procesador Geométrico -->
-    <g transform="translate(0, 5)">
-        <!-- Cuerpo del chip -->
-        <rect x="2" y="2" width="36" height="36" rx="6" fill="none" stroke="#38bdf8" stroke-width="2.5" />
-        <!-- Circuitos internos -->
-        <path d="M20 20 L20 10 M20 20 L28 28 M20 20 L12 28" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" />
-        <circle cx="20" cy="20" r="4" fill="#38bdf8" />
-        <!-- Pines externos -->
-        <rect x="16" y="0" width="8" height="2" fill="#38bdf8" />
-        <rect x="16" y="38" width="8" height="2" fill="#38bdf8" />
-        <rect x="0" y="16" width="2" height="8" fill="#38bdf8" />
-        <rect x="38" y="16" width="2" height="8" fill="#38bdf8" />
+  <symbol id="logo-dombet" viewBox="0 0 300 50">
+    <!-- Icon: Microchip Minimalista -->
+    <g transform="translate(0, 8)"> <!-- Centrado verticalmente -->
+      <!-- Chip Outline -->
+      <rect x="0" y="0" width="34" height="34" rx="4" fill="none" stroke="#38bdf8" stroke-width="2.5"/>
+      <!-- Inner Core -->
+      <rect x="11" y="11" width="12" height="12" rx="1" fill="#38bdf8"/>
+      <!-- Pins/Traces -->
+      <path d="M17 0 V6 M17 28 V34 M0 17 H6 M28 17 H34" stroke="#38bdf8" stroke-width="2.5"/>
+      <path d="M7 0 V6 M7 28 V34 M0 7 H6 M28 7 H34" stroke="#38bdf8" stroke-width="2.5"/>
+      <path d="M27 0 V6 M27 28 V34 M0 27 H6 M28 27 H34" stroke="#38bdf8" stroke-width="2.5"/>
     </g>
-    
-    <!-- Texto DOMBET (Azul Tecnológico) -->
-    <text x="50" y="24" font-family="'Montserrat', sans-serif" font-weight="800" font-size="24" fill="#38bdf8" letter-spacing="0.5">DOMBET</text>
-    
-    <!-- Texto INFORMÁTICA (Blanco, DEBAJO de DOMBET) -->
-    <text x="50" y="38" font-family="'Montserrat', sans-serif" font-weight="500" font-size="10" fill="#ffffff" letter-spacing="3">INFORMÁTICA</text>
+
+    <!-- Text Group -->
+    <text x="50" y="32" font-family="'Montserrat', sans-serif" font-weight="800" font-size="24" fill="#38bdf8" letter-spacing="0.5">DOMBET</text>
+    <text x="168" y="30" font-family="'Montserrat', sans-serif" font-weight="300" font-size="24" fill="#ffffff">|</text>
+    <text x="182" y="32" font-family="'Montserrat', sans-serif" font-weight="400" font-size="24" fill="#ffffff" letter-spacing="1">MARKET</text>
   </symbol>
 </svg>
 
