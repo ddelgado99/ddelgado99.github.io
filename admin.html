@@ -10,8 +10,8 @@
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
 :root {
-  --primary: #3b82f6; 
-  --primary-dark: #2563eb;
+  --primary: #1e90ff; /* Azul del logo */
+  --primary-dark: #106ebe;
   --accent: #ef4444; 
   --success: #10b981; 
   --bg: #0f172a; 
@@ -49,7 +49,7 @@ body {
   border: 1px solid var(--border);
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
 }
-.login-logo { width: 180px; height: auto; margin-bottom: 20px; fill: var(--text); }
+.login-logo { width: 200px; height: auto; margin-bottom: 25px; display: inline-block; }
 .login-input { 
   width: 100%; padding: 14px; margin-bottom: 15px; 
   background: var(--input-bg); border: 1px solid var(--border); 
@@ -79,20 +79,20 @@ header {
 .header-left { display: flex; align-items: center; gap: 30px; flex: 1; }
 
 /* LOGO SVG EN HEADER */
-.brand-logo { height: 32px; width: auto; fill: var(--text); display: block; }
+.brand-logo { height: 38px; width: auto; display: block; }
 
-/* BUSCADOR */
+/* BUSCADOR SOFISTICADO (PÍLDORA) */
 .admin-search-box {
   display: flex; align-items: center;
-  background: var(--input-bg); border-radius: 50px;
+  background: var(--input-bg); border-radius: 50px; /* Redondeado completo */
   width: 100%; max-width: 400px; height: 42px; 
   border: 1px solid var(--border);
-  padding: 0 15px;
+  padding: 0 20px;
   transition: all 0.3s ease;
 }
 .admin-search-box:focus-within {
   border-color: var(--primary);
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+  box-shadow: 0 0 0 3px rgba(30, 144, 255, 0.2); /* Glow azul */
 }
 .search-icon-svg { width: 18px; height: 18px; fill: var(--text-secondary); margin-right: 10px; }
 .admin-search-box input {
@@ -140,7 +140,7 @@ header {
   transition: transform 0.2s;
 }
 .btn-icon:hover { transform: translateY(-2px); }
-.btn-edit { background: rgba(59, 130, 246, 0.15); color: var(--primary); }
+.btn-edit { background: rgba(30, 144, 255, 0.15); color: var(--primary); }
 .btn-del { background: rgba(239, 68, 68, 0.15); color: var(--accent); }
 .btn-icon svg { width: 18px; height: 18px; fill: currentColor; }
 
@@ -185,7 +185,7 @@ header {
   .product-list { height: 50vh; border-right: none; border-bottom: 1px solid var(--border); }
   .editor-panel { width: 100%; height: 50vh; border-left: none; }
   header { padding: 0 15px; height: 60px; }
-  .brand-logo { height: 24px; } /* Logo más pequeño en móvil */
+  .brand-logo { height: 28px; } 
   .btn-text { display: none; }
   .admin-search-box { max-width: 100%; }
 }
@@ -193,15 +193,20 @@ header {
 </head>
 <body>
 
-<!-- SVG DEFINITION (Reutilizable) -->
+<!-- SVG DEFINITION (NUEVO DISEÑO) -->
 <svg style="display: none;">
-  <symbol id="logo-dombet" viewBox="0 0 160 30">
-    <!-- Icono Tech Hexagon -->
-    <path d="M15 2 L28 9 V21 L15 28 L2 21 V9 Z" fill="currentColor" opacity="0.2"/>
-    <path d="M15 6 L24 11 V19 L15 24 L6 19 V11 Z" fill="currentColor"/>
-    <circle cx="15" cy="15" r="3" fill="var(--bg)"/>
-    <!-- Texto DOMBET -->
-    <text x="38" y="22" font-family="Segoe UI, sans-serif" font-weight="900" font-size="22" fill="currentColor" letter-spacing="1">DOMBET</text>
+  <symbol id="logo-dombet" viewBox="0 0 200 50">
+    <g transform="translate(0, 5)">
+        <!-- Monitor -->
+        <path d="M2 2 H22 V16 H2 Z M10 16 V20 M6 20 H18" stroke="#1e90ff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- CPU -->
+        <rect x="26" y="2" width="10" height="22" rx="1" stroke="#1e90ff" stroke-width="2" fill="none"/>
+        <circle cx="31" cy="6" r="1" fill="#1e90ff"/>
+    </g>
+    <!-- Texto DOMBET (Azul) -->
+    <text x="45" y="22" font-family="'Segoe UI', sans-serif" font-weight="700" font-size="24" fill="#1e90ff">DOMBET</text>
+    <!-- Texto INFORMÁTICA (Blanco) -->
+    <text x="45" y="38" font-family="'Segoe UI', sans-serif" font-weight="400" font-size="12" fill="#ffffff" letter-spacing="2">INFORMÁTICA</text>
   </symbol>
 </svg>
 
@@ -209,7 +214,8 @@ header {
   <div class="login-card">
     <svg class="login-logo"><use href="#logo-dombet"></use></svg>
     <input type="text" id="loginUser" class="login-input" placeholder="Usuario">
-    <input type="password" id="loginPass" class="login-input" placeholder="Contraseña">
+    <!-- Se agregó onkeyup para detectar ENTER -->
+    <input type="password" id="loginPass" class="login-input" placeholder="Contraseña" onkeyup="if(event.key==='Enter') doLogin()">
     <button class="btn-login" onclick="doLogin()">ENTRAR AL SISTEMA</button>
     <div class="login-error" id="loginError">Credenciales incorrectas</div>
   </div>
