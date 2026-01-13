@@ -23,14 +23,14 @@ body{
   color: #333;
 }
 
-/* ANIMACIÓN REBOTE (ENTRADA) */
+/* ANIMACIÓN REBOTE (SOLO PARA ELEMENTOS ESPECÍFICOS AHORA) */
 @keyframes elegantBounce {
   0% { opacity: 0; transform: scale(0.9); }
   70% { transform: scale(1.03); }
   100% { opacity: 1; transform: scale(1); }
 }
 
-/* ===== HEADER (LAYOUT OPTIMIZADO) ===== */
+/* ===== HEADER ===== */
 header {
   background: #0a1a3a;
   color: #fff;
@@ -104,7 +104,7 @@ header {
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
-/* BUSCADOR (CENTRO) */
+/* BUSCADOR */
 .search-container {
   width: 100%;
   position: relative;
@@ -232,9 +232,9 @@ header {
   .hero-title::before, .hero-title::after { width: 80px; }
 }
 
-/* ===== BARRA DE FILTROS (REDISEÑADA) ===== */
+/* ===== BARRA DE FILTROS (MODIFICADA: RECTÁNGULO Y ELEGANTE) ===== */
 .filter-bar {
-  background: #ffffff; /* Fondo limpio */
+  background: #ffffff;
   padding: 10px 15px;
   display: none;
   justify-content: flex-end;
@@ -245,45 +245,46 @@ header {
   position: sticky;
   top: 110px; 
   z-index: 900;
-  gap: 10px;
+  gap: 12px;
 }
 @media (min-width: 768px) { .filter-bar { top: 90px; } }
 
 .sort-label {
   font-size: 11px; 
-  font-weight: 700;
-  color: #64748b;
+  font-weight: 300; /* Letra más fina y sofisticada */
+  color: #111;
   text-transform: uppercase;
-  letter-spacing: 0.5px; 
+  letter-spacing: 1.5px; /* Mayor espaciado */
   margin-right: 5px;
+  font-family: 'Montserrat', sans-serif;
 }
 
-/* CONTENEDOR TIPO PÍLDORA CORPORATIVA */
+/* CONTENEDOR RECTANGULAR */
 .sort-container {
   display: flex;
   align-items: center;
   gap: 8px;
-  background: #0a1a3a; /* Azul Corporativo */
+  background: #0a1a3a; 
   padding: 8px 16px; 
-  border-radius: 20px; /* Redondeado moderno */
+  border-radius: 4px; /* Rectángulo con bordes suaves */
   border: 1px solid #1e3a6e;
   box-shadow: 0 2px 5px rgba(10, 26, 58, 0.15);
   transition: transform 0.2s;
 }
 .sort-container:active { transform: scale(0.98); }
 
-.sort-icon { width: 16px; height: 16px; fill: #38bdf8; /* Cian Corporativo */ }
+.sort-icon { width: 16px; height: 16px; fill: #38bdf8; }
 
 .sort-select {
   border: none;
   background: transparent;
   font-size: 12px;
-  color: #ffffff; /* Texto blanco */
-  font-weight: 600;
+  color: #ffffff;
+  font-weight: 500;
   outline: none;
   cursor: pointer;
   font-family: 'Montserrat', sans-serif;
-  appearance: none; /* Quitar flecha por defecto */
+  appearance: none;
   -webkit-appearance: none;
   padding-right: 5px;
 }
@@ -326,12 +327,11 @@ header {
 .offer-card img { width: 100%; height: 140px; object-fit: contain; margin-bottom: 12px; pointer-events: none; }
 .offer-name { font-size: 13px; font-weight: 600; color: #333; height: 36px; overflow: hidden; margin-bottom: 8px; line-height: 1.4; }
 
-/* CORRECCIÓN PRECIOS OFERTAS: Alineación vertical con altura fija */
 .offer-price-box { 
   display: flex; 
-  flex-direction: column; /* Vuelve a columna */
-  justify-content: flex-end; /* Alinea todo al fondo */
-  height: 38px; /* Altura fija para que el precio final siempre esté abajo */
+  flex-direction: column; 
+  justify-content: flex-end; 
+  height: 38px; 
 }
 .offer-old { font-size: 11px; text-decoration: line-through; color: #999; font-weight: 500; }
 .offer-new { font-size: 16px; font-weight: 800; color: #d32f2f; }
@@ -342,7 +342,7 @@ header {
   .offer-card { width: 240px; } .offer-card img { height: 160px; } .offer-name { font-size: 14px; } .offer-new { font-size: 18px; }
 }
 
-/* ===== LISTADO ===== */
+/* ===== LISTADO (ANIMACIÓN ELIMINADA) ===== */
 .products {
   display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 10px; max-width: 1400px; margin: auto;
 }
@@ -350,7 +350,10 @@ header {
   .products { gap: 30px; padding: 40px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
 }
 .card {
-  background: #fff; border-radius: 12px; padding: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); cursor: pointer; display: flex; flex-direction: column; border: 1px solid #f0f0f0; position: relative; height: 100%; animation: elegantBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease; min-width: 0; overflow: hidden; 
+  background: #fff; border-radius: 12px; padding: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); cursor: pointer; display: flex; flex-direction: column; border: 1px solid #f0f0f0; position: relative; height: 100%; 
+  /* ANIMACIÓN ELIMINADA PARA CARGA RÁPIDA */
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease; 
+  min-width: 0; overflow: hidden; 
 }
 .card:hover { box-shadow: 0 15px 30px rgba(0,0,0,0.1); transform: translateY(-5px) scale(1.02); z-index: 10; border-color: #e0e0e0; }
 .card img { width: 100%; height: 140px; object-fit: contain; margin-bottom: 10px; mix-blend-mode: multiply; }
@@ -360,15 +363,14 @@ header {
 }
 @media (min-width: 768px) { .name { font-size: 15px; min-height: 42px; -webkit-line-clamp: 2; } }
 
-/* CORRECCIÓN PRECIOS LISTADO: Alineación vertical con altura fija */
 .price-container { 
   display: flex; 
-  flex-direction: column; /* Columna para tachado arriba */
-  justify-content: flex-end; /* Empuja el precio actual al fondo */
+  flex-direction: column; 
+  justify-content: flex-end; 
   align-items: flex-start;
   gap: 2px; 
   margin-bottom: 10px; 
-  height: 38px; /* Altura fija: si no hay descuento, el precio baja */
+  height: 38px; 
 }
 .old-price { color: #9ca3af; text-decoration: line-through; font-size: 11px; font-weight: 500; }
 .current-price { font-size: 15px; font-weight: 700; color: #111; }
@@ -396,7 +398,7 @@ header {
 @media (min-width: 768px) { .detail-title { font-size: 36px; margin-bottom: 25px; } }
 .detail-columns { display: flex; flex-direction: column; gap: 30px; }
 @media (min-width: 768px) { .detail-columns { flex-direction: row; align-items: flex-start; gap: 50px; } }
-.gallery{ flex: 1.2; width: 100%; position: relative; display: flex; flex-direction: column; gap: 15px; }
+.gallery{ flex: 1.2; width: 100%; position: relative; display: flex; flex-direction: column; gap: 15px; flex-shrink: 0; }
 @media (min-width: 768px) { .gallery { flex-direction: row; } }
 .thumbs{ display:none; gap:10px; justify-content: center; overflow-x: auto; order: 2; padding: 5px 0; }
 @media (min-width: 768px) { .thumbs { display: flex; flex-direction: column; order: 1; justify-content: flex-start; width: 80px; overflow-y: auto; overflow-x: hidden; max-height: 500px; } }
@@ -405,11 +407,11 @@ header {
 }
 .thumbs img.active{border-color:#0a1a3a; border-width: 2px;}
 
-/* CORRECCIÓN ESTABILIDAD IMAGEN: Altura fija estricta */
 .main-img{
   flex: 1; 
   width:100%; 
-  height: 300px; /* Altura fija en móvil */
+  height: 300px; 
+  min-height: 300px; 
   position:relative; 
   display: flex; 
   align-items: center; 
@@ -419,11 +421,19 @@ header {
   touch-action: pan-y; 
   overflow: hidden; 
   border-radius: 8px;
-  flex-shrink: 0; /* Evita que se encoja */
+  flex-shrink: 0; 
 }
-@media (min-width: 768px) { .main-img { height: 500px; order: 2; } }
+@media (min-width: 768px) { .main-img { height: 500px; min-height: 500px; order: 2; } }
 
-.main-img img{ max-width:100%; max-height:100%; object-fit:contain; transition: transform 0.3s ease; cursor: pointer; }
+.main-img img{ 
+  width: 100%; 
+  height: 100%; 
+  object-fit: contain; 
+  transition: transform 0.3s ease; 
+  cursor: pointer; 
+  display: block; 
+}
+
 .arrow{
   position:absolute; top:50%; transform:translateY(-50%); background: rgba(255,255,255,0.8); color: #111; border: 1px solid #eee; font-size: 24px; font-weight: 300; width: 40px; height: 40px; border-radius: 50%; cursor:pointer; z-index: 2; display: none; align-items: center; justify-content: center; transition: all 0.2s ease; padding: 0; opacity: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
@@ -437,12 +447,11 @@ header {
 .info{ flex:1; width: 100%; display: flex; flex-direction: column; position: relative; z-index: 1; }
 .info-header { margin-bottom: 20px; }
 
-/* CORRECCIÓN PRECIOS DETALLE: Vuelta a columna */
 .detail-prices { 
   padding-bottom: 20px; 
   border-bottom: 1px solid #eee; 
   display: flex; 
-  flex-direction: column; /* Tachado arriba */
+  flex-direction: column; 
   align-items: flex-start; 
   gap: 8px; 
 }
@@ -614,8 +623,8 @@ header {
   <div class="sort-container">
     <svg class="sort-icon" viewBox="0 0 24 24"><path d="M3 18h6v-2H3v2zM3 6v2h18V6H3zm0 7h12v-2H3v2z"/></svg>
     <select class="sort-select" onchange="sortProducts(this.value)">
-      <option value="asc">Precio más bajo</option>
       <option value="desc">Precio más alto</option>
+      <option value="asc">Precio más bajo</option>
     </select>
   </div>
 </div>
@@ -1300,11 +1309,16 @@ function updateZoomTransform(isLightbox) {
   }
 }
 
-/* MOBILE PINCH & PAN */
+/* MOBILE PINCH & PAN (MEJORADO: FLUIDO Y NATURAL) */
 const lbImgElement = document.getElementById('lightboxImg');
 let justZoomed = false; 
+
 lbImgElement.addEventListener('touchstart', function(e) {
   if(document.getElementById('lightbox').style.display !== 'flex') return;
+  
+  // Al iniciar toque, quitamos transición para que el movimiento sea instantáneo (1:1)
+  lbImgElement.style.transition = 'none';
+
   if (e.touches.length === 2) {
     lbPanning = false; justZoomed = true; 
     lbStartDist = Math.hypot(e.touches[0].pageX - e.touches[1].pageX, e.touches[0].pageY - e.touches[1].pageY);
@@ -1312,35 +1326,49 @@ lbImgElement.addEventListener('touchstart', function(e) {
     lbPanning = true; lbStartX = e.touches[0].pageX - lbPointX; lbStartY = e.touches[0].pageY - lbPointY;
   }
 });
+
 lbImgElement.addEventListener('touchmove', function(e) {
   if(document.getElementById('lightbox').style.display !== 'flex') return;
   e.preventDefault(); 
+  
   if (e.touches.length === 2) {
     const dist = Math.hypot(e.touches[0].pageX - e.touches[1].pageX, e.touches[0].pageY - e.touches[1].pageY);
     const delta = dist / lbStartDist;
     let newScale = lbScale * delta;
-    if (newScale < 1) newScale = 1; if (newScale > 4) newScale = 4;
+    
+    // Límites suaves
+    if (newScale < 1) newScale = 1; 
+    if (newScale > 4) newScale = 4;
+    
     lbImgElement.style.transform = `translate(${lbPointX}px, ${lbPointY}px) scale(${newScale})`;
     lbImgElement.dataset.tempScale = newScale;
   } else if (e.touches.length === 1 && lbPanning && lbScale > 1) {
-    const currentX = e.touches[0].pageX; const currentY = e.touches[0].pageY;
-    lbPointX = currentX - lbStartX; lbPointY = currentY - lbStartY;
+    const currentX = e.touches[0].pageX; 
+    const currentY = e.touches[0].pageY;
+    lbPointX = currentX - lbStartX; 
+    lbPointY = currentY - lbStartY;
     lbImgElement.style.transform = `translate(${lbPointX}px, ${lbPointY}px) scale(${lbScale})`;
   }
 });
+
 lbImgElement.addEventListener('touchend', function(e) {
   if(document.getElementById('lightbox').style.display !== 'flex') return;
+  
+  // Al soltar, reactivamos la transición suave (350ms)
+  lbImgElement.style.transition = "transform 0.35s ease-out";
+
   if (lbImgElement.dataset.tempScale) { 
       lbScale = parseFloat(lbImgElement.dataset.tempScale); 
-      currentLbZoom = lbScale; // Sincronizar para el doble click
+      currentLbZoom = lbScale; 
       delete lbImgElement.dataset.tempScale; 
   }
+  
+  // Rebote si es menor a 1
   if (lbScale < 1) {
     lbScale = 1; currentLbZoom = 1; lbPointX = 0; lbPointY = 0;
-    lbImgElement.style.transition = "transform 0.3s ease";
     lbImgElement.style.transform = `translate(0px, 0px) scale(1)`;
-    setTimeout(() => { lbImgElement.style.transition = "transform 0.05s linear"; }, 300);
   }
+  
   if (justZoomed) { setTimeout(() => { justZoomed = false; }, 800); }
   lbPanning = false;
 });
