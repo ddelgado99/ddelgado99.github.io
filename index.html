@@ -23,7 +23,7 @@ body{
   color: #333;
 }
 
-/* ANIMACIÓN REBOTE (SOLO PARA ELEMENTOS ESPECÍFICOS AHORA) */
+/* ANIMACIÓN REBOTE (SOLO PARA ELEMENTOS ESPECÍFICOS) */
 @keyframes elegantBounce {
   0% { opacity: 0; transform: scale(0.9); }
   70% { transform: scale(1.03); }
@@ -232,10 +232,10 @@ header {
   .hero-title::before, .hero-title::after { width: 80px; }
 }
 
-/* ===== BARRA DE FILTROS (MODIFICADA: RECTÁNGULO Y ELEGANTE) ===== */
+/* ===== BARRA DE FILTROS (OPTIMIZADA MÓVIL) ===== */
 .filter-bar {
   background: #ffffff;
-  padding: 10px 15px;
+  padding: 8px 12px; /* Padding reducido en móvil */
   display: none;
   justify-content: flex-end;
   align-items: center;
@@ -245,17 +245,16 @@ header {
   position: sticky;
   top: 110px; 
   z-index: 900;
-  gap: 12px;
+  gap: 8px; /* Gap reducido en móvil */
 }
-@media (min-width: 768px) { .filter-bar { top: 90px; } }
 
 .sort-label {
-  font-size: 11px; 
-  font-weight: 300; /* Letra más fina y sofisticada */
+  font-size: 10px; /* Fuente más pequeña en móvil */
+  font-weight: 300;
   color: #111;
   text-transform: uppercase;
-  letter-spacing: 1.5px; /* Mayor espaciado */
-  margin-right: 5px;
+  letter-spacing: 0.5px; /* Espaciado sutil en móvil */
+  margin-right: 2px;
   font-family: 'Montserrat', sans-serif;
 }
 
@@ -263,22 +262,22 @@ header {
 .sort-container {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   background: #0a1a3a; 
-  padding: 8px 16px; 
-  border-radius: 4px; /* Rectángulo con bordes suaves */
+  padding: 6px 12px; /* Botón más compacto en móvil */
+  border-radius: 4px; 
   border: 1px solid #1e3a6e;
   box-shadow: 0 2px 5px rgba(10, 26, 58, 0.15);
   transition: transform 0.2s;
 }
 .sort-container:active { transform: scale(0.98); }
 
-.sort-icon { width: 16px; height: 16px; fill: #38bdf8; }
+.sort-icon { width: 14px; height: 14px; fill: #38bdf8; }
 
 .sort-select {
   border: none;
   background: transparent;
-  font-size: 12px;
+  font-size: 11px; /* Letra ajustada */
   color: #ffffff;
   font-weight: 500;
   outline: none;
@@ -291,6 +290,15 @@ header {
 .sort-select option {
   background: #fff;
   color: #333;
+}
+
+/* AJUSTES PARA PC (MÁS GRANDE Y ESPACIADO) */
+@media (min-width: 768px) { 
+  .filter-bar { top: 90px; padding: 10px 15px; gap: 12px; } 
+  .sort-label { font-size: 11px; letter-spacing: 1.5px; margin-right: 5px; }
+  .sort-container { padding: 8px 16px; gap: 8px; }
+  .sort-select { font-size: 12px; }
+  .sort-icon { width: 16px; height: 16px; }
 }
 
 /* ===== SECCIÓN DE OFERTAS ===== */
