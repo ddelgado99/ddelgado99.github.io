@@ -40,11 +40,11 @@ header {
   z-index: 1000;
   box-shadow: 0 4px 25px rgba(0,0,0,0.2);
   
-  /* Configuración Flex para Móvil (Columna) */
+  /* MÓVIL: Columna centrada */
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px; /* Gap reducido */
+  gap: 12px; 
   height: auto; 
 }
 
@@ -53,6 +53,7 @@ header {
   cursor: pointer;
   display: flex;
   align-items: center;
+  /* MÓVIL: Centrado */
   justify-content: center;
   z-index: 1002;
   animation: elegantBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both;
@@ -67,12 +68,13 @@ header {
   width: auto;
 }
 
-/* HEADER RIGHT (CARRITO) - POSICIÓN ABSOLUTA EN MÓVIL */
+/* HEADER RIGHT (CARRITO) */
 .header-right {
   display: flex;
   align-items: center;
   gap: 5px;
   z-index: 1003;
+  /* MÓVIL: Absoluto a la derecha */
   position: absolute;
   top: 15px;
   right: 15px;
@@ -107,7 +109,7 @@ header {
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
-/* BUSCADOR (CENTRO) - ESTILO AZUL SOFISTICADO */
+/* BUSCADOR (CENTRO) */
 .search-container {
   width: 100%;
   position: relative;
@@ -116,15 +118,13 @@ header {
 
 .search-box {
   display: flex;
-  /* Fondo Azul Sofisticado (Ligeramente más claro que el header) */
-  background: #162a4f; 
+  background: #162a4f; /* Azul oscuro sofisticado */
   border-radius: 12px; 
   overflow: hidden;
-  /* Borde sutil en el azul de la marca */
   border: 1px solid #2d4a86;
   width: 100%;
   transition: all 0.3s ease;
-  height: 36px; /* Altura reducida para móvil (Compacto) */
+  height: 36px; 
   align-items: center;
   padding-right: 5px;
 }
@@ -142,7 +142,7 @@ header {
   background: transparent;
   outline: none;
   font-size: 13px;
-  color: #ffffff; /* Texto blanco para contraste */
+  color: #ffffff; 
   min-width: 0;
   font-family: 'Montserrat', sans-serif;
   font-weight: 500;
@@ -159,7 +159,7 @@ header {
   justify-content: center;
   height: 100%;
 }
-.search-btn svg { fill: #38bdf8; width: 18px; height: 18px; } /* Lupa en azul marca */
+.search-btn svg { fill: #38bdf8; width: 18px; height: 18px; }
 
 /* RESULTADOS DE BÚSQUEDA */
 .search-results{
@@ -190,31 +190,47 @@ header {
 .search-item img{width:40px;height:40px;object-fit:contain}
 .search-item div { color: #333; font-weight: 600; font-size: 13px; }
 
-/* ===== MEDIA QUERY PARA ESCRITORIO (PC) ===== */
+/* ===== MEDIA QUERY PARA ESCRITORIO (PC) - ARMONÍA PERFECTA ===== */
 @media (min-width: 768px) {
   header { 
     flex-direction: row; 
-    padding: 10px 50px; 
-    gap: 40px; 
+    padding: 10px 50px; /* 50px a cada lado para simetría */
+    gap: 20px; 
     height: 90px; 
     justify-content: space-between;
   }
   
-  .logo-container { margin: 0; }
-  .store-logo { height: 44px; }
-  .header-right { position: static; }
+  /* IZQUIERDA: Logo ocupa el espacio izquierdo */
+  .logo-container {
+    margin: 0;
+    flex: 1; /* Ocupa todo el espacio disponible a la izquierda */
+    display: flex;
+    justify-content: flex-start; /* Alineado a la izquierda */
+  }
 
+  .store-logo {
+    height: 48px; 
+  }
+
+  /* CENTRO: Buscador centrado matemáticamente */
   .search-container { 
-    max-width: 600px;
-    margin: 0 auto; 
-    flex-grow: 1;
+    flex: 0 1 600px; /* Ancho base 600px, pero flexible */
+    margin: 0; 
   }
   
   .search-box { 
-    height: 46px; /* Más alto en PC */
+    height: 46px; 
   }
   
   .search-box input { font-size: 15px; padding: 0 20px; }
+
+  /* DERECHA: Carrito ocupa el espacio derecho */
+  .header-right {
+    position: static;
+    flex: 1; /* Ocupa todo el espacio disponible a la derecha */
+    display: flex;
+    justify-content: flex-end; /* Alineado a la derecha */
+  }
 }
 
 /* ===== HERO SECTION (OPTIMIZADO) ===== */
@@ -228,11 +244,10 @@ header {
 
 .hero-title {
   font-size: 9px; 
-  font-weight: 700; /* Un poco más grueso */
+  font-weight: 700; 
   margin: 0;
   letter-spacing: 2px; 
   text-transform: uppercase; 
-  /* COLOR ACTUALIZADO PARA COMBINAR CON LOGO */
   color: #38bdf8; 
   display: flex;
   align-items: center;
@@ -247,7 +262,7 @@ header {
   display: block;
   width: 25px; 
   height: 1px;
-  background: rgba(56, 189, 248, 0.3); /* Líneas sutiles en azul */
+  background: rgba(56, 189, 248, 0.3); 
   flex-shrink: 0; 
 }
 
@@ -272,7 +287,7 @@ header {
   max-width: 1400px;
   margin: 0 auto;
   position: sticky;
-  top: 110px; /* Ajuste dinámico */
+  top: 110px; 
   z-index: 900;
   gap: 10px;
 }
