@@ -10,12 +10,12 @@
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
 :root {
-  --primary: #3b82f6; /* Azul más moderno */
+  --primary: #3b82f6; 
   --primary-dark: #2563eb;
   --accent: #ef4444; 
   --success: #10b981; 
-  --bg: #0f172a; /* Fondo azul oscuro profundo */
-  --surface: #1e293b; /* Superficie gris azulada */
+  --bg: #0f172a; 
+  --surface: #1e293b; 
   --text: #f1f5f9; 
   --text-secondary: #94a3b8;
   --border: #334155;
@@ -49,8 +49,7 @@ body {
   border: 1px solid var(--border);
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
 }
-.login-title { font-size: 26px; font-weight: 800; color: var(--text); margin-bottom: 25px; letter-spacing: -0.5px; }
-.login-title span { color: var(--primary); }
+.login-logo { width: 180px; height: auto; margin-bottom: 20px; fill: var(--text); }
 .login-input { 
   width: 100%; padding: 14px; margin-bottom: 15px; 
   background: var(--input-bg); border: 1px solid var(--border); 
@@ -79,14 +78,10 @@ header {
 
 .header-left { display: flex; align-items: center; gap: 30px; flex: 1; }
 
-.brand { 
-  font-size: 22px; font-weight: 800; color: var(--text); 
-  letter-spacing: -0.5px; display: flex; align-items: center; gap: 5px;
-  white-space: nowrap;
-}
-.brand span { color: var(--primary); }
+/* LOGO SVG EN HEADER */
+.brand-logo { height: 32px; width: auto; fill: var(--text); display: block; }
 
-/* BUSCADOR MEJORADO */
+/* BUSCADOR */
 .admin-search-box {
   display: flex; align-items: center;
   background: var(--input-bg); border-radius: 50px;
@@ -105,7 +100,7 @@ header {
   color: var(--text); background: transparent; font-size: 14px;
 }
 
-/* BOTONES HEADER MEJORADOS */
+/* BOTONES HEADER */
 .header-actions { display: flex; align-items: center; gap: 12px; }
 
 .btn-header {
@@ -125,12 +120,6 @@ header {
 
 /* LISTA */
 .product-list { flex: 1; overflow-y: auto; padding: 25px; border-right: 1px solid var(--border); }
-
-/* PANEL CONFIG LOGO */
-.config-panel {
-  background: var(--surface); padding: 20px; border-radius: 12px; 
-  border: 1px solid var(--border); margin-bottom: 25px;
-}
 
 .product-item {
   background: var(--surface); padding: 15px; border-radius: 10px; margin-bottom: 12px;
@@ -196,7 +185,7 @@ header {
   .product-list { height: 50vh; border-right: none; border-bottom: 1px solid var(--border); }
   .editor-panel { width: 100%; height: 50vh; border-left: none; }
   header { padding: 0 15px; height: 60px; }
-  .brand { display: none; } /* Ocultar marca en móvil para espacio */
+  .brand-logo { height: 24px; } /* Logo más pequeño en móvil */
   .btn-text { display: none; }
   .admin-search-box { max-width: 100%; }
 }
@@ -204,9 +193,21 @@ header {
 </head>
 <body>
 
+<!-- SVG DEFINITION (Reutilizable) -->
+<svg style="display: none;">
+  <symbol id="logo-dombet" viewBox="0 0 160 30">
+    <!-- Icono Tech Hexagon -->
+    <path d="M15 2 L28 9 V21 L15 28 L2 21 V9 Z" fill="currentColor" opacity="0.2"/>
+    <path d="M15 6 L24 11 V19 L15 24 L6 19 V11 Z" fill="currentColor"/>
+    <circle cx="15" cy="15" r="3" fill="var(--bg)"/>
+    <!-- Texto DOMBET -->
+    <text x="38" y="22" font-family="Segoe UI, sans-serif" font-weight="900" font-size="22" fill="currentColor" letter-spacing="1">DOMBET</text>
+  </symbol>
+</svg>
+
 <div id="loginScreen">
   <div class="login-card">
-    <div class="login-title">DOMBET <span>ADMIN</span></div>
+    <svg class="login-logo"><use href="#logo-dombet"></use></svg>
     <input type="text" id="loginUser" class="login-input" placeholder="Usuario">
     <input type="password" id="loginPass" class="login-input" placeholder="Contraseña">
     <button class="btn-login" onclick="doLogin()">ENTRAR AL SISTEMA</button>
@@ -217,7 +218,9 @@ header {
 <div id="adminContent">
   <header>
     <div class="header-left">
-      <div class="brand">DOMBET <span>ADMIN</span></div>
+      <!-- LOGO SVG -->
+      <svg class="brand-logo"><use href="#logo-dombet"></use></svg>
+      
       <div class="admin-search-box">
         <svg class="search-icon-svg" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
         <input id="adminSearch" placeholder="Buscar producto por nombre..." oninput="filterAdminList()" autocomplete="off">
@@ -237,17 +240,6 @@ header {
 
   <div class="main-container">
     <div class="product-list">
-      <!-- PANEL DE CONFIGURACIÓN (LOGO) -->
-      <div class="config-panel">
-        <div class="form-header" style="margin-bottom: 15px; border:none; padding:0; font-size: 16px;">CONFIGURACIÓN DE MARCA</div>
-        <div style="display: flex; gap: 10px; align-items: center;">
-          <input class="form-input" id="siteLogoUrl" placeholder="URL del Logo (ImgBB, etc)..." style="margin:0;">
-          <button class="btn-save" onclick="saveLogo()" style="width: auto; margin: 0; padding: 0 20px; font-size: 13px; height: 44px;">GUARDAR</button>
-        </div>
-        <div style="margin-top: 10px; font-size: 12px; color: var(--text-secondary);">Vista previa:</div>
-        <img id="logoPreview" src="" style="height: 60px; margin-top: 5px; display: none; border: 1px solid #444; padding: 5px; background: #fff; border-radius: 4px;">
-      </div>
-
       <div id="adminList"></div>
     </div>
 
@@ -271,7 +263,6 @@ header {
         </div>
       </div>
 
-      <!-- CAJA ÚNICA DE IMÁGENES -->
       <div class="form-group">
         <label class="form-label">Imágenes (Enlaces directos)</label>
         <textarea class="form-input" id="prodImages" rows="4" placeholder="Pega aquí los enlaces de tus imágenes.&#10;El primer enlace será la portada.&#10;Usa un enlace por línea." style="font-family: monospace; font-size: 12px;"></textarea>
@@ -318,34 +309,6 @@ function showAdminPanel() {
   document.getElementById('loginScreen').style.display = 'none';
   document.getElementById('adminContent').style.display = 'flex';
   loadProducts();
-  loadLogoSetting(); 
-}
-
-// --- LOGO LOGIC ---
-function loadLogoSetting() {
-  fetch("https://dombet-backend.onrender.com/settings/logo")
-    .then(r => r.json())
-    .then(d => {
-      if(d.url) {
-        document.getElementById('siteLogoUrl').value = d.url;
-        const preview = document.getElementById('logoPreview');
-        preview.src = d.url;
-        preview.style.display = 'block';
-      }
-    });
-}
-
-function saveLogo() {
-  const url = document.getElementById('siteLogoUrl').value;
-  if(!url) return alert("Pega una URL primero");
-  fetch("https://dombet-backend.onrender.com/settings/logo", {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ url: url })
-  }).then(() => {
-    alert("Logo actualizado correctamente");
-    loadLogoSetting();
-  });
 }
 
 // --- PRODUCT LOGIC ---
