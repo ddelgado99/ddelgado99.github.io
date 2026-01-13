@@ -5,13 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>ADMIN DOMBET</title>
 
+<!-- FUENTE MONTSERRAT (Para coincidir con el logo de la tienda) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
 <style>
 /* ===== GENERAL (DARK MODE) ===== */
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
 :root {
-  --primary: #1e90ff; /* Azul del logo */
-  --primary-dark: #106ebe;
+  --primary: #38bdf8; /* Azul Cian Corporativo */
+  --primary-dark: #0284c7;
   --accent: #ef4444; 
   --success: #10b981; 
   --bg: #0f172a; 
@@ -24,7 +29,7 @@
 
 body {
   margin: 0;
-  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-family: 'Montserrat', 'Segoe UI', system-ui, sans-serif; /* Fuente actualizada */
   background: var(--bg);
   color: var(--text);
   height: 100vh;
@@ -45,24 +50,28 @@ body {
 }
 .login-card {
   background: var(--surface); padding: 40px; border-radius: 16px;
-  width: 90%; max-width: 380px; text-align: center;
+  width: 90%; max-width: 420px; text-align: center;
   border: 1px solid var(--border);
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
 }
-.login-logo { width: 200px; height: auto; margin-bottom: 25px; display: inline-block; }
+.login-logo { width: 260px; height: auto; margin-bottom: 30px; display: inline-block; }
 .login-input { 
   width: 100%; padding: 14px; margin-bottom: 15px; 
   background: var(--input-bg); border: 1px solid var(--border); 
   color: var(--text); border-radius: 8px; outline: none; 
   transition: border-color 0.3s;
+  font-family: inherit;
 }
 .login-input:focus { border-color: var(--primary); }
 .btn-login { 
   width: 100%; padding: 14px; background: var(--primary); 
-  color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; 
+  color: #0f172a; /* Texto oscuro para contraste con cian */
+  border: none; border-radius: 8px; font-weight: 700; cursor: pointer; 
   transition: background 0.3s;
+  font-family: inherit;
+  text-transform: uppercase;
 }
-.btn-login:hover { background: var(--primary-dark); }
+.btn-login:hover { background: var(--primary-dark); color: white; }
 .login-error { color: var(--accent); font-size: 13px; margin-top: 15px; display: none; }
 
 /* ADMIN CONTENT */
@@ -70,35 +79,39 @@ body {
 
 header {
   background: var(--surface); border-bottom: 1px solid var(--border);
-  padding: 0 25px; height: 70px; display: flex; align-items: center;
+  padding: 0 25px; height: 80px; display: flex; align-items: center;
   justify-content: space-between; flex-shrink: 0; gap: 20px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   z-index: 10;
 }
 
-.header-left { display: flex; align-items: center; gap: 30px; flex: 1; }
+.header-left { display: flex; align-items: center; gap: 40px; flex: 1; }
 
 /* LOGO SVG EN HEADER */
-.brand-logo { height: 38px; width: auto; display: block; }
+.brand-logo { height: 40px; width: auto; display: block; }
 
-/* BUSCADOR SOFISTICADO (PÍLDORA) */
+/* BUSCADOR SOFISTICADO (Estilo Index) */
 .admin-search-box {
   display: flex; align-items: center;
-  background: var(--input-bg); border-radius: 50px; /* Redondeado completo */
-  width: 100%; max-width: 400px; height: 42px; 
-  border: 1px solid var(--border);
-  padding: 0 20px;
+  background: #162a4f; /* Fondo Azul Oscuro Sofisticado */
+  border-radius: 12px; /* Bordes redondeados modernos */
+  width: 100%; max-width: 500px; height: 42px; 
+  border: 1px solid #2d4a86;
+  padding: 0 15px;
   transition: all 0.3s ease;
 }
 .admin-search-box:focus-within {
+  background: #1e3a6e;
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(30, 144, 255, 0.2); /* Glow azul */
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.3); /* Glow azul cian */
 }
-.search-icon-svg { width: 18px; height: 18px; fill: var(--text-secondary); margin-right: 10px; }
+.search-icon-svg { width: 18px; height: 18px; fill: var(--primary); margin-right: 10px; }
 .admin-search-box input {
   flex-grow: 1; border: none; padding: 0; outline: none;
-  color: var(--text); background: transparent; font-size: 14px;
+  color: #ffffff; background: transparent; font-size: 14px;
+  font-family: inherit; font-weight: 500;
 }
+.admin-search-box input::placeholder { color: #94a3b8; }
 
 /* BOTONES HEADER */
 .header-actions { display: flex; align-items: center; gap: 12px; }
@@ -109,6 +122,7 @@ header {
   display: flex; align-items: center; gap: 8px; 
   border: 1px solid transparent; cursor: pointer;
   transition: all 0.2s;
+  font-family: inherit;
 }
 .btn-header:hover { background: rgba(255,255,255,0.05); color: var(--text); }
 .btn-header svg { width: 20px; height: 20px; fill: currentColor; }
@@ -126,7 +140,7 @@ header {
   display: flex; align-items: center; gap: 15px; border: 1px solid var(--border);
   transition: transform 0.2s;
 }
-.product-item:hover { border-color: #475569; }
+.product-item:hover { border-color: #475569; transform: translateY(-2px); }
 
 .p-img { width: 50px; height: 50px; object-fit: contain; border-radius: 6px; background: #fff; padding: 2px; }
 .p-info { flex: 1; min-width: 0; }
@@ -140,7 +154,7 @@ header {
   transition: transform 0.2s;
 }
 .btn-icon:hover { transform: translateY(-2px); }
-.btn-edit { background: rgba(30, 144, 255, 0.15); color: var(--primary); }
+.btn-edit { background: rgba(56, 189, 248, 0.15); color: var(--primary); }
 .btn-del { background: rgba(239, 68, 68, 0.15); color: var(--accent); }
 .btn-icon svg { width: 18px; height: 18px; fill: currentColor; }
 
@@ -160,6 +174,7 @@ header {
   border: 1px solid var(--border); border-radius: 8px; 
   font-size: 14px; color: var(--text); outline: none; 
   transition: border-color 0.2s;
+  font-family: inherit;
 }
 .form-input:focus { border-color: var(--primary); }
 .form-textarea { resize: vertical; min-height: 100px; font-family: inherit; line-height: 1.5; }
@@ -167,16 +182,19 @@ header {
 
 .btn-save { 
   width: 100%; padding: 15px; background: var(--primary); 
-  color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; margin-top: 20px; 
+  color: #0f172a; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; margin-top: 20px; 
   transition: background 0.2s;
+  font-family: inherit;
+  text-transform: uppercase;
 }
-.btn-save:hover { background: var(--primary-dark); }
+.btn-save:hover { background: var(--primary-dark); color: white; }
 
 .btn-clear { 
   width: 100%; padding: 12px; background: transparent; 
   color: var(--text-secondary); border: 1px solid var(--border); 
   border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 12px; 
   transition: all 0.2s;
+  font-family: inherit;
 }
 .btn-clear:hover { border-color: var(--text); color: var(--text); }
 
@@ -184,8 +202,8 @@ header {
   .main-container { flex-direction: column; }
   .product-list { height: 50vh; border-right: none; border-bottom: 1px solid var(--border); }
   .editor-panel { width: 100%; height: 50vh; border-left: none; }
-  header { padding: 0 15px; height: 60px; }
-  .brand-logo { height: 28px; } 
+  header { padding: 0 15px; height: 70px; gap: 15px; }
+  .brand-logo { height: 32px; } 
   .btn-text { display: none; }
   .admin-search-box { max-width: 100%; }
 }
@@ -193,26 +211,32 @@ header {
 </head>
 <body>
 
-<!-- SVG DEFINITION (LOGO ANTERIOR RESTAURADO) -->
+<!-- SVG DEFINITION (LOGO ADAPTADO: DOMBET | ADMIN) -->
 <svg style="display: none;">
-  <symbol id="logo-dombet" viewBox="0 0 200 50">
-    <g transform="translate(0, 5)">
-        <!-- Monitor -->
-        <path d="M2 2 H22 V16 H2 Z M10 16 V20 M6 20 H18" stroke="#1e90ff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        <!-- CPU -->
-        <rect x="26" y="2" width="10" height="22" rx="1" stroke="#1e90ff" stroke-width="2" fill="none"/>
-        <circle cx="31" cy="6" r="1" fill="#1e90ff"/>
+  <symbol id="logo-dombet-admin" viewBox="0 0 300 50">
+    <!-- Icon: Microchip Minimalista -->
+    <g transform="translate(0, 8)">
+      <!-- Chip Outline -->
+      <rect x="0" y="0" width="34" height="34" rx="4" fill="none" stroke="#38bdf8" stroke-width="2.5"/>
+      <!-- Inner Core -->
+      <rect x="11" y="11" width="12" height="12" rx="1" fill="#38bdf8"/>
+      <!-- Pins/Traces -->
+      <path d="M17 0 V6 M17 28 V34 M0 17 H6 M28 17 H34" stroke="#38bdf8" stroke-width="2.5"/>
+      <path d="M7 0 V6 M7 28 V34 M0 7 H6 M28 7 H34" stroke="#38bdf8" stroke-width="2.5"/>
+      <path d="M27 0 V6 M27 28 V34 M0 27 H6 M28 27 H34" stroke="#38bdf8" stroke-width="2.5"/>
     </g>
-    <!-- Texto DOMBET (Azul) -->
-    <text x="45" y="22" font-family="'Segoe UI', sans-serif" font-weight="700" font-size="24" fill="#1e90ff">DOMBET</text>
-    <!-- Texto INFORMÁTICA (Blanco) -->
-    <text x="45" y="38" font-family="'Segoe UI', sans-serif" font-weight="400" font-size="12" fill="#ffffff" letter-spacing="2">INFORMÁTICA</text>
+
+    <!-- Text Group -->
+    <text x="50" y="32" font-family="'Montserrat', sans-serif" font-weight="800" font-size="24" fill="#38bdf8" letter-spacing="0.5">DOMBET</text>
+    <text x="168" y="30" font-family="'Montserrat', sans-serif" font-weight="300" font-size="24" fill="#ffffff">|</text>
+    <!-- Adaptado para ADMIN -->
+    <text x="182" y="32" font-family="'Montserrat', sans-serif" font-weight="400" font-size="24" fill="#ffffff" letter-spacing="1">ADMIN</text>
   </symbol>
 </svg>
 
 <div id="loginScreen">
   <div class="login-card">
-    <svg class="login-logo"><use href="#logo-dombet"></use></svg>
+    <svg class="login-logo"><use href="#logo-dombet-admin"></use></svg>
     <input type="text" id="loginUser" class="login-input" placeholder="Usuario">
     <!-- Se agregó onkeyup para detectar ENTER -->
     <input type="password" id="loginPass" class="login-input" placeholder="Contraseña" onkeyup="if(event.key==='Enter') doLogin()">
@@ -225,7 +249,7 @@ header {
   <header>
     <div class="header-left">
       <!-- LOGO SVG -->
-      <svg class="brand-logo"><use href="#logo-dombet"></use></svg>
+      <svg class="brand-logo"><use href="#logo-dombet-admin"></use></svg>
       
       <div class="admin-search-box">
         <svg class="search-icon-svg" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
