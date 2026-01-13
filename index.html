@@ -395,18 +395,32 @@ header {
 .btn-list-add svg { width: 12px; height: 12px; fill: white; }
 @media (min-width: 768px) { .btn-list-add { padding: 12px; font-size: 13px; gap: 8px; } .btn-list-add svg { width: 16px; height: 16px; } }
 
-/* ===== DETALLE ===== */
+/* ===== DETALLE (REESTRUCTURADO) ===== */
 .detail{ display:none; padding: 0; margin-top: 0; }
 .detail-box{ max-width:1400px; margin: 0 auto; background:#fff; padding: 20px; border-radius: 0; display: block; }
 @media (min-width: 768px) { .detail { padding: 0 40px; } .detail-box { padding: 40px; border-radius: 0; } }
+
+/* TÍTULO AHORA ARRIBA DEL TODO */
 .detail-title {
-  font-size: 26px; font-weight: 800; color: #111; margin: 0 0 15px 0; line-height: 1.2; width: 100%; padding-bottom: 15px; border-bottom: 1px solid #eee; letter-spacing: -0.5px;
+  font-size: 22px; 
+  font-weight: 800; 
+  color: #111; 
+  margin: 0 0 20px 0; 
+  line-height: 1.2; 
+  width: 100%; 
+  padding-bottom: 15px; 
+  border-bottom: 1px solid #eee; 
+  letter-spacing: -0.5px;
+  display: block; /* Asegura que ocupe ancho completo */
 }
 @media (min-width: 768px) { .detail-title { font-size: 36px; margin-bottom: 25px; } }
-.detail-columns { display: flex; flex-direction: column; gap: 30px; }
+
+.detail-columns { display: flex; flex-direction: column; gap: 20px; }
 @media (min-width: 768px) { .detail-columns { flex-direction: row; align-items: flex-start; gap: 50px; } }
+
 .gallery{ flex: 1.2; width: 100%; position: relative; display: flex; flex-direction: column; gap: 15px; flex-shrink: 0; }
 @media (min-width: 768px) { .gallery { flex-direction: row; } }
+
 .thumbs{ display:none; gap:10px; justify-content: center; overflow-x: auto; order: 2; padding: 5px 0; }
 @media (min-width: 768px) { .thumbs { display: flex; flex-direction: column; order: 1; justify-content: flex-start; width: 80px; overflow-y: auto; overflow-x: hidden; max-height: 500px; } }
 .thumbs img{
@@ -414,13 +428,13 @@ header {
 }
 .thumbs img.active{border-color:#0a1a3a; border-width: 2px;}
 
-/* CORRECCIÓN PANEL FIJO (PANEL GRANDE) */
+/* PANEL FIJO DE IMAGEN (OPTIMIZADO MÓVIL) */
 .main-img{
   flex: 1; 
   width:100%; 
-  /* Altura fija aumentada para crear el "Panel" */
-  height: 400px; 
-  min-height: 400px; 
+  /* Altura fija reducida para móvil */
+  height: 340px; 
+  min-height: 340px; 
   position:relative; 
   display: flex; 
   align-items: center; 
@@ -430,17 +444,17 @@ header {
   touch-action: pan-y; 
   overflow: hidden; 
   border-radius: 8px;
-  border: 1px solid #f9f9f9; /* Borde sutil para delimitar el panel */
+  border: 1px solid #f9f9f9; 
   flex-shrink: 0; 
 }
-@media (min-width: 768px) { .main-img { height: 600px; min-height: 600px; order: 2; } }
+@media (min-width: 768px) { .main-img { height: 500px; min-height: 500px; order: 2; } }
 
 /* IMAGEN FLOTANTE DENTRO DEL PANEL */
 .main-img img{ 
   max-width: 100%; 
   max-height: 100%; 
-  width: auto; /* Importante: deja que el aspect ratio decida */
-  height: auto; /* Importante: deja que el aspect ratio decida */
+  width: auto; 
+  height: auto; 
   object-fit: contain; 
   transition: transform 0.3s ease; 
   cursor: pointer; 
@@ -457,6 +471,8 @@ header {
   background: rgba(255,255,255,0.9); color: #000; border: 1px solid #eee; font-size: 24px; font-weight: 300; width: 44px; height: 44px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 .zoom-btn:hover { background: #fff; transform: scale(1.05); }
+
+/* INFO BOX (PRECIO Y ACCIONES) */
 .info{ flex:1; width: 100%; display: flex; flex-direction: column; position: relative; z-index: 1; }
 .info-header { margin-bottom: 20px; }
 
@@ -656,6 +672,9 @@ header {
 
 <div class="detail" id="detail">
   <div class="detail-box">
+    <!-- TÍTULO MOVIDO AQUÍ ARRIBA PARA QUE NO SALTE -->
+    <h1 class="detail-title" id="dName"></h1>
+    
     <div class="detail-columns">
       <div class="gallery">
         <div class="thumbs" id="thumbs"></div>
@@ -667,7 +686,6 @@ header {
       </div>
 
       <div class="info">
-        <h1 class="detail-title" id="dName"></h1>
         <div class="info-header">
           <div class="detail-prices" id="detailPricesContainer"></div>
         </div>
