@@ -5,239 +5,93 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>ADMIN DOMBET</title>
 
-<!-- FUENTE MONTSERRAT (Para coincidir con el logo de la tienda) -->
+<!-- FUENTE MONTSERRAT -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
+<!-- NUEVO: LIBRERÍA PARA DRAG & DROP -->
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+
 <style>
-/* ===== GENERAL (DARK MODE) ===== */
-* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
 :root {
-  --primary: #38bdf8; /* Azul Cian Corporativo */
-  --primary-dark: #0284c7;
-  --accent: #ef4444; 
-  --success: #10b981; 
-  --bg: #0f172a; 
-  --surface: #1e293b; 
-  --text: #f1f5f9; 
-  --text-secondary: #94a3b8;
-  --border: #334155;
-  --input-bg: #0f172a;
+  --primary: #38bdf8; --primary-dark: #0284c7; --accent: #ef4444; --success: #10b981; 
+  --bg: #0f172a; --surface: #1e293b; --text: #f1f5f9; --text-secondary: #94a3b8;
+  --border: #334155; --input-bg: #0f172a;
 }
-
-body {
-  margin: 0;
-  font-family: 'Montserrat', 'Segoe UI', system-ui, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: #475569; border-radius: 10px; }
-
-/* LOGIN */
-#loginScreen {
-  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-  background: var(--bg); z-index: 20000;
-  display: flex; justify-content: center; align-items: center;
-}
-.login-card {
-  background: var(--surface); padding: 40px; border-radius: 16px;
-  width: 90%; max-width: 420px; text-align: center;
-  border: 1px solid var(--border);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
-}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body { margin: 0; font-family: 'Montserrat', sans-serif; background: var(--bg); color: var(--text); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: #475569; border-radius: 10px; }
+#loginScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 20000; display: flex; justify-content: center; align-items: center; }
+.login-card { background: var(--surface); padding: 40px; border-radius: 16px; width: 90%; max-width: 420px; text-align: center; border: 1px solid var(--border); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3); }
 .login-logo { width: 260px; height: auto; margin-bottom: 30px; display: inline-block; }
-.login-input { 
-  width: 100%; padding: 14px; margin-bottom: 15px; 
-  background: var(--input-bg); border: 1px solid var(--border); 
-  color: var(--text); border-radius: 8px; outline: none; 
-  transition: border-color 0.3s;
-  font-family: inherit;
-}
+.login-input { width: 100%; padding: 14px; margin-bottom: 15px; background: var(--input-bg); border: 1px solid var(--border); color: var(--text); border-radius: 8px; outline: none; transition: border-color 0.3s; font-family: inherit; }
 .login-input:focus { border-color: var(--primary); }
-.btn-login { 
-  width: 100%; padding: 14px; background: var(--primary); 
-  color: #0f172a; /* Texto oscuro para contraste con cian */
-  border: none; border-radius: 8px; font-weight: 700; cursor: pointer; 
-  transition: background 0.3s;
-  font-family: inherit;
-  text-transform: uppercase;
-}
+.btn-login { width: 100%; padding: 14px; background: var(--primary); color: #0f172a; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; transition: background 0.3s; font-family: inherit; text-transform: uppercase; }
 .btn-login:hover { background: var(--primary-dark); color: white; }
 .login-error { color: var(--accent); font-size: 13px; margin-top: 15px; display: none; }
-
-/* ADMIN CONTENT */
 #adminContent { display: none; flex-direction: column; height: 100%; }
-
-header {
-  background: var(--surface); border-bottom: 1px solid var(--border);
-  padding: 0 25px; height: 80px; display: flex; align-items: center;
-  justify-content: space-between; flex-shrink: 0; gap: 20px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  z-index: 10;
-}
-
+header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 25px; height: 80px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; gap: 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); z-index: 10; }
 .header-left { display: flex; align-items: center; gap: 40px; flex: 1; }
-
-/* LOGO SVG EN HEADER */
 .brand-logo { height: 40px; width: auto; display: block; }
-
-/* BUSCADOR SOFISTICADO */
-.admin-search-box {
-  display: flex; align-items: center;
-  background: #162a4f; 
-  border-radius: 12px; 
-  width: 100%; max-width: 500px; height: 42px; 
-  border: 1px solid #2d4a86;
-  padding: 0 15px;
-  transition: all 0.3s ease;
-}
-.admin-search-box:focus-within {
-  background: #1e3a6e;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.3);
-}
+.admin-search-box { display: flex; align-items: center; background: #162a4f; border-radius: 12px; width: 100%; max-width: 500px; height: 42px; border: 1px solid #2d4a86; padding: 0 15px; transition: all 0.3s ease; }
+.admin-search-box:focus-within { background: #1e3a6e; border-color: var(--primary); box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.3); }
 .search-icon-svg { width: 18px; height: 18px; fill: var(--primary); margin-right: 10px; }
-.admin-search-box input {
-  flex-grow: 1; border: none; padding: 0; outline: none;
-  color: #ffffff; background: transparent; font-size: 14px;
-  font-family: inherit; font-weight: 500;
-}
+.admin-search-box input { flex-grow: 1; border: none; padding: 0; outline: none; color: #ffffff; background: transparent; font-size: 14px; font-family: inherit; font-weight: 500; }
 .admin-search-box input::placeholder { color: #94a3b8; }
-
-/* BOTONES HEADER */
 .header-actions { display: flex; align-items: center; gap: 12px; }
-
-.btn-header {
-  background: transparent; color: var(--text-secondary); text-decoration: none;
-  padding: 8px 16px; height: 40px; border-radius: 8px; font-weight: 600; font-size: 13px;
-  display: flex; align-items: center; gap: 8px; 
-  border: 1px solid transparent; cursor: pointer;
-  transition: all 0.2s;
-  font-family: inherit;
-}
+.btn-header { background: transparent; color: var(--text-secondary); text-decoration: none; padding: 8px 16px; height: 40px; border-radius: 8px; font-weight: 600; font-size: 13px; display: flex; align-items: center; gap: 8px; border: 1px solid transparent; cursor: pointer; transition: all 0.2s; font-family: inherit; }
 .btn-header:hover { background: rgba(255,255,255,0.05); color: var(--text); }
 .btn-header svg { width: 20px; height: 20px; fill: currentColor; }
-
 .btn-logout { color: var(--accent); }
 .btn-logout:hover { background: rgba(239, 68, 68, 0.1); color: var(--accent); }
-
 .main-container { display: flex; flex: 1; overflow: hidden; }
-
-/* LISTA */
 .product-list { flex: 1; overflow-y: auto; padding: 25px; border-right: 1px solid var(--border); }
-
-.product-item {
-  background: var(--surface); padding: 15px; border-radius: 10px; margin-bottom: 12px;
-  display: flex; align-items: center; gap: 15px; border: 1px solid var(--border);
-  transition: transform 0.2s;
-}
+.product-item { background: var(--surface); padding: 10px 15px; border-radius: 10px; margin-bottom: 12px; display: flex; align-items: center; gap: 15px; border: 1px solid var(--border); transition: transform 0.2s; }
 .product-item:hover { border-color: #475569; transform: translateY(-2px); }
-
 .p-img { width: 50px; height: 50px; object-fit: contain; border-radius: 6px; background: #fff; padding: 2px; }
 .p-info { flex: 1; min-width: 0; }
 .p-name { font-weight: 700; font-size: 15px; color: var(--text); margin-bottom: 4px; }
 .p-price-normal { font-size: 13px; color: var(--primary); font-weight: 600; }
-
 .p-actions { display: flex; gap: 8px; }
-.btn-icon { 
-  width: 38px; height: 38px; border-radius: 8px; border: none; 
-  cursor: pointer; display: flex; align-items: center; justify-content: center; 
-  transition: transform 0.2s;
-}
+.btn-icon { width: 38px; height: 38px; border-radius: 8px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.2s; }
 .btn-icon:hover { transform: translateY(-2px); }
 .btn-edit { background: rgba(56, 189, 248, 0.15); color: var(--primary); }
 .btn-del { background: rgba(239, 68, 68, 0.15); color: var(--accent); }
 .btn-icon svg { width: 18px; height: 18px; fill: currentColor; }
-
-/* EDITOR */
-.editor-panel {
-  width: 420px; background: var(--surface); padding: 30px; overflow-y: auto;
-  display: flex; flex-direction: column; border-left: 1px solid var(--border);
-}
-.form-header { 
-  font-size: 20px; font-weight: 800; margin-bottom: 25px; 
-  color: var(--text); border-bottom: 1px solid var(--border); padding-bottom: 15px; 
-}
+.editor-panel { width: 420px; background: var(--surface); padding: 30px; overflow-y: auto; display: flex; flex-direction: column; border-left: 1px solid var(--border); }
+.form-header { font-size: 20px; font-weight: 800; margin-bottom: 25px; color: var(--text); border-bottom: 1px solid var(--border); padding-bottom: 15px; }
 .form-group { margin-bottom: 18px; }
 .form-label { display: block; font-size: 12px; font-weight: 700; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
-.form-input { 
-  width: 100%; padding: 12px; background: var(--input-bg); 
-  border: 1px solid var(--border); border-radius: 8px; 
-  font-size: 14px; color: var(--text); outline: none; 
-  transition: border-color 0.2s;
-  font-family: inherit;
-}
+.form-input { width: 100%; padding: 12px; background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px; font-size: 14px; color: var(--text); outline: none; transition: border-color 0.2s; font-family: inherit; }
 .form-input:focus { border-color: var(--primary); }
 .form-textarea { resize: vertical; min-height: 100px; font-family: inherit; line-height: 1.5; }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-
-.btn-save { 
-  width: 100%; padding: 15px; background: var(--primary); 
-  color: #0f172a; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; margin-top: 20px; 
-  transition: background 0.2s;
-  font-family: inherit;
-  text-transform: uppercase;
-}
+.btn-save { width: 100%; padding: 15px; background: var(--primary); color: #0f172a; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; margin-top: 20px; transition: background 0.2s; font-family: inherit; text-transform: uppercase; }
 .btn-save:hover { background: var(--primary-dark); color: white; }
-
-.btn-clear { 
-  width: 100%; padding: 12px; background: transparent; 
-  color: var(--text-secondary); border: 1px solid var(--border); 
-  border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 12px; 
-  transition: all 0.2s;
-  font-family: inherit;
-}
+.btn-clear { width: 100%; padding: 12px; background: transparent; color: var(--text-secondary); border: 1px solid var(--border); border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 12px; transition: all 0.2s; font-family: inherit; }
 .btn-clear:hover { border-color: var(--text); color: var(--text); }
-
-/* ESTILO PARA LA PREVIA DEL DESCUENTO */
-#discountPreview {
-  display: none; 
-  margin-top: 8px; 
-  font-size: 13px; 
-  color: var(--success); 
-  font-weight: 700; 
-  background: rgba(16, 185, 129, 0.1); 
-  padding: 10px; 
-  border-radius: 6px;
-  border: 1px solid rgba(16, 185, 129, 0.2);
-  text-align: center;
-}
+#discountPreview { display: none; margin-top: 8px; font-size: 13px; color: var(--success); font-weight: 700; background: rgba(16, 185, 129, 0.1); padding: 10px; border-radius: 6px; border: 1px solid rgba(16, 185, 129, 0.2); text-align: center; }
+/* NUEVOS ESTILOS PARA DRAG & DROP */
+.drag-handle { cursor: grab; color: var(--text-secondary); padding: 0 10px 0 0; }
+.drag-handle:active { cursor: grabbing; }
+.product-item.sortable-ghost { background: var(--primary-dark); opacity: 0.7; }
+.product-item.sortable-chosen { border-color: var(--primary); }
 
 @media (max-width: 900px) {
   .main-container { flex-direction: column; }
   .product-list { height: 50vh; border-right: none; border-bottom: 1px solid var(--border); }
   .editor-panel { width: 100%; height: 50vh; border-left: none; }
   header { padding: 0 15px; height: 70px; gap: 15px; }
-  .brand-logo { height: 32px; } 
-  .btn-text { display: none; }
-  .admin-search-box { max-width: 100%; }
+  .brand-logo { height: 32px; } .btn-text { display: none; } .admin-search-box { max-width: 100%; }
 }
 </style>
 </head>
 <body>
 
-<!-- SVG DEFINITION (LOGO ADAPTADO: DOMBET | ADMIN) -->
 <svg style="display: none;">
   <symbol id="logo-dombet-admin" viewBox="0 0 300 50">
-    <!-- Icon: Microchip Minimalista -->
-    <g transform="translate(0, 8)">
-      <rect x="0" y="0" width="34" height="34" rx="4" fill="none" stroke="#38bdf8" stroke-width="2.5"/>
-      <rect x="11" y="11" width="12" height="12" rx="1" fill="#38bdf8"/>
-      <path d="M17 0 V6 M17 28 V34 M0 17 H6 M28 17 H34" stroke="#38bdf8" stroke-width="2.5"/>
-      <path d="M7 0 V6 M7 28 V34 M0 7 H6 M28 7 H34" stroke="#38bdf8" stroke-width="2.5"/>
-      <path d="M27 0 V6 M27 28 V34 M0 27 H6 M28 27 H34" stroke="#38bdf8" stroke-width="2.5"/>
-    </g>
-
-    <!-- Text Group -->
+    <g transform="translate(0, 8)"><rect x="0" y="0" width="34" height="34" rx="4" fill="none" stroke="#38bdf8" stroke-width="2.5"/><rect x="11" y="11" width="12" height="12" rx="1" fill="#38bdf8"/><path d="M17 0 V6 M17 28 V34 M0 17 H6 M28 17 H34" stroke="#38bdf8" stroke-width="2.5"/><path d="M7 0 V6 M7 28 V34 M0 7 H6 M28 7 H34" stroke="#38bdf8" stroke-width="2.5"/><path d="M27 0 V6 M27 28 V34 M0 27 H6 M28 27 H34" stroke="#38bdf8" stroke-width="2.5"/></g>
     <text x="50" y="32" font-family="'Montserrat', sans-serif" font-weight="800" font-size="24" fill="#38bdf8" letter-spacing="0.5">DOMBET</text>
     <text x="168" y="30" font-family="'Montserrat', sans-serif" font-weight="300" font-size="24" fill="#ffffff">|</text>
     <text x="182" y="32" font-family="'Montserrat', sans-serif" font-weight="400" font-size="24" fill="#ffffff" letter-spacing="1">ADMIN</text>
@@ -258,13 +112,17 @@ header {
   <header>
     <div class="header-left">
       <svg class="brand-logo"><use href="#logo-dombet-admin"></use></svg>
-      
       <div class="admin-search-box">
         <svg class="search-icon-svg" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
         <input id="adminSearch" placeholder="Buscar producto por nombre..." oninput="filterAdminList()" autocomplete="off">
       </div>
     </div>
     <div class="header-actions">
+      <!-- NUEVO: Botón para guardar el orden -->
+      <button id="btnSaveOrder" onclick="saveOrder()" class="btn-header" style="display: none; color: var(--success);">
+        <svg viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm2 16H5V5h11.17L19 7.83V19zM12 18c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zM6 6h9v4H6z"/></svg>
+        <span class="btn-text">GUARDAR ORDEN</span>
+      </button>
       <a href="index.html" class="btn-header" target="_blank">
         <svg viewBox="0 0 24 24"><path d="M12 2l-5.5 9h11z"/><path d="M0 0h24v24H0z" fill="none"/><path d="M3 13h18v8H3z"/></svg>
         <span class="btn-text">IR A TIENDA</span>
@@ -280,43 +138,32 @@ header {
     <div class="product-list">
       <div id="adminList"></div>
     </div>
-
     <div class="editor-panel">
       <div class="form-header" id="formTitle">Nuevo Producto</div>
       <input type="hidden" id="prodId">
-      
       <div class="form-group">
         <label class="form-label">Nombre del Producto</label>
         <input class="form-input" id="prodName" placeholder="Ej: Laptop HP Pavilion...">
       </div>
-      
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">Precio (Gs)</label>
-          <!-- Se agrega calculateDiscountPreview() al evento oninput -->
           <input class="form-input" id="prodPrice" type="text" placeholder="0" oninput="formatPriceInput(this); calculateDiscountPreview()">
         </div>
         <div class="form-group">
           <label class="form-label">Descuento (%)</label>
-          <!-- Se agrega el evento oninput y el contenedor de previa -->
           <input class="form-input" id="prodDiscount" type="number" placeholder="0" oninput="calculateDiscountPreview()">
-          
-          <div id="discountPreview">
-            Queda en: Gs. <span id="finalPriceDisplay">0</span>
-          </div>
+          <div id="discountPreview">Queda en: Gs. <span id="finalPriceDisplay">0</span></div>
         </div>
       </div>
-
       <div class="form-group">
         <label class="form-label">Imágenes (Enlaces directos)</label>
         <textarea class="form-input" id="prodImages" rows="4" placeholder="Pega aquí los enlaces de tus imágenes.&#10;El primer enlace será la portada.&#10;Usa un enlace por línea." style="font-family: monospace; font-size: 12px;"></textarea>
       </div>
-
       <div class="form-group">
         <label class="form-label">Descripción Detallada</label>
         <textarea class="form-input form-textarea" id="prodDesc" placeholder="Escribe las características..."></textarea>
       </div>
-
       <button class="btn-save" onclick="saveProduct()">GUARDAR CAMBIOS</button>
       <button class="btn-clear" onclick="resetForm()">LIMPIAR FORMULARIO</button>
     </div>
@@ -325,14 +172,11 @@ header {
 
 <script>
 const SESSION_KEY = 'dombet_admin_session';
+const API_URL = 'https://dombet-backend.onrender.com';
 let products = [];
+let sortableInstance = null;
 
-window.onload = function() {
-  if(sessionStorage.getItem(SESSION_KEY) === 'active') {
-    showAdminPanel();
-  }
-};
-
+window.onload = () => { if(sessionStorage.getItem(SESSION_KEY) === 'active') showAdminPanel(); };
 function doLogin() {
   const user = document.getElementById('loginUser').value;
   const pass = document.getElementById('loginPass').value;
@@ -343,56 +187,35 @@ function doLogin() {
     document.getElementById('loginError').style.display = 'block';
   }
 }
-
-function doLogout() {
-  sessionStorage.removeItem(SESSION_KEY);
-  location.reload();
-}
-
+function doLogout() { sessionStorage.removeItem(SESSION_KEY); location.reload(); }
 function showAdminPanel() {
   document.getElementById('loginScreen').style.display = 'none';
   document.getElementById('adminContent').style.display = 'flex';
   loadProducts();
 }
 
-// --- PRODUCT LOGIC ---
+// --- LOGICA DE PRODUCTOS ---
 function loadProducts() {
-  fetch("https://dombet-backend.onrender.com/products")
+  fetch(`${API_URL}/products`)
   .then(r => r.json())
   .then(d => { products = d; renderAdminList(); });
 }
-
-function formatCurrency(value) { return Number(value).toLocaleString('es-PY'); }
-
+function formatCurrency(v) { return Number(v).toLocaleString('es-PY'); }
 function formatPriceInput(input) {
-  let value = input.value.replace(/\D/g, '');
-  if (value) value = Number(value).toLocaleString('es-PY');
-  input.value = value;
+  let v = input.value.replace(/\D/g, '');
+  if (v) v = Number(v).toLocaleString('es-PY');
+  input.value = v;
 }
-
-// --- NUEVA FUNCIÓN PARA CALCULAR DESCUENTO ---
 function calculateDiscountPreview() {
-  // 1. Obtener precio limpio (sin puntos)
-  const rawPrice = document.getElementById('prodPrice').value.replace(/\./g, '');
-  const price = parseFloat(rawPrice);
-  
-  // 2. Obtener descuento
+  const price = parseFloat(document.getElementById('prodPrice').value.replace(/\./g, ''));
   const discount = parseFloat(document.getElementById('prodDiscount').value);
-  
-  const previewBox = document.getElementById('discountPreview');
-  const finalSpan = document.getElementById('finalPriceDisplay');
-
-  // 3. Validar y Calcular
+  const box = document.getElementById('discountPreview');
   if (price > 0 && discount > 0) {
-    const discountAmount = price * (discount / 100);
-    const finalPrice = price - discountAmount;
-    
-    // Mostrar resultado formateado
-    finalSpan.innerText = finalPrice.toLocaleString('es-PY');
-    previewBox.style.display = 'block';
+    const final = price - (price * (discount / 100));
+    document.getElementById('finalPriceDisplay').innerText = formatCurrency(final);
+    box.style.display = 'block';
   } else {
-    // Ocultar si no hay datos suficientes
-    previewBox.style.display = 'none';
+    box.style.display = 'none';
   }
 }
 
@@ -400,25 +223,24 @@ function renderAdminList(items = products) {
   const container = document.getElementById('adminList');
   container.innerHTML = "";
   items.forEach(p => {
-    const price = Number(p.price);
-    const imgMain = p.image_main ? p.image_main : 'https://via.placeholder.com/45?text=X';
+    const imgMain = p.image_main || 'https://via.placeholder.com/45?text=X';
     container.innerHTML += `
-      <div class="product-item">
+      <div class="product-item" data-id="${p.id}">
+        <div class="drag-handle" title="Arrastrar para ordenar">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M3 15h18v-2H3v2zm0 4h18v-2H3v2zm0-8h18V9H3v2zm0-6v2h18V5H3z"/></svg>
+        </div>
         <img src="${imgMain}" class="p-img">
         <div class="p-info">
           <div class="p-name">${p.name}</div>
-          <div class="p-price-normal">Gs. ${formatCurrency(price)}</div>
+          <div class="p-price-normal">Gs. ${formatCurrency(p.price)}</div>
         </div>
         <div class="p-actions">
-          <button class="btn-icon btn-edit" onclick="editProduct(${p.id})">
-            <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
-          </button>
-          <button class="btn-icon btn-del" onclick="deleteProduct(${p.id})">
-            <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
-          </button>
+          <button class="btn-icon btn-edit" onclick="editProduct(${p.id})"><svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></button>
+          <button class="btn-icon btn-del" onclick="deleteProduct(${p.id})"><svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button>
         </div>
       </div>`;
   });
+  initSortable(); // Iniciar la funcionalidad de arrastrar
 }
 
 function filterAdminList() {
@@ -427,15 +249,8 @@ function filterAdminList() {
 }
 
 function resetForm() {
-  document.getElementById('prodId').value = "";
-  document.getElementById('prodName').value = "";
-  document.getElementById('prodPrice').value = "";
-  document.getElementById('prodDiscount').value = "";
-  document.getElementById('prodImages').value = "";
-  document.getElementById('prodDesc').value = "";
+  ['prodId', 'prodName', 'prodPrice', 'prodDiscount', 'prodImages', 'prodDesc'].forEach(id => document.getElementById(id).value = "");
   document.getElementById('formTitle').innerText = "Nuevo Producto";
-  
-  // Ocultar la previa al limpiar
   document.getElementById('discountPreview').style.display = 'none';
 }
 
@@ -444,57 +259,81 @@ function editProduct(id) {
   if(!p) return;
   document.getElementById('prodId').value = p.id;
   document.getElementById('prodName').value = p.name;
-  document.getElementById('prodPrice').value = Number(p.price).toLocaleString('es-PY');
+  document.getElementById('prodPrice').value = formatCurrency(p.price);
   document.getElementById('prodDiscount').value = p.discount;
-  
-  const allImages = [p.image_main, p.image_thumb1, p.image_thumb2, p.image_thumb3].filter(Boolean);
-  document.getElementById('prodImages').value = allImages.join('\n');
-  
+  document.getElementById('prodImages').value = [p.image_main, p.image_thumb1, p.image_thumb2, p.image_thumb3].filter(Boolean).join('\n');
   document.getElementById('prodDesc').value = p.description;
   document.getElementById('formTitle').innerText = "Editar Producto";
-
-  // Calcular la previa inmediatamente al cargar los datos
   calculateDiscountPreview();
+  window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
 }
 
 function saveProduct() {
   const id = document.getElementById('prodId').value;
   const rawPrice = document.getElementById('prodPrice').value.replace(/\./g, '');
-  const rawImages = document.getElementById('prodImages').value;
-  const urls = rawImages.split(/\s+/).filter(u => u.trim().startsWith('http'));
-
+  const urls = document.getElementById('prodImages').value.split(/\s+/).filter(u => u.trim().startsWith('http'));
   const data = {
     name: document.getElementById('prodName').value,
     price: rawPrice,
     discount: document.getElementById('prodDiscount').value,
-    image_main: urls[0] || null,
-    image_thumb1: urls[1] || null,
-    image_thumb2: urls[2] || null,
-    image_thumb3: urls[3] || null,
+    image_main: urls[0] || null, image_thumb1: urls[1] || null,
+    image_thumb2: urls[2] || null, image_thumb3: urls[3] || null,
     description: document.getElementById('prodDesc').value
   };
-
   const method = id ? 'PUT' : 'POST';
-  const url = id ? `https://dombet-backend.onrender.com/products/${id}` : `https://dombet-backend.onrender.com/products`;
-
-  fetch(url, {
-    method: method,
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
-  })
-  .then(r => r.json())
-  .then(() => {
-    alert("Guardado correctamente");
-    resetForm();
-    loadProducts();
-  })
-  .catch(e => alert("Error: " + e));
+  const url = id ? `${API_URL}/products/${id}` : `${API_URL}/products`;
+  fetch(url, { method: method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
+  .then(r => r.json()).then(() => { alert("Guardado correctamente"); resetForm(); loadProducts(); }).catch(e => alert("Error: " + e));
 }
 
 function deleteProduct(id) {
   if(!confirm("¿Eliminar este producto?")) return;
-  fetch(`https://dombet-backend.onrender.com/products/${id}`, { method: 'DELETE' })
-  .then(() => loadProducts());
+  fetch(`${API_URL}/products/${id}`, { method: 'DELETE' }).then(() => loadProducts());
+}
+
+// --- NUEVAS FUNCIONES PARA ORDENAR ---
+function initSortable() {
+  if (sortableInstance) sortableInstance.destroy(); // Destruir instancia anterior para evitar duplicados
+  const list = document.getElementById('adminList');
+  sortableInstance = new Sortable(list, {
+    handle: '.drag-handle',
+    animation: 150,
+    ghostClass: 'sortable-ghost',
+    chosenClass: 'sortable-chosen',
+    onEnd: () => {
+      document.getElementById('btnSaveOrder').style.display = 'flex'; // Mostrar botón al reordenar
+    }
+  });
+}
+
+function saveOrder() {
+  const btn = document.getElementById('btnSaveOrder');
+  btn.disabled = true;
+  btn.style.opacity = '0.5';
+
+  const items = document.querySelectorAll('#adminList .product-item');
+  const orderedIds = Array.from(items).map(item => item.dataset.id);
+
+  fetch(`${API_URL}/products/reorder`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ orderedIds })
+  })
+  .then(r => r.json())
+  .then(res => {
+    if (res.success) {
+      alert('Orden guardado correctamente.');
+      btn.style.display = 'none';
+      loadProducts(); // Recargar para confirmar el orden desde la DB
+    } else {
+      alert('Error al guardar el orden.');
+    }
+  })
+  .catch(() => alert('Error de conexión al guardar el orden.'))
+  .finally(() => {
+    btn.disabled = false;
+    btn.style.opacity = '1';
+  });
 }
 </script>
 </body>
