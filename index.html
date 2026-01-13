@@ -63,9 +63,9 @@ header {
 
 /* ESTILO DEL SVG EN TIENDA */
 .store-logo {
-  height: 35px; /* Tamaño móvil */
+  height: 38px; /* Tamaño móvil */
   width: auto;
-  fill: #ffffff; /* Blanco para fondo oscuro */
+  /* El color se define dentro del SVG para mantener la identidad corporativa */
 }
 
 /* HEADER RIGHT (CARRITO) */
@@ -169,7 +169,7 @@ header {
   }
   
   .store-logo {
-    height: 45px; /* Logo más grande en PC */
+    height: 48px; /* Logo más grande en PC */
   }
 
   .search-container { 
@@ -1151,15 +1151,23 @@ header {
 
 <body>
 
-<!-- SVG DEFINITION (Reutilizable) -->
+<!-- SVG DEFINITION (NUEVO LOGO ABSTRACTO) -->
 <svg style="display: none;">
-  <symbol id="logo-dombet" viewBox="0 0 160 30">
-    <!-- Icono Tech Hexagon -->
-    <path d="M15 2 L28 9 V21 L15 28 L2 21 V9 Z" fill="currentColor" opacity="0.2"/>
-    <path d="M15 6 L24 11 V19 L15 24 L6 19 V11 Z" fill="currentColor"/>
-    <circle cx="15" cy="15" r="3" fill="#0a1a3a"/> <!-- Centro oscuro para contraste en tienda -->
-    <!-- Texto DOMBET -->
-    <text x="38" y="22" font-family="Montserrat, sans-serif" font-weight="900" font-size="22" fill="currentColor" letter-spacing="1">DOMBET</text>
+  <symbol id="logo-dombet" viewBox="0 0 200 50">
+    <!-- Icono: Nodo Tecnológico Abstracto (Cuadrado redondeado con conexiones) -->
+    <g transform="translate(0, 5)">
+        <!-- Base shape -->
+        <rect x="2" y="2" width="36" height="36" rx="8" fill="#38bdf8" />
+        <!-- Inner details (Tech lines/nodes) -->
+        <circle cx="20" cy="20" r="5" fill="#0a1a3a" />
+        <path d="M20 20 L20 8 M20 20 L30 28 M20 20 L10 28" stroke="#0a1a3a" stroke-width="3" stroke-linecap="round" />
+    </g>
+    
+    <!-- Texto DOMBET (Azul Tecnológico Brillante para contraste con fondo oscuro) -->
+    <text x="50" y="32" font-family="'Montserrat', sans-serif" font-weight="800" font-size="24" fill="#38bdf8" letter-spacing="0.5">DOMBET</text>
+    
+    <!-- Texto INFORMÁTICA (Blanco) -->
+    <text x="168" y="32" font-family="'Montserrat', sans-serif" font-weight="400" font-size="11" fill="#ffffff" letter-spacing="1" text-anchor="end">INFORMÁTICA</text>
   </symbol>
 </svg>
 
