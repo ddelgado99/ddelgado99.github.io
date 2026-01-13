@@ -44,8 +44,8 @@ header {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 15px;
-  height: auto; /* Altura automática en móvil */
+  gap: 12px; /* Gap reducido */
+  height: auto; 
 }
 
 /* LOGO SVG CONTAINER */
@@ -58,13 +58,12 @@ header {
   animation: elegantBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both;
   text-decoration: none;
   flex-shrink: 0;
-  /* En móvil, el logo manda en el centro */
   margin: 0 auto;
 }
 
 /* ESTILO DEL SVG EN TIENDA */
 .store-logo {
-  height: 40px; 
+  height: 38px; 
   width: auto;
 }
 
@@ -74,8 +73,6 @@ header {
   align-items: center;
   gap: 5px;
   z-index: 1003;
-  
-  /* Posicionamiento optimizado en móvil */
   position: absolute;
   top: 15px;
   right: 15px;
@@ -91,7 +88,7 @@ header {
   border: none;
   outline: none;
 }
-.cart-trigger svg { width: 28px; height: 28px; fill: white; pointer-events: none; }
+.cart-trigger svg { width: 26px; height: 26px; fill: white; pointer-events: none; }
 .cart-count {
   position: absolute;
   top: -2px;
@@ -110,31 +107,31 @@ header {
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
-/* BUSCADOR (CENTRO) - ESTILO RECTÁNGULO REDONDEADO */
+/* BUSCADOR (CENTRO) - ESTILO AZUL SOFISTICADO */
 .search-container {
   width: 100%;
   position: relative;
   z-index: 1001;
-  /* En móvil ocupa todo el ancho disponible */
 }
 
 .search-box {
   display: flex;
-  background: #f5f5f5; 
-  /* BORDES REDONDEADOS (RECTÁNGULO SOFISTICADO) */
+  /* Fondo Azul Sofisticado (Ligeramente más claro que el header) */
+  background: #162a4f; 
   border-radius: 12px; 
   overflow: hidden;
-  border: 1px solid #e0e0e0;
+  /* Borde sutil en el azul de la marca */
+  border: 1px solid #2d4a86;
   width: 100%;
   transition: all 0.3s ease;
-  height: 44px; /* Altura cómoda para el dedo */
+  height: 36px; /* Altura reducida para móvil (Compacto) */
   align-items: center;
   padding-right: 5px;
 }
 
 .search-box:focus-within { 
-  background: #ffffff; 
-  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.3); 
+  background: #1e3a6e; 
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.4); 
   border-color: #38bdf8;
 }
 
@@ -144,25 +141,25 @@ header {
   border: none;
   background: transparent;
   outline: none;
-  font-size: 14px;
-  color: #333;
+  font-size: 13px;
+  color: #ffffff; /* Texto blanco para contraste */
   min-width: 0;
   font-family: 'Montserrat', sans-serif;
   font-weight: 500;
 }
-.search-box input::placeholder { color: #888; }
+.search-box input::placeholder { color: #94a3b8; }
 
 .search-btn {
   background: transparent;
   border: none;
-  padding: 0 12px;
+  padding: 0 10px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
 }
-.search-btn svg { fill: #555; width: 20px; height: 20px; }
+.search-btn svg { fill: #38bdf8; width: 18px; height: 18px; } /* Lupa en azul marca */
 
 /* RESULTADOS DE BÚSQUEDA */
 .search-results{
@@ -172,7 +169,7 @@ header {
   right: 0;
   background:#fff;
   border-radius: 12px;
-  box-shadow:0 10px 30px rgba(0,0,0,.15);
+  box-shadow:0 10px 30px rgba(0,0,0,.25);
   display:none;
   z-index: 1001;
   max-height: 300px;
@@ -196,33 +193,25 @@ header {
 /* ===== MEDIA QUERY PARA ESCRITORIO (PC) ===== */
 @media (min-width: 768px) {
   header { 
-    flex-direction: row; /* Volver a fila en PC */
+    flex-direction: row; 
     padding: 10px 50px; 
     gap: 40px; 
-    height: 90px; /* Altura fija en PC */
+    height: 90px; 
     justify-content: space-between;
   }
   
-  .logo-container {
-    margin: 0; /* Reset margen */
-  }
-
-  .store-logo {
-    height: 48px; 
-  }
-
-  .header-right {
-    position: static; /* Reset posición absoluta */
-  }
+  .logo-container { margin: 0; }
+  .store-logo { height: 44px; }
+  .header-right { position: static; }
 
   .search-container { 
     max-width: 600px;
-    margin: 0 auto; /* Centrado en el espacio disponible */
+    margin: 0 auto; 
     flex-grow: 1;
   }
   
   .search-box { 
-    height: 48px; /* Un poco más alto en PC */
+    height: 46px; /* Más alto en PC */
   }
   
   .search-box input { font-size: 15px; padding: 0 20px; }
@@ -239,11 +228,12 @@ header {
 
 .hero-title {
   font-size: 9px; 
-  font-weight: 600;
+  font-weight: 700; /* Un poco más grueso */
   margin: 0;
   letter-spacing: 2px; 
   text-transform: uppercase; 
-  color: #a5b4fc;
+  /* COLOR ACTUALIZADO PARA COMBINAR CON LOGO */
+  color: #38bdf8; 
   display: flex;
   align-items: center;
   justify-content: center;
@@ -257,7 +247,7 @@ header {
   display: block;
   width: 25px; 
   height: 1px;
-  background: rgba(255,255,255,0.15);
+  background: rgba(56, 189, 248, 0.3); /* Líneas sutiles en azul */
   flex-shrink: 0; 
 }
 
@@ -282,8 +272,7 @@ header {
   max-width: 1400px;
   margin: 0 auto;
   position: sticky;
-  /* Ajuste dinámico del sticky según el header */
-  top: 115px; /* Altura aprox header móvil */
+  top: 110px; /* Ajuste dinámico */
   z-index: 900;
   gap: 10px;
 }
@@ -1187,7 +1176,8 @@ header {
     <!-- Text Group -->
     <text x="50" y="32" font-family="'Montserrat', sans-serif" font-weight="800" font-size="24" fill="#38bdf8" letter-spacing="0.5">DOMBET</text>
     <text x="168" y="30" font-family="'Montserrat', sans-serif" font-weight="300" font-size="24" fill="#ffffff">|</text>
-    <text x="182" y="32" font-family="'Montserrat', sans-serif" font-weight="400" font-size="24" fill="#ffffff" letter-spacing="1">MARKET</text>
+    <!-- Ajuste de posición para MARKET (más cerca de la barra) -->
+    <text x="176" y="32" font-family="'Montserrat', sans-serif" font-weight="400" font-size="24" fill="#ffffff" letter-spacing="1">MARKET</text>
   </symbol>
 </svg>
 
