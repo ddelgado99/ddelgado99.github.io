@@ -34,7 +34,7 @@ body{
 header {
   background: #0a1a3a;
   color: #fff;
-  padding: 5px 15px;
+  padding: 8px 10px; /* Padding reducido para ganar espacio en móvil */
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
@@ -43,8 +43,8 @@ header {
   top: 0;
   z-index: 1000;
   box-shadow: 0 4px 25px rgba(0,0,0,0.2);
-  gap: 10px;
-  height: 70px;
+  gap: 8px; /* Gap reducido */
+  height: 65px;
 }
 
 /* LOGO SVG CONTAINER */
@@ -63,16 +63,16 @@ header {
 
 /* ESTILO DEL SVG EN TIENDA */
 .store-logo {
-  height: 38px; /* Tamaño móvil */
+  height: 42px; /* Tamaño optimizado */
   width: auto;
-  /* El color se define dentro del SVG para mantener la identidad corporativa */
+  /* El color se define dentro del SVG */
 }
 
 /* HEADER RIGHT (CARRITO) */
 .header-right {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 5px;
   z-index: 1002;
   position: relative;
   order: 3; 
@@ -89,17 +89,17 @@ header {
   border: none;
   outline: none;
 }
-.cart-trigger svg { width: 28px; height: 28px; fill: white; pointer-events: none; }
+.cart-trigger svg { width: 26px; height: 26px; fill: white; pointer-events: none; }
 .cart-count {
   position: absolute;
-  top: -4px;
-  right: -4px;
+  top: -2px;
+  right: -2px;
   background: #d32f2f;
   color: white;
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 700;
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -108,36 +108,38 @@ header {
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
-/* BUSCADOR (CENTRO) */
+/* BUSCADOR (CENTRO) - ESTILO PÍLDORA */
 .search-container {
   flex-grow: 1;
   order: 2; 
   position: relative;
   z-index: 1001;
   margin: 0 5px;
-  min-width: 0;
+  min-width: 0; /* Permite que el input se encoja si es necesario */
 }
 
 .search-box {
   display: flex;
   background: #f5f5f5; 
-  border-radius: 6px;
+  border-radius: 50px; /* PÍLDORA REDONDEADA */
   overflow: hidden;
   border: 1px solid #e0e0e0;
   width: 100%;
   transition: all 0.3s ease;
-  height: 40px;
+  height: 38px; /* Altura cómoda para móvil */
+  align-items: center;
+  padding-right: 5px;
 }
 
 .search-box:focus-within { 
   background: #ffffff; 
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  border-color: #ccc;
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.3); /* Glow sutil */
+  border-color: #38bdf8;
 }
 
 .search-box input {
   flex-grow: 1;
-  padding: 0 10px;
+  padding: 0 15px;
   border: none;
   background: transparent;
   outline: none;
@@ -152,11 +154,12 @@ header {
 .search-btn {
   background: transparent;
   border: none;
-  padding: 0 10px;
+  padding: 0 8px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 100%;
 }
 .search-btn svg { fill: #555; width: 18px; height: 18px; }
 
@@ -169,7 +172,7 @@ header {
   }
   
   .store-logo {
-    height: 48px; /* Logo más grande en PC */
+    height: 50px; 
   }
 
   .search-container { 
@@ -181,23 +184,23 @@ header {
     height: 46px;
   }
   
-  .search-box input { font-size: 15px; padding: 0 15px; }
+  .search-box input { font-size: 15px; padding: 0 20px; }
 }
 
 .search-results{
   position:absolute;
   top:100%;
-  left: 0;
-  right: 0;
+  left: 10px; /* Ajuste para coincidir con la curva */
+  right: 10px;
   background:#fff;
-  border-radius: 0 0 8px 8px;
+  border-radius: 12px;
   box-shadow:0 10px 30px rgba(0,0,0,.15);
   display:none;
   z-index: 1001;
   max-height: 300px;
   overflow-y: auto;
-  border-top: 1px solid #eee;
-  margin-top: 2px;
+  border: 1px solid #eee;
+  margin-top: 5px;
 }
 .search-item{
   display:flex;
@@ -266,10 +269,11 @@ header {
   max-width: 1400px;
   margin: 0 auto;
   position: sticky;
-  top: 70px; 
+  top: 65px; /* Ajustado a la altura del header móvil */
   z-index: 900;
   gap: 10px;
 }
+@media (min-width: 768px) { .filter-bar { top: 80px; } }
 
 .sort-label {
   font-size: 11px; 
@@ -1151,23 +1155,28 @@ header {
 
 <body>
 
-<!-- SVG DEFINITION (NUEVO LOGO ABSTRACTO) -->
+<!-- SVG DEFINITION (LOGO CORREGIDO: CHIP + TEXTO ABAJO) -->
 <svg style="display: none;">
-  <symbol id="logo-dombet" viewBox="0 0 200 50">
-    <!-- Icono: Nodo Tecnológico Abstracto (Cuadrado redondeado con conexiones) -->
+  <symbol id="logo-dombet" viewBox="0 0 220 50">
+    <!-- Icono: Chip/Procesador Geométrico -->
     <g transform="translate(0, 5)">
-        <!-- Base shape -->
-        <rect x="2" y="2" width="36" height="36" rx="8" fill="#38bdf8" />
-        <!-- Inner details (Tech lines/nodes) -->
-        <circle cx="20" cy="20" r="5" fill="#0a1a3a" />
-        <path d="M20 20 L20 8 M20 20 L30 28 M20 20 L10 28" stroke="#0a1a3a" stroke-width="3" stroke-linecap="round" />
+        <!-- Cuerpo del chip -->
+        <rect x="2" y="2" width="36" height="36" rx="6" fill="none" stroke="#38bdf8" stroke-width="2.5" />
+        <!-- Circuitos internos -->
+        <path d="M20 20 L20 10 M20 20 L28 28 M20 20 L12 28" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" />
+        <circle cx="20" cy="20" r="4" fill="#38bdf8" />
+        <!-- Pines externos -->
+        <rect x="16" y="0" width="8" height="2" fill="#38bdf8" />
+        <rect x="16" y="38" width="8" height="2" fill="#38bdf8" />
+        <rect x="0" y="16" width="2" height="8" fill="#38bdf8" />
+        <rect x="38" y="16" width="2" height="8" fill="#38bdf8" />
     </g>
     
-    <!-- Texto DOMBET (Azul Tecnológico Brillante para contraste con fondo oscuro) -->
-    <text x="50" y="32" font-family="'Montserrat', sans-serif" font-weight="800" font-size="24" fill="#38bdf8" letter-spacing="0.5">DOMBET</text>
+    <!-- Texto DOMBET (Azul Tecnológico) -->
+    <text x="50" y="24" font-family="'Montserrat', sans-serif" font-weight="800" font-size="24" fill="#38bdf8" letter-spacing="0.5">DOMBET</text>
     
-    <!-- Texto INFORMÁTICA (Blanco) -->
-    <text x="168" y="32" font-family="'Montserrat', sans-serif" font-weight="400" font-size="11" fill="#ffffff" letter-spacing="1" text-anchor="end">INFORMÁTICA</text>
+    <!-- Texto INFORMÁTICA (Blanco, DEBAJO de DOMBET) -->
+    <text x="50" y="38" font-family="'Montserrat', sans-serif" font-weight="500" font-size="10" fill="#ffffff" letter-spacing="3">INFORMÁTICA</text>
   </symbol>
 </svg>
 
@@ -1178,10 +1187,10 @@ header {
     <svg class="store-logo"><use href="#logo-dombet"></use></svg>
   </div>
 
-  <!-- BUSCADOR (CENTRO) -->
+  <!-- BUSCADOR (CENTRO) - PÍLDORA -->
   <div class="search-container">
     <div class="search-box">
-      <input id="searchInput" placeholder="Buscar productos..." autocomplete="off">
+      <input id="searchInput" placeholder="Buscar..." autocomplete="off">
       <button class="search-btn">
         <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
       </button>
