@@ -44,10 +44,10 @@ header {
   z-index: 1000;
   box-shadow: 0 4px 25px rgba(0,0,0,0.2);
   gap: 10px;
-  height: 80px; /* AUMENTADO PARA DAR ESPACIO AL LOGO */
+  height: 70px;
 }
 
-/* LOGO CORREGIDO */
+/* LOGO SVG CONTAINER */
 .logo-container {
   cursor: pointer;
   display: flex;
@@ -61,11 +61,11 @@ header {
   height: 100%;
 }
 
-.logo-container img {
-  height: 70px; /* AUMENTADO: Ahora el logo puede ser más alto */
-  width: auto;  /* Mantiene la proporción original */
-  object-fit: contain;
-  max-width: 140px; /* Evita que ocupe demasiado ancho en móviles */
+/* ESTILO DEL SVG EN TIENDA */
+.store-logo {
+  height: 35px; /* Tamaño móvil */
+  width: auto;
+  fill: #ffffff; /* Blanco para fondo oscuro */
 }
 
 /* HEADER RIGHT (CARRITO) */
@@ -165,12 +165,11 @@ header {
   header { 
     padding: 10px 50px; 
     gap: 40px; 
-    height: 90px; /* Más alto en PC */
+    height: 80px; 
   }
   
-  .logo-container img {
-    height: 80px; /* Logo más grande en PC */
-    max-width: none;
+  .store-logo {
+    height: 45px; /* Logo más grande en PC */
   }
 
   .search-container { 
@@ -267,7 +266,7 @@ header {
   max-width: 1400px;
   margin: 0 auto;
   position: sticky;
-  top: 80px; /* Ajustado al nuevo header */
+  top: 70px; 
   z-index: 900;
   gap: 10px;
 }
@@ -1152,12 +1151,23 @@ header {
 
 <body>
 
+<!-- SVG DEFINITION (Reutilizable) -->
+<svg style="display: none;">
+  <symbol id="logo-dombet" viewBox="0 0 160 30">
+    <!-- Icono Tech Hexagon -->
+    <path d="M15 2 L28 9 V21 L15 28 L2 21 V9 Z" fill="currentColor" opacity="0.2"/>
+    <path d="M15 6 L24 11 V19 L15 24 L6 19 V11 Z" fill="currentColor"/>
+    <circle cx="15" cy="15" r="3" fill="#0a1a3a"/> <!-- Centro oscuro para contraste en tienda -->
+    <!-- Texto DOMBET -->
+    <text x="38" y="22" font-family="Montserrat, sans-serif" font-weight="900" font-size="22" fill="currentColor" letter-spacing="1">DOMBET</text>
+  </symbol>
+</svg>
+
 <!-- HEADER -->
 <header>
-  <!-- LOGO TIPOGRÁFICO APILADO -->
+  <!-- LOGO SVG -->
   <div class="logo-container" onclick="goHome()">
-    <!-- Se eliminó el style inline restrictivo -->
-    <img id="dynamicLogo" src="https://i.ibb.co/gZgKrhX4/logo-png.png" alt="DOMBET">
+    <svg class="store-logo"><use href="#logo-dombet"></use></svg>
   </div>
 
   <!-- BUSCADOR (CENTRO) -->
@@ -1356,19 +1366,7 @@ fetch("https://dombet-backend.onrender.com/products")
   }
 });
 
-// Cargar Logo Dinámico desde la Base de Datos
-fetch("https://dombet-backend.onrender.com/settings/logo")
-  .then(r => r.json())
-  .then(d => {
-    if (d.url) {
-      // Busca la imagen del logo por su ID y actualiza la fuente
-      const logoImg = document.getElementById('dynamicLogo');
-      if(logoImg) {
-          logoImg.src = d.url;
-      }
-    }
-  })
-  .catch(e => console.log("Usando logo por defecto"));
+// (ELIMINADO: fetch de logo dinámico)
 
 window.onpopstate = function(event) {
   const params = new URLSearchParams(window.location.search);
