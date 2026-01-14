@@ -513,11 +513,54 @@ header {
 .btn-whats { background: #25D366; color: white; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.2); }
 .btn-whats:hover { background: #22c35e; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(37, 211, 102, 0.3); }
 .btn-whats svg { width: 24px; height: 24px; fill: white; }
-.info-details { border-top: 1px solid #eee; padding-top: 25px; }
-.label-title { font-weight: 800; font-size: 13px; color: #111; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
-.desc-text { color: #555; line-height: 1.7; margin-bottom: 25px; font-size: 15px; font-weight: 400; }
+
+/* ===== NUEVA SECCIÓN DE ESPECIFICACIONES (MEJORADA PC) ===== */
+.specs-container {
+  margin-top: 30px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 1px solid #e9ecef;
+  width: 100%;
+}
+.specs-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: #0a1a3a;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  border-bottom: 2px solid #e9ecef;
+  padding-bottom: 10px;
+  letter-spacing: 0.5px;
+}
+.specs-content {
+  font-size: 15px;
+  line-height: 1.8;
+  color: #333;
+}
+.specs-content ul {
+  padding-left: 20px;
+  margin: 0;
+}
+.specs-content li {
+  margin-bottom: 8px;
+}
+
+/* AJUSTES ESPECÍFICOS PARA PC */
+@media (min-width: 768px) {
+  .specs-container { margin-top: 50px; padding: 40px; }
+  .specs-title { font-size: 24px; margin-bottom: 25px; }
+  /* Divide el texto en 2 columnas automáticamente en PC */
+  .specs-content { 
+    font-size: 16px; 
+    column-count: 2; 
+    column-gap: 60px; 
+    column-rule: 1px solid #eee;
+  }
+}
+
 .shipping-info {
-  background: #f0fdf4; color: #15803d; padding: 12px 15px; border-radius: 8px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 12px; border: 1px solid #dcfce7;
+  background: #f0fdf4; color: #15803d; padding: 12px 15px; border-radius: 8px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 12px; border: 1px solid #dcfce7; margin-top: 10px;
 }
 
 /* ===== CARRITO ===== */
@@ -672,7 +715,7 @@ header {
 
 <div class="detail" id="detail">
   <div class="detail-box">
-    <!-- TÍTULO MOVIDO AQUÍ ARRIBA PARA QUE NO SALTE -->
+    <!-- TÍTULO -->
     <h1 class="detail-title" id="dName"></h1>
     
     <div class="detail-columns">
@@ -707,16 +750,21 @@ header {
             Comprar por WhatsApp
           </button>
         </div>
-        <div class="info-details">
-          <div class="label-title">ESPECIFICACIONES TÉCNICAS</div>
-          <p class="desc-text" id="dDesc"></p>
-          <div class="shipping-info">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="#15803d" style="flex-shrink:0"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
-            <span>ENVIOS A TODO EL PARAGUAY A TRAVES DE TRANSPORTADORA</span>
-          </div>
+        
+        <!-- INFO ENVIO (SE QUEDA AQUÍ) -->
+        <div class="shipping-info">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="#15803d" style="flex-shrink:0"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+          <span>ENVIOS A TODO EL PARAGUAY A TRAVES DE TRANSPORTADORA</span>
         </div>
       </div>
     </div>
+
+    <!-- NUEVA UBICACIÓN DE ESPECIFICACIONES (FULL WIDTH) -->
+    <div class="specs-container">
+      <div class="specs-title">ESPECIFICACIONES TÉCNICAS</div>
+      <div class="specs-content" id="dDesc"></div>
+    </div>
+
   </div>
 </div>
 
@@ -1017,7 +1065,16 @@ function openDetail(i, pushHistory = true){
   if(offersSection) offersSection.style.display = 'none';
 
   dName.innerText=current.name;
-  dDesc.innerText=current.description||"Sin descripción detallada.";
+  
+  // FORMATEO DE DESCRIPCIÓN PARA QUE PAREZCA UNA LISTA
+  // Si hay saltos de línea, los convertimos en elementos de lista
+  const rawDesc = current.description || "Sin descripción detallada.";
+  if(rawDesc.includes('\n')) {
+    const listItems = rawDesc.split('\n').filter(line => line.trim() !== '').map(line => `<li>${line}</li>`).join('');
+    dDesc.innerHTML = `<ul>${listItems}</ul>`;
+  } else {
+    dDesc.innerText = rawDesc;
+  }
   
   const price = Number(current.price);
   const discount = Number(current.discount || 0);
