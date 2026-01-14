@@ -543,6 +543,14 @@ header {
   box-shadow: 0 8px 20px rgba(10, 26, 58, 0.25); 
 }
 
+/* Feedback visual para el botón */
+.btn-added-success {
+  background-color: #15803d !important; /* Verde oscuro elegante */
+  color: white !important;
+  pointer-events: none; /* Evita doble click */
+  transform: scale(0.98); /* Ligero efecto de pulsación */
+}
+
 .btn-whats { 
   background: #25D366; 
   color: white; 
@@ -1202,22 +1210,48 @@ function updateTotalDisplay(){
   document.getElementById("dTotal").innerText = "Gs. " + formatCurrency(total);
 }
 
+// FUNCIÓN AUXILIAR PARA ANIMACIÓN DE BOTÓN
+function animateButtonFeedback(btn) {
+  if(!btn) return;
+  const originalHTML = btn.innerHTML; // Guardamos icono + texto
+  
+  // Cambiar estado
+  btn.innerHTML = "AÑADIDO ✔️";
+  btn.classList.add('btn-added-success');
+
+  // Revertir después de 2 segundos
+  setTimeout(() => {
+    btn.innerHTML = originalHTML;
+    btn.classList.remove('btn-added-success');
+  }, 2000);
+}
+
 function addToCartFromList(i, event){
   event.stopPropagation();
   const prod = products[i];
   const existing = cart.find(item => item.product.name === prod.name);
   if(existing){ existing.qty += 1; } else { cart.push({ product: prod, qty: 1 }); }
+  
+  // Animación de feedback
+  const btn = event.currentTarget;
+  animateButtonFeedback(btn);
+
   saveCart();
   updateCartUI();
-  toggleCart(true);
+  // toggleCart(true); // Opcional: Si quieres que se abra el carrito o solo muestre el check
 }
 
 function addToCart(){
   const existing = cart.find(item => item.product.name === current.name);
   if(existing){ existing.qty += qty; } else { cart.push({ product: current, qty: qty }); }
+  
+  // Animación de feedback
+  const btn = document.querySelector('.btn-add-cart');
+  animateButtonFeedback(btn);
+
   saveCart();
   updateCartUI();
-  toggleCart(true);
+  // toggleCart(true); // Opcional
 }
 
 function saveCart(){ localStorage.setItem('dombet_cart', JSON.stringify(cart)); }
