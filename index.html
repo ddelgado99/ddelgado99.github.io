@@ -1215,8 +1215,11 @@ function animateButtonFeedback(btn) {
   if(!btn) return;
   const originalHTML = btn.innerHTML; // Guardamos icono + texto
   
+  // SVG elegante
+  const checkSvg = '<svg viewBox="0 0 24 24" style="width:18px; height:18px; fill:white;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
+
   // Cambiar estado
-  btn.innerHTML = "AÑADIDO ✔️";
+  btn.innerHTML = checkSvg + " AÑADIDO";
   btn.classList.add('btn-added-success');
 
   // Revertir después de 2 segundos
