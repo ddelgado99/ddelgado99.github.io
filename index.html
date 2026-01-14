@@ -504,15 +504,69 @@ header {
   font-size: 16px; font-weight: 600; width: 40px; text-align: center; color: #111; height: 100%; line-height: 40px; user-select: none; border-left: 1px solid #f3f4f6; border-right: 1px solid #f3f4f6;
 }
 .total-section { font-size: 16px; font-weight: 700; color: #111; }
-.info-actions { margin-bottom: 30px; }
-.btn-add-cart, .btn-whats {
-  width: 100%; padding: 16px; border: none; border-radius: 8px; font-size: 15px; font-weight: 700; cursor: pointer; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; gap: 10px; text-transform: uppercase; letter-spacing: 0.5px; font-family: 'Montserrat', sans-serif; transition: all 0.2s;
+
+/* ===== BOTONES DE ACCIÓN (OPTIMIZADOS Y ELEGANTES) ===== */
+.info-actions { 
+  margin-bottom: 30px; 
+  display: flex; 
+  flex-direction: column; /* Móvil: Apilados */
+  gap: 10px; /* Espacio prolijo entre botones */
 }
-.btn-add-cart { background: #0a1a3a; color: white; box-shadow: 0 4px 10px rgba(10, 26, 58, 0.2); }
-.btn-add-cart:hover { background: #152c5b; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(10, 26, 58, 0.3); }
-.btn-whats { background: #25D366; color: white; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.2); }
-.btn-whats:hover { background: #22c35e; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(37, 211, 102, 0.3); }
-.btn-whats svg { width: 24px; height: 24px; fill: white; }
+
+.btn-add-cart, .btn-whats {
+  width: 100%; 
+  height: 50px; /* Altura fija elegante */
+  border: none; 
+  border-radius: 10px; /* Bordes suavizados sofisticados */
+  font-size: 13px; 
+  font-weight: 700; 
+  cursor: pointer; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  gap: 10px; 
+  text-transform: uppercase; 
+  letter-spacing: 1px; /* Espaciado elegante */
+  font-family: 'Montserrat', sans-serif; 
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  margin: 0; /* Reseteo de márgenes */
+}
+
+.btn-add-cart { 
+  background: #0a1a3a; 
+  color: white; 
+  box-shadow: 0 4px 12px rgba(10, 26, 58, 0.15); 
+}
+.btn-add-cart:hover { 
+  background: #152c5b; 
+  transform: translateY(-2px); 
+  box-shadow: 0 8px 20px rgba(10, 26, 58, 0.25); 
+}
+
+.btn-whats { 
+  background: #25D366; 
+  color: white; 
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.15); 
+}
+.btn-whats:hover { 
+  background: #22c35e; 
+  transform: translateY(-2px); 
+  box-shadow: 0 8px 20px rgba(37, 211, 102, 0.25); 
+}
+.btn-whats svg { width: 20px; height: 20px; fill: white; }
+
+/* AJUSTES PC PARA BOTONES */
+@media (min-width: 768px) {
+  .info-actions {
+    flex-direction: row; /* PC: Lado a lado */
+    gap: 15px;
+  }
+  .btn-add-cart, .btn-whats {
+    flex: 1; /* Ocupan el mismo ancho */
+    font-size: 14px;
+    height: 54px; /* Un poco más altos en PC */
+  }
+}
 
 /* ===== NUEVA SECCIÓN DE ESPECIFICACIONES (MEJORADA PC) ===== */
 .specs-container {
