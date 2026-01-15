@@ -35,11 +35,10 @@ body{
 .bg-img-contain { background-size: contain; }
 .bg-img-cover { background-size: cover; }
 
-/* ANIMACIÓN REBOTE LOGO */
-@keyframes elegantBounce {
-  0% { opacity: 0; transform: scale(0.9); }
-  70% { transform: scale(1.03); }
-  100% { opacity: 1; transform: scale(1); }
+/* ANIMACIÓN ELEGANTE (SUAVIZADA) */
+@keyframes softEntrance {
+  0% { opacity: 0; transform: translateY(10px) scale(0.98); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 /* ===== HEADER ===== */
@@ -50,7 +49,7 @@ header {
   position: sticky;
   top: 0;
   z-index: 1000;
-  box-shadow: 0 4px 25px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 25px rgba(0,0,0,0.15); /* Sombra más suave */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -65,7 +64,7 @@ header {
   align-items: center;
   justify-content: center;
   z-index: 1002;
-  animation: elegantBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  animation: softEntrance 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
   text-decoration: none;
   flex-shrink: 0;
   margin: 0 auto;
@@ -287,6 +286,32 @@ header {
   display: none; /* Se activa con JS */
   overflow: hidden;
 }
+
+/* TÍTULO DE SECCIÓN ELEGANTE (NUEVO) */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  padding: 0 20px 15px 20px;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.header-line {
+  height: 1px;
+  flex: 1;
+  background: linear-gradient(90deg, transparent, #e0e0e0, transparent);
+  max-width: 100px;
+}
+.header-text {
+  font-size: 12px;
+  font-weight: 700;
+  color: #0a1a3a;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
 .stories-scroll {
   display: flex;
   gap: 15px;
@@ -350,8 +375,7 @@ header {
 
 /* Elementos exclusivos Desktop (ocultos en móvil) */
 .story-desktop-badge,
-.story-desktop-details,
-.stories-header-desktop {
+.story-desktop-details {
   display: none;
 }
 .story-info-container {
@@ -367,24 +391,16 @@ header {
     background: #0a1a3a; /* Fondo oscuro para destacar */
   }
 
-  .stories-header-desktop {
-    display: block;
-    color: #fff;
-    font-size: 24px;
-    font-weight: 800;
-    margin-bottom: 25px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    max-width: 1400px;
-    margin-left: auto;
-    margin-right: auto;
-  }
+  /* Ajuste del título para fondo oscuro */
+  .section-header { padding-bottom: 30px; }
+  .header-text { color: #38bdf8; font-size: 16px; letter-spacing: 4px; }
+  .header-line { background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.3), transparent); }
 
   .stories-scroll {
     display: grid;
     /* Tarjetas verticales tipo "Shorts" */
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 20px;
+    gap: 25px;
     padding: 0;
     overflow: visible;
     max-width: 1400px;
@@ -393,21 +409,21 @@ header {
 
   .story-item {
     width: 100%;
-    height: 280px; /* Altura fija vertical */
+    height: 300px; /* Altura fija vertical */
     background: #000;
     border-radius: 16px;
     padding: 0;
     box-shadow: 0 10px 25px rgba(0,0,0,0.3);
     border: none;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     position: relative;
     overflow: hidden;
     align-items: flex-start;
   }
 
   .story-item:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    transform: translateY(-5px); /* Movimiento más sutil y elegante */
+    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
     z-index: 2;
   }
 
@@ -439,66 +455,68 @@ header {
     border-radius: 0;
     background-size: contain; /* Muestra todo el producto */
     background-position: center;
-    transition: transform 0.5s ease;
+    transition: transform 0.6s ease;
   }
   
   .story-item:hover .story-bg-img {
-    transform: scale(1.1);
+    transform: scale(1.05); /* Zoom suave */
   }
 
   /* Badge Flotante */
   .story-desktop-badge {
     display: block;
     position: absolute;
-    top: 12px;
-    left: 12px;
+    top: 15px;
+    left: 15px;
     right: auto;
     background: #d32f2f;
     color: white;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 800;
-    padding: 6px 10px;
-    border-radius: 6px;
+    padding: 5px 10px;
+    border-radius: 4px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     z-index: 2;
+    letter-spacing: 0.5px;
   }
 
-  /* Info Container con Degradado */
+  /* Info Container con Degradado Mejorado */
   .story-info-container {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
-    padding: 20px 15px;
-    /* Degradado negro para leer texto sobre imagen */
-    background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 60%, transparent 100%);
+    padding: 25px 20px;
+    /* Degradado más alto para asegurar legibilidad */
+    background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.8) 40%, rgba(0,0,0,0) 100%);
     z-index: 1;
     text-align: left;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    height: 50%;
+    height: 60%; /* Cubre más área para textos largos */
   }
 
   .story-label {
     font-size: 14px;
-    font-weight: 700;
+    font-weight: 600;
     color: #fff;
     text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-    margin-bottom: 6px;
+    margin-bottom: 8px;
     white-space: normal;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
     height: auto;
+    line-height: 1.4;
   }
 
   /* Detalles Desktop */
   .story-desktop-details {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 5px;
     width: 100%;
     margin-top: 0;
   }
@@ -506,17 +524,17 @@ header {
   .story-desktop-prices {
     display: flex;
     align-items: baseline;
-    gap: 8px;
+    gap: 10px;
   }
 
   .sd-old {
-    font-size: 11px;
+    font-size: 12px;
     color: rgba(255,255,255,0.6);
     text-decoration: line-through;
   }
 
   .sd-new {
-    font-size: 16px;
+    font-size: 18px;
     color: #4ade80; /* Verde brillante */
     font-weight: 800;
   }
@@ -526,11 +544,11 @@ header {
     font-weight: 700;
     color: #38bdf8; /* Azul claro */
     text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-top: 8px;
+    letter-spacing: 1.5px;
+    margin-top: 10px;
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 6px;
     opacity: 0.9;
   }
   
@@ -541,7 +559,7 @@ header {
   }
 
   .story-item:hover .sd-cta::after {
-    transform: translateX(4px);
+    transform: translateX(5px);
   }
 }
 
@@ -981,7 +999,12 @@ header {
 
 <!-- SECCIÓN DE HISTORIAS -->
 <div class="stories-section" id="storiesSection">
-  <div class="stories-header-desktop" style="display:none;">OFERTAS FLASH</div>
+  <!-- TÍTULO ELEGANTE -->
+  <div class="section-header">
+    <span class="header-line"></span>
+    <span class="header-text">OFERTAS FLASH</span>
+    <span class="header-line"></span>
+  </div>
   <div class="stories-scroll" id="storiesTrack"></div>
 </div>
 
