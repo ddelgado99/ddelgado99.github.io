@@ -527,7 +527,7 @@ header {
     color: #38bdf8; /* Azul claro */
     text-transform: uppercase;
     letter-spacing: 1.5px;
-    margin-top: 5px;
+    margin-top: 10px;
     display: flex;
     align-items: center;
     gap: 6px;
@@ -809,7 +809,14 @@ header {
 }
 .btn-add-cart { background: #0a1a3a; color: white; box-shadow: 0 4px 12px rgba(10, 26, 58, 0.15); }
 .btn-add-cart:hover { background: #152c5b; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(10, 26, 58, 0.25); }
-.btn-added-success { background-color: #15803d !important; color: white !important; pointer-events: none; transform: scale(0.98); }
+/* ESTILO UNIFICADO PARA FEEDBACK DE CARRITO */
+.btn-added-success {
+  background-color: #25D366 !important; /* Verde WhatsApp/Story */
+  color: white !important;
+  pointer-events: none;
+  transform: scale(0.95);
+  box-shadow: none !important;
+}
 .btn-whats { background: #25D366; color: white; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.15); }
 .btn-whats:hover { background: #22c35e; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(37, 211, 102, 0.25); }
 .btn-whats svg { width: 20px; height: 20px; fill: white; }
@@ -1543,17 +1550,16 @@ function animateButtonFeedback(btn) {
   if(!btn) return;
   const originalHTML = btn.innerHTML; // Guardamos icono + texto
   
-  // SVG elegante
-  const checkSvg = '<svg viewBox="0 0 24 24" style="width:18px; height:18px; fill:white;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
-
-  // Cambiar estado
-  btn.innerHTML = checkSvg + " AÑADIDO";
+  // Cambiar estado (SIN SVG, SOLO TEXTO)
+  btn.style.width = getComputedStyle(btn).width; // Evitar saltos de ancho
+  btn.innerText = "¡AÑADIDO!";
   btn.classList.add('btn-added-success');
 
   // Revertir después de 2 segundos
   setTimeout(() => {
     btn.innerHTML = originalHTML;
     btn.classList.remove('btn-added-success');
+    btn.style.width = ''; // Resetear ancho
   }, 2000);
 }
 
