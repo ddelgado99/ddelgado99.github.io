@@ -876,7 +876,9 @@ let animationLoopCount = 0;
 let carouselPos = 0;
 let carouselSpeed = 0.3; 
 let isDragging = false;
+let isPaused = false; // Nueva variable para pausar animación
 let startX = 0;
+let startY = 0; // Nueva variable para detectar scroll vertical
 let currentTranslate = 0;
 let prevTranslate = 0;
 let animationId;
@@ -1010,7 +1012,7 @@ function initOffers() {
   trackContainer.addEventListener('mousemove', touchMove);
   trackContainer.addEventListener('mouseup', touchEnd);
   trackContainer.addEventListener('mouseleave', () => {
-    if(isDragging) touchEnd();
+    if(isDragging || isPaused) touchEnd();
   });
 
   animationId = requestAnimationFrame(animateCarousel);
@@ -1055,7 +1057,8 @@ function updateCarouselBatch() {
 }
 
 function animateCarousel() {
-  if (!isDragging) {
+  // Solo animar si NO está pausado (por toque)
+  if (!isPaused) {
     carouselPos -= carouselSpeed;
     checkBoundary(); 
     setSliderPosition();
@@ -1081,23 +1084,52 @@ function setSliderPosition() {
 }
 
 function touchStart(event) {
-  isDragging = true;
+  // Pausar animación inmediatamente al tocar
+  isPaused = true;
+  isDragging = false; // Aún no sabemos si es arrastre horizontal
+  
   startX = getPositionX(event);
+  startY = getPositionY(event); // Guardamos Y para detectar scroll vertical
   prevTranslate = carouselPos;
 }
 
 function touchMove(event) {
+  // Si no está pausado (no hubo touchStart válido), salir
+  if (!isPaused) return;
+
+  const currentX = getPositionX(event);
+  const currentY = getPositionY(event);
+  const diffX = currentX - startX;
+  const diffY = currentY - startY;
+
+  // Lógica para decidir si es scroll vertical o arrastre horizontal
+  if (!isDragging) {
+    // Si el movimiento vertical es mayor que el horizontal, es scroll de página
+    if (Math.abs(diffY) > Math.abs(diffX)) {
+      return; // Dejamos que el navegador haga scroll vertical y no movemos el carrusel
+    }
+    // Si es mayormente horizontal, activamos el arrastre del carrusel
+    isDragging = true;
+  }
+
+  // Si ya confirmamos que es arrastre horizontal
   if (isDragging) {
-    const currentPosition = getPositionX(event);
-    const diff = currentPosition - startX;
-    carouselPos = prevTranslate + diff;
+    // Prevenir scroll vertical solo si es toque (en móvil)
+    if(event.type.includes('touch')) event.preventDefault();
+    
+    carouselPos = prevTranslate + diffX;
     checkBoundary(); 
     setSliderPosition();
   }
 }
 
-function touchEnd() { isDragging = false; }
+function touchEnd() { 
+  isDragging = false; 
+  isPaused = false; // Reanudar animación automática
+}
+
 function getPositionX(event) { return event.type.includes('mouse') ? event.pageX : event.touches[0].clientX; }
+function getPositionY(event) { return event.type.includes('mouse') ? event.pageY : event.touches[0].clientY; }
 
 function sortProducts(order) {
   if(!order) return;
