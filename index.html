@@ -27,11 +27,9 @@ body{
 .bg-img-contain, .bg-img-cover {
   background-position: center;
   background-repeat: no-repeat;
-  /* Bloqueo de menú contextual y selección */
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   user-select: none;
-  /* Permite scroll y pan, bloquea zoom doble tap en algunos navegadores */
   touch-action: manipulation; 
 }
 .bg-img-contain { background-size: contain; }
@@ -352,7 +350,8 @@ header {
 
 /* Elementos exclusivos Desktop (ocultos en móvil) */
 .story-desktop-badge,
-.story-desktop-details {
+.story-desktop-details,
+.stories-header-desktop {
   display: none;
 }
 .story-info-container {
@@ -362,15 +361,30 @@ header {
 
 /* ===== TRANSFORMACIÓN STORIES DESKTOP (> 768px) ===== */
 @media (min-width: 768px) {
+  /* Contenedor Principal Oscuro */
   .stories-section {
-    padding: 40px;
-    background: #f8f9fa;
+    padding: 40px 50px;
+    background: #0a1a3a; /* Fondo oscuro para destacar */
+  }
+
+  .stories-header-desktop {
+    display: block;
+    color: #fff;
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .stories-scroll {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 25px;
+    /* Tarjetas verticales tipo "Shorts" */
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
     padding: 0;
     overflow: visible;
     max-width: 1400px;
@@ -379,37 +393,42 @@ header {
 
   .story-item {
     width: 100%;
-    background: #fff;
-    border-radius: 12px;
-    padding: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-    border: 1px solid #eee;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    align-items: flex-start;
-    text-align: left;
+    height: 280px; /* Altura fija vertical */
+    background: #000;
+    border-radius: 16px;
+    padding: 0;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    border: none;
+    transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    align-items: flex-start;
   }
 
   .story-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 30px rgba(0,0,0,0.08);
-    border-color: #dbeafe;
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    z-index: 2;
   }
 
-  /* Transformación de Imagen */
+  /* Imagen ocupa todo el fondo */
   .story-ring {
     width: 100%;
-    height: 200px;
+    height: 100%;
     padding: 0;
     background: none;
-    border-radius: 8px;
-    margin-bottom: 15px;
-    position: relative;
+    border-radius: 0;
+    margin: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
   }
 
   .story-img-box {
-    border-radius: 8px;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
     border: none;
     background: #fff;
   }
@@ -417,86 +436,102 @@ header {
   .story-bg-img {
     width: 100%;
     height: 100%;
-    border-radius: 8px;
-    background-size: contain;
+    border-radius: 0;
+    background-size: contain; /* Muestra todo el producto */
     background-position: center;
+    transition: transform 0.5s ease;
+  }
+  
+  .story-item:hover .story-bg-img {
+    transform: scale(1.1);
   }
 
-  /* Badge Desktop */
+  /* Badge Flotante */
   .story-desktop-badge {
     display: block;
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 12px;
+    left: 12px;
+    right: auto;
     background: #d32f2f;
     color: white;
-    font-size: 11px;
-    font-weight: 700;
-    padding: 4px 8px;
-    border-radius: 4px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    font-size: 12px;
+    font-weight: 800;
+    padding: 6px 10px;
+    border-radius: 6px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     z-index: 2;
   }
 
-  /* Info Container */
+  /* Info Container con Degradado */
   .story-info-container {
-    text-align: left;
+    position: absolute;
+    bottom: 0;
+    left: 0;
     width: 100%;
+    padding: 20px 15px;
+    /* Degradado negro para leer texto sobre imagen */
+    background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 60%, transparent 100%);
+    z-index: 1;
+    text-align: left;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    flex: 1;
+    justify-content: flex-end;
+    height: 50%;
   }
 
   .story-label {
     font-size: 14px;
     font-weight: 700;
-    color: #111;
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+    margin-bottom: 6px;
     white-space: normal;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    height: 38px;
-    margin-bottom: 10px;
+    height: auto;
   }
 
   /* Detalles Desktop */
   .story-desktop-details {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 4px;
     width: 100%;
-    margin-top: auto;
+    margin-top: 0;
   }
 
   .story-desktop-prices {
     display: flex;
-    flex-direction: column;
+    align-items: baseline;
+    gap: 8px;
   }
 
   .sd-old {
-    font-size: 12px;
-    color: #999;
+    font-size: 11px;
+    color: rgba(255,255,255,0.6);
     text-decoration: line-through;
   }
 
   .sd-new {
-    font-size: 18px;
-    color: #d32f2f;
+    font-size: 16px;
+    color: #4ade80; /* Verde brillante */
     font-weight: 800;
   }
 
   .sd-cta {
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 700;
-    color: #0a1a3a;
+    color: #38bdf8; /* Azul claro */
     text-transform: uppercase;
     letter-spacing: 1px;
-    margin-top: 5px;
+    margin-top: 8px;
     display: flex;
     align-items: center;
     gap: 5px;
+    opacity: 0.9;
   }
   
   .sd-cta::after {
@@ -946,6 +981,7 @@ header {
 
 <!-- SECCIÓN DE HISTORIAS -->
 <div class="stories-section" id="storiesSection">
+  <div class="stories-header-desktop" style="display:none;">OFERTAS FLASH</div>
   <div class="stories-scroll" id="storiesTrack"></div>
 </div>
 
