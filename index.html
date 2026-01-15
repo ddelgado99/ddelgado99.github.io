@@ -23,6 +23,20 @@ body{
   color: #333;
 }
 
+/* CLASES UTILITARIAS PARA IMÁGENES BACKGROUND (MOBILE FIRST) */
+.bg-img-contain, .bg-img-cover {
+  background-position: center;
+  background-repeat: no-repeat;
+  /* Bloqueo de menú contextual y selección */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  /* Permite scroll y pan, bloquea zoom doble tap en algunos navegadores */
+  touch-action: manipulation; 
+}
+.bg-img-contain { background-size: contain; }
+.bg-img-cover { background-size: cover; }
+
 /* ANIMACIÓN REBOTE LOGO */
 @keyframes elegantBounce {
   0% { opacity: 0; transform: scale(0.9); }
@@ -182,7 +196,7 @@ header {
   transition: background 0.2s;
 }
 .search-item:hover{background:#f9f9f9}
-.search-item img{width:40px;height:40px;object-fit:contain}
+.search-img { width:40px; height:40px; flex-shrink: 0; }
 .search-item div { color: #333; font-weight: 600; font-size: 13px; }
 
 @media (min-width: 768px) {
@@ -267,7 +281,7 @@ header {
   .sort-icon { width: 16px; height: 16px; }
 }
 
-/* ===== STORIES SECTION (NUEVO) ===== */
+/* ===== STORIES SECTION (MOBILE FIRST) ===== */
 .stories-section {
   padding: 15px 0;
   background: #fff;
@@ -297,15 +311,15 @@ header {
 }
 .story-item:active { transform: scale(0.95); }
 
+/* Estilo Mobile: Anillo circular */
 .story-ring {
   width: 74px;
   height: 74px;
   padding: 3px;
   border-radius: 50%;
-  background: linear-gradient(45deg, #38bdf8 0%, #0a1a3a 100%); /* Colores de la marca */
+  background: linear-gradient(45deg, #38bdf8 0%, #0a1a3a 100%);
   position: relative;
 }
-/* Efecto de "visto" opcional: .story-ring.seen { background: #e0e0e0; } */
 
 .story-img-box {
   width: 100%;
@@ -318,11 +332,13 @@ header {
   align-items: center;
   justify-content: center;
 }
-.story-img-box img {
+
+.story-bg-img {
   width: 90%;
   height: 90%;
-  object-fit: contain;
+  border-radius: 50%;
 }
+
 .story-label {
   font-size: 10px;
   text-align: center;
@@ -332,6 +348,166 @@ header {
   white-space: nowrap;
   color: #333;
   font-weight: 600;
+}
+
+/* Elementos exclusivos Desktop (ocultos en móvil) */
+.story-desktop-badge,
+.story-desktop-details {
+  display: none;
+}
+.story-info-container {
+  width: 100%;
+  text-align: center;
+}
+
+/* ===== TRANSFORMACIÓN STORIES DESKTOP (> 768px) ===== */
+@media (min-width: 768px) {
+  .stories-section {
+    padding: 40px;
+    background: #f8f9fa;
+  }
+
+  .stories-scroll {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 25px;
+    padding: 0;
+    overflow: visible;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .story-item {
+    width: 100%;
+    background: #fff;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    border: 1px solid #eee;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    align-items: flex-start;
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .story-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+    border-color: #dbeafe;
+  }
+
+  /* Transformación de Imagen */
+  .story-ring {
+    width: 100%;
+    height: 200px;
+    padding: 0;
+    background: none;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    position: relative;
+  }
+
+  .story-img-box {
+    border-radius: 8px;
+    border: none;
+    background: #fff;
+  }
+
+  .story-bg-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    background-size: contain;
+    background-position: center;
+  }
+
+  /* Badge Desktop */
+  .story-desktop-badge {
+    display: block;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #d32f2f;
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 2;
+  }
+
+  /* Info Container */
+  .story-info-container {
+    text-align: left;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
+  }
+
+  .story-label {
+    font-size: 14px;
+    font-weight: 700;
+    color: #111;
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: 38px;
+    margin-bottom: 10px;
+  }
+
+  /* Detalles Desktop */
+  .story-desktop-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    margin-top: auto;
+  }
+
+  .story-desktop-prices {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sd-old {
+    font-size: 12px;
+    color: #999;
+    text-decoration: line-through;
+  }
+
+  .sd-new {
+    font-size: 18px;
+    color: #d32f2f;
+    font-weight: 800;
+  }
+
+  .sd-cta {
+    font-size: 11px;
+    font-weight: 700;
+    color: #0a1a3a;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .sd-cta::after {
+    content: "→";
+    font-size: 14px;
+    transition: transform 0.2s;
+  }
+
+  .story-item:hover .sd-cta::after {
+    transform: translateX(4px);
+  }
 }
 
 /* ===== STORY VIEWER (FULLSCREEN OVERLAY) ===== */
@@ -399,8 +575,9 @@ header {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: #111; /* Fondo oscuro */
+  background: #111;
 }
+/* MANTENEMOS IMG AQUÍ (REGLA 2) */
 .story-main-img {
   max-width: 100%;
   max-height: 65vh;
@@ -415,7 +592,6 @@ header {
   bottom: 100px;
   width: 30%;
   z-index: 20001;
-  /* background: rgba(255,0,0,0.1); Debug */
 }
 .story-nav-left { left: 0; }
 .story-nav-right { right: 0; }
@@ -473,8 +649,16 @@ header {
   min-width: 0; overflow: hidden; 
 }
 .card:hover { box-shadow: 0 15px 30px rgba(0,0,0,0.1); transform: translateY(-5px) scale(1.02); z-index: 10; border-color: #e0e0e0; }
-.card img { width: 100%; height: 140px; object-fit: contain; margin-bottom: 10px; mix-blend-mode: multiply; }
-@media (min-width: 768px) { .card { padding: 15px; } .card img { height: 200px; padding: 10px; margin-bottom: 15px; } }
+
+/* Reemplazo img por div en card */
+.card-img {
+  width: 100%;
+  height: 140px;
+  margin-bottom: 10px;
+  mix-blend-mode: multiply;
+}
+@media (min-width: 768px) { .card { padding: 15px; } .card-img { height: 200px; margin-bottom: 15px; } }
+
 .name {
   font-size: 12px; min-height: 34px; color: #111; margin-bottom: 8px; line-height: 1.3; font-weight: 700; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; word-break: break-word;
 }
@@ -523,16 +707,19 @@ header {
 
 .thumbs{ display:none; gap:10px; justify-content: center; overflow-x: auto; order: 2; padding: 5px 0; }
 @media (min-width: 768px) { .thumbs { display: flex; flex-direction: column; order: 1; justify-content: flex-start; width: 80px; overflow-y: auto; overflow-x: hidden; max-height: 500px; } }
-.thumbs img{
-  width:70px;height:70px;object-fit:contain; border:1px solid #eee; border-radius:6px; cursor: pointer; flex-shrink: 0; transition: border-color 0.2s;
+
+/* Reemplazo img por div en thumbs */
+.thumb-img {
+  width:70px; height:70px; border:1px solid #eee; border-radius:6px; cursor: pointer; flex-shrink: 0; transition: border-color 0.2s;
 }
-.thumbs img.active{border-color:#0a1a3a; border-width: 2px;}
+.thumb-img.active{border-color:#0a1a3a; border-width: 2px;}
 
 .main-img{
   flex: 1; width:100%; height: 340px; min-height: 340px; position:relative; display: flex; align-items: center; justify-content: center; background: #fff; order: 1; touch-action: pan-y; overflow: hidden; border-radius: 8px; border: 1px solid #f9f9f9; flex-shrink: 0; 
 }
 @media (min-width: 768px) { .main-img { height: 500px; min-height: 500px; order: 2; } }
 
+/* Mantenemos img en main-img para zoom/lightbox */
 .main-img img{ max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; transition: transform 0.3s ease; cursor: pointer; display: block; }
 
 .arrow{
@@ -624,7 +811,8 @@ header {
 .cart-empty-msg { text-align: center; color: #999; margin-top: 60px; font-size: 16px; font-weight: 500; }
 .cart-item { display: flex; gap: 15px; margin-bottom: 20px; border-bottom: 1px solid #f0f0f0; padding-bottom: 15px; }
 .cart-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-.cart-item img { width: 70px; height: 70px; object-fit: contain; border: 1px solid #eee; border-radius: 6px; padding: 5px; }
+/* Reemplazo img por div en cart */
+.cart-img { width: 70px; height: 70px; border: 1px solid #eee; border-radius: 6px; padding: 5px; flex-shrink: 0; }
 .cart-item-info { flex: 1; min-width: 0; }
 .cart-item-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #111; }
 .cart-item-price { color: #2e7d32; font-weight: 700; font-size: 15px; }
@@ -672,10 +860,11 @@ header {
   .lightbox-thumbs { flex-direction: row; width: 100%; height: 80px; top: auto; bottom: 0; left: 0; border-right: none; border-top: 1px solid #eee; justify-content: center; align-items: center; padding: 10px; background: rgba(255,255,255,0.95); }
   .lb-prev { left: 10px; } 
 }
-.lightbox-thumbs img {
-  width: 60px; height: 60px; object-fit: contain; border: 1px solid #eee; border-radius: 6px; opacity: 0.6; background: #fff; transition: all 0.2s; flex-shrink: 0; cursor: pointer;
+/* Reemplazo img por div en lightbox thumbs */
+.lightbox-thumb-img {
+  width: 60px; height: 60px; border: 1px solid #eee; border-radius: 6px; opacity: 0.6; background-color: #fff; transition: all 0.2s; flex-shrink: 0; cursor: pointer;
 }
-.lightbox-thumbs img.active { border-color: #0a1a3a; opacity: 1; border-width: 2px; transform: scale(1.05); }
+.lightbox-thumb-img.active { border-color: #0a1a3a; opacity: 1; border-width: 2px; transform: scale(1.05); }
 .lb-zoom-controls {
   position: absolute; top: 20px; left: 110px; display: flex; flex-direction: column; gap: 10px; z-index: 12003;
 }
@@ -744,7 +933,7 @@ header {
   </div>
 </div>
 
-<!-- SECCIÓN DE HISTORIAS (REEMPLAZA CARRUSEL) -->
+<!-- SECCIÓN DE HISTORIAS -->
 <div class="stories-section" id="storiesSection">
   <div class="stories-scroll" id="storiesTrack"></div>
 </div>
@@ -768,6 +957,7 @@ header {
     <div class="story-nav-left" onclick="prevStory(event)"></div>
     <div class="story-nav-right" onclick="nextStory(event)"></div>
     
+    <!-- IMAGEN PRINCIPAL DEL VISOR (MANTENIDA COMO IMG) -->
     <img id="storyMainImg" class="story-main-img">
   </div>
 
@@ -984,10 +1174,11 @@ function renderList(){
 
     const imgMain = p.image_main ? p.image_main : 'https://via.placeholder.com/300?text=Sin+Imagen';
 
+    // Reemplazo de img por div con background-image
     list.innerHTML+=`
       <div class="card" onclick="openDetail(${i})">
         ${discountBadge}
-        <img src="${imgMain}">
+        <div class="card-img bg-img-contain" style="background-image: url('${imgMain}')"></div>
         <div class="name">${p.name}</div>
         <div class="price-container">
           ${priceHtml}
@@ -1008,14 +1199,39 @@ function initStories() {
 
   track.innerHTML = discountProducts.map((p, index) => {
     const imgMain = p.image_main ? p.image_main : 'https://via.placeholder.com/100?text=Sin+Imagen';
+    
+    // Cálculos de precio para la vista Desktop
+    const price = Number(p.price);
+    const discount = Number(p.discount);
+    const finalPrice = price - (price * (discount / 100));
+
+    // Estructura HTML enriquecida (Info extra oculta en móvil por CSS)
     return `
       <div class="story-item" onclick="openStoryViewer(${index})">
+        
+        <!-- Contenedor de Imagen (Círculo en Mobile / Rectángulo en Desktop) -->
         <div class="story-ring">
           <div class="story-img-box">
-            <img src="${imgMain}">
+            <div class="story-bg-img bg-img-contain" style="background-image: url('${imgMain}')"></div>
+          </div>
+          <!-- Badge solo para Desktop -->
+          <div class="story-desktop-badge">-${discount}%</div>
+        </div>
+
+        <!-- Info del Producto -->
+        <div class="story-info-container">
+          <div class="story-label">${p.name}</div>
+          
+          <!-- Detalles exclusivos Desktop -->
+          <div class="story-desktop-details">
+            <div class="story-desktop-prices">
+              <span class="sd-old">Gs. ${formatCurrency(price)}</span>
+              <span class="sd-new">Gs. ${formatCurrency(finalPrice)}</span>
+            </div>
+            <div class="sd-cta">VER HISTORIA</div>
           </div>
         </div>
-        <div class="story-label">${p.name}</div>
+
       </div>
     `;
   }).join('');
@@ -1230,7 +1446,8 @@ function openDetail(i, pushHistory = true){
   mainImg.src=imgs[0];
   thumbs.innerHTML="";
   imgs.forEach((img,idx)=>{
-    thumbs.innerHTML+=`<img src="${img}" class="${idx===0?'active':''}" onclick="setImg(${idx})">`
+    // Reemplazo de img por div con background-image en thumbs
+    thumbs.innerHTML+=`<div class="thumb-img bg-img-contain ${idx===0?'active':''}" style="background-image: url('${img}')" onclick="setImg(${idx})"></div>`
   });
   
   window.scrollTo(0,0);
@@ -1345,9 +1562,10 @@ function updateCartUI(){
       total += itemTotal;
       const imgMain = item.product.image_main ? item.product.image_main : 'https://via.placeholder.com/70?text=Sin+Imagen';
 
+      // Reemplazo de img por div con background-image en cart
       cartItems.innerHTML += `
         <div class="cart-item">
-          <img src="${imgMain}">
+          <div class="cart-img bg-img-contain" style="background-image: url('${imgMain}')"></div>
           <div class="cart-item-info">
             <div class="cart-item-title">${item.product.name}</div>
             <div class="cart-item-price">Gs. ${formatCurrency(finalPrice)}</div>
@@ -1409,8 +1627,9 @@ searchInput.oninput=e=>{
   searchResults.innerHTML=f.map(p=>{
     const i=products.indexOf(p)
     const imgMain = p.image_main ? p.image_main : 'https://via.placeholder.com/35?text=Sin+Imagen';
+    // Reemplazo de img por div con background-image en search
     return `<div class="search-item" onclick="openDetail(${i});searchResults.style.display='none'">
-      <img src="${imgMain}">
+      <div class="search-img bg-img-contain" style="background-image: url('${imgMain}')"></div>
       <div>${p.name}</div>
     </div>`
   }).join('')
@@ -1443,7 +1662,8 @@ function openLightbox() {
 
   lbThumbs.innerHTML = "";
   imgs.forEach((img, idx) => {
-    lbThumbs.innerHTML += `<img src="${img}" class="${idx===imgIndex?'active':''}" onclick="event.stopPropagation(); setImg(${idx})">`;
+    // Reemplazo de img por div con background-image en lightbox thumbs
+    lbThumbs.innerHTML += `<div class="lightbox-thumb-img bg-img-contain ${idx===imgIndex?'active':''}" style="background-image: url('${img}')" onclick="event.stopPropagation(); setImg(${idx})"></div>`;
   });
   
   document.body.style.overflow = 'hidden';
