@@ -389,6 +389,8 @@ header {
   .stories-section {
     padding: 40px 50px;
     background: #0a1a3a; /* Fondo oscuro para destacar */
+    /* CORRECCIÓN: Eliminamos border-bottom blanco para continuidad */
+    border-bottom: none; 
   }
 
   /* Ajuste del título para fondo oscuro */
@@ -973,7 +975,18 @@ header {
   </div>
 </div>
 
-<!-- BARRA DE FILTROS -->
+<!-- SECCIÓN DE HISTORIAS (MOVIDA AQUÍ PARA ELIMINAR ESPACIO EN BLANCO) -->
+<div class="stories-section" id="storiesSection">
+  <!-- TÍTULO ELEGANTE -->
+  <div class="section-header">
+    <span class="header-line"></span>
+    <span class="header-text">OFERTAS FLASH</span>
+    <span class="header-line"></span>
+  </div>
+  <div class="stories-scroll" id="storiesTrack"></div>
+</div>
+
+<!-- BARRA DE FILTROS (AHORA DEBAJO DE LAS HISTORIAS) -->
 <div class="filter-bar" id="filterBar" style="display:none;">
   <span class="sort-label">Ordenar por:</span>
   <div class="sort-container">
@@ -983,17 +996,6 @@ header {
       <option value="asc">Precio más bajo</option>
     </select>
   </div>
-</div>
-
-<!-- SECCIÓN DE HISTORIAS -->
-<div class="stories-section" id="storiesSection">
-  <!-- TÍTULO ELEGANTE -->
-  <div class="section-header">
-    <span class="header-line"></span>
-    <span class="header-text">OFERTAS FLASH</span>
-    <span class="header-line"></span>
-  </div>
-  <div class="stories-scroll" id="storiesTrack"></div>
 </div>
 
 <!-- VISOR DE HISTORIAS (FULLSCREEN) -->
