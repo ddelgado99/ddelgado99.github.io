@@ -73,6 +73,8 @@ header {
 .store-logo {
   height: 42px; 
   width: auto;
+  /* Asegura que el SVG tenga espacio suficiente */
+  min-width: 200px; 
 }
 
 /* HEADER RIGHT (CARRITO) */
@@ -930,27 +932,29 @@ header {
 <body>
 
 <!-- SVG DEFINITION (LOGO: DOMBET | MARKET + MICROCHIP) -->
-<svg style="display: none;">
-  <symbol id="logo-dombet" viewBox="0 0 350 50">
+<!-- CORRECCIÓN: Usamos position:absolute y width/height:0 en lugar de display:none para que los gradientes funcionen -->
+<svg style="position: absolute; width: 0; height: 0; overflow: hidden;" aria-hidden="true">
+  <symbol id="logo-dombet" viewBox="0 0 300 50">
     <defs>
-      <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
         <stop offset="0%" style="stop-color:#0a1a3a;stop-opacity:1" />
         <stop offset="100%" style="stop-color:#00AEEF;stop-opacity:1" />
       </linearGradient>
     </defs>
-    <g transform="translate(0, 2)">
-      <!-- Hexagon -->
-      <path d="M12 0 L33 0 L43.5 18 L33 36 L12 36 L1.5 18 Z" fill="none" stroke="url(#grad1)" stroke-width="2.5"/>
-      <!-- Arrow -->
-      <path d="M22.5 26 L22.5 10 M17.5 15 L22.5 10 L27.5 15" stroke="#00AEEF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-      <!-- Particles -->
-      <circle cx="38" cy="8" r="1.5" fill="#00AEEF"/>
-      <circle cx="7" cy="28" r="1.5" fill="#00AEEF" opacity="0.7"/>
-      <circle cx="40" cy="25" r="1" fill="#00AEEF" opacity="0.5"/>
+    <!-- Grupo centrado verticalmente -->
+    <g transform="translate(0, 7)">
+      <!-- Hexágono -->
+      <path d="M10 0 L30 0 L40 18 L30 36 L10 36 L0 18 Z" fill="none" stroke="url(#grad1)" stroke-width="2.5" stroke-linejoin="round"/>
+      <!-- Flecha -->
+      <path d="M20 26 L20 10 M15 15 L20 10 L25 15" stroke="#00AEEF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <!-- Partículas -->
+      <circle cx="35" cy="8" r="1.5" fill="#00AEEF"/>
+      <circle cx="5" cy="28" r="1.5" fill="#00AEEF" opacity="0.7"/>
+      <circle cx="38" cy="25" r="1" fill="#00AEEF" opacity="0.5"/>
     </g>
-    <!-- Text -->
-    <text x="52" y="30" font-family="'Montserrat', sans-serif" font-weight="800" font-size="24" fill="#00AEEF" letter-spacing="-0.5">DOMBET</text>
-    <text x="168" y="30" font-family="'Montserrat', sans-serif" font-weight="300" font-size="24" fill="#FFFFFF" letter-spacing="1">MARKET</text>
+    <!-- Texto -->
+    <text x="50" y="33" font-family="'Montserrat', sans-serif" font-weight="800" font-size="22" fill="#00AEEF" letter-spacing="0.5">DOMBET</text>
+    <text x="155" y="33" font-family="'Montserrat', sans-serif" font-weight="300" font-size="22" fill="#FFFFFF" letter-spacing="1">MARKET</text>
   </symbol>
 </svg>
 
