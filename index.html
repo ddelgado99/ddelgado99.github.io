@@ -43,7 +43,7 @@ body{
   100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* ===== HEADER ===== */
+/* ===== HEADER OPTIMIZADO ===== */
 header {
   background: #0a1a3a;
   color: #fff;
@@ -53,35 +53,40 @@ header {
   z-index: 1000;
   box-shadow: 0 4px 25px rgba(0,0,0,0.15);
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: wrap; /* Permite que el buscador baje */
   align-items: center;
-  gap: 10px; 
+  justify-content: space-between; /* Distribuye Menú - Logo - Carrito */
+  gap: 0; 
   height: auto; 
 }
 
-/* MENÚ HAMBURGUESA */
+/* 1. MENÚ HAMBURGUESA (Izquierda) */
 .menu-trigger {
-  background: none; border: none; cursor: pointer; padding: 5px; display: flex; align-items: center; justify-content: center; color: white; margin-right: 5px;
+  background: none; border: none; cursor: pointer; padding: 5px; display: flex; align-items: center; justify-content: center; color: white; 
+  order: 1; /* Primero en móvil */
+  flex: 0 0 auto;
 }
-.menu-trigger svg { width: 28px; height: 28px; fill: white; }
+.menu-trigger svg { width: 26px; height: 26px; fill: white; }
 
-/* LOGO */
+/* 2. LOGO (Centro) */
 .logo-container {
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  flex-shrink: 0;
+  order: 2; /* Segundo en móvil */
+  flex: 1; /* Ocupa el espacio central */
 }
-.store-logo { height: 32px; width: auto; }
+.store-logo { height: 28px; width: auto; max-width: 100%; } /* Ajustado para móvil */
 
-/* HEADER RIGHT (CARRITO) */
+/* 3. CARRITO (Derecha) */
 .header-right {
   display: flex;
   align-items: center;
   gap: 5px;
-  margin-left: auto; /* Empuja a la derecha */
+  order: 3; /* Tercero en móvil */
+  flex: 0 0 auto;
 }
 
 .cart-trigger {
@@ -92,12 +97,12 @@ header {
   position: absolute; top: -2px; right: -2px; background: #d32f2f; color: white; font-size: 9px; font-weight: 700; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; pointer-events: none; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
-/* BUSCADOR */
+/* 4. BUSCADOR (Abajo en móvil) */
 .search-container {
   width: 100%;
   position: relative;
-  order: 4; /* En móvil baja */
-  margin-top: 5px;
+  order: 4; /* Baja a la siguiente línea */
+  margin-top: 10px; /* Separación con la línea de arriba */
 }
 
 .search-box {
@@ -123,11 +128,11 @@ header {
 /* MEDIA QUERY HEADER DESKTOP */
 @media (min-width: 768px) {
   header { flex-wrap: nowrap; padding: 15px 40px; gap: 30px; height: 80px; }
-  .menu-trigger { display: flex; margin-right: 10px; } /* Visible en desktop también */
-  .logo-container { order: 0; }
+  .menu-trigger { order: 0; margin-right: 10px; } 
+  .logo-container { order: 0; flex: 0 0 auto; }
   .store-logo { height: 42px; }
   .search-container { flex: 1; margin: 0; order: 0; max-width: 600px; }
-  .header-right { margin-left: 0; }
+  .header-right { order: 0; margin-left: 0; }
 }
 
 /* ===== MENÚ LATERAL (CATEGORÍAS) ===== */
@@ -189,8 +194,20 @@ header {
   .section-header { padding-bottom: 30px; }
   .header-text { color: #0a1a3a; font-size: 16px; letter-spacing: 4px; }
   .stories-scroll { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 25px; padding: 10px; overflow: visible; max-width: 1400px; margin: 0 auto; }
-  .story-item { width: 100%; height: 320px; background: #fff; border-radius: 16px; padding: 0; box-shadow: 0 10px 25px rgba(0,0,0,0.08); border: 2px solid #38bdf8; transition: all 0.3s ease; position: relative; overflow: hidden; align-items: center; display: flex; flex-direction: column; }
-  .story-item:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(56, 189, 248, 0.2); border-color: #0a1a3a; }
+  
+  .story-item { 
+    width: 100%; height: 320px; background: #fff; border-radius: 16px; padding: 0; box-shadow: 0 10px 25px rgba(0,0,0,0.08); 
+    border: 2px solid #38bdf8; /* Borde normal azul claro */
+    transition: all 0.3s ease; position: relative; overflow: hidden; align-items: center; display: flex; flex-direction: column; 
+  }
+  
+  /* HOVER AZUL MARINO (CORREGIDO) */
+  .story-item:hover { 
+    transform: translateY(-5px); 
+    box-shadow: 0 15px 35px rgba(30, 58, 138, 0.2); 
+    border-color: #1e3a8a; /* AZUL MARINO VIBRANTE (NO NEGRO) */
+  }
+  
   .story-ring { width: 100%; height: 75%; padding: 15px; background: none; border-radius: 0; margin: 0; position: relative; top: auto; left: auto; }
   .story-img-box { width: 100%; height: 100%; border-radius: 8px; border: none; background: #fff; }
   .story-bg-img { width: 100%; height: 100%; border-radius: 0; background-size: contain; background-position: center; transition: transform 0.6s ease; }
