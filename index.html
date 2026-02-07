@@ -70,11 +70,11 @@ header {
 /* 2. COLUMNA DE MARCA (Logo + Menú Desktop) */
 .brand-col {
   display: flex;
-  flex-direction: column; /* En PC se apilan */
-  align-items: flex-start;
+  flex-direction: column; 
+  align-items: flex-start; /* Alineación izquierda estricta */
   justify-content: center;
   order: 2; 
-  flex: 1; /* En móvil ocupa el centro */
+  flex: 1; 
   margin-left: 10px;
 }
 
@@ -83,6 +83,7 @@ header {
   display: flex;
   align-items: center;
   text-decoration: none;
+  margin-bottom: 2px; /* Pequeño respiro antes del menú */
 }
 .store-logo { height: 28px; width: auto; max-width: 100%; }
 
@@ -92,21 +93,21 @@ header {
   background: none;
   border: none;
   cursor: pointer;
-  color: #38bdf8;
+  color: #38bdf8; /* Azul claro elegante */
   font-family: 'Montserrat', sans-serif;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 600; /* Peso medio para elegancia */
   align-items: center;
   gap: 8px;
-  padding: 5px 0;
-  margin-top: 2px;
+  padding: 0;
+  margin: 0;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  transition: color 0.2s;
+  transition: all 0.2s ease;
 }
-.menu-desktop-trigger:hover { color: #fff; }
-.menu-desktop-trigger svg.icon-hamburger { width: 18px; height: 18px; fill: currentColor; }
-.menu-desktop-trigger svg.icon-arrow { width: 10px; height: 10px; fill: currentColor; transition: transform 0.3s ease; }
+.menu-desktop-trigger:hover { color: #fff; transform: translateX(2px); }
+.menu-desktop-trigger svg.icon-hamburger { width: 16px; height: 16px; fill: currentColor; }
+.menu-desktop-trigger svg.icon-arrow { width: 10px; height: 10px; fill: currentColor; transition: transform 0.3s ease; opacity: 0.8; }
 
 /* Rotación de la flecha cuando está activo */
 .menu-desktop-trigger.active svg.icon-arrow { transform: rotate(180deg); }
@@ -131,58 +132,72 @@ header {
 .search-container {
   width: 100%;
   position: relative;
-  order: 4; /* En móvil baja a 2da línea */
+  order: 4; 
   margin-top: 10px;
 }
 .search-box {
-  display: flex; background: #162a4f; border-radius: 12px; overflow: hidden; border: 1px solid #2d4a86; width: 100%; transition: all 0.3s ease; height: 40px; align-items: center; padding-right: 5px;
+  display: flex; background: #162a4f; border-radius: 8px; /* Bordes más sutiles */ overflow: hidden; border: 1px solid #2d4a86; width: 100%; transition: all 0.3s ease; height: 40px; align-items: center; padding-right: 5px;
 }
-.search-box:focus-within { background: #1e3a6e; box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.4); border-color: #38bdf8; }
+.search-box:focus-within { background: #1e3a6e; box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.3); border-color: #38bdf8; }
 .search-box input {
-  flex-grow: 1; padding: 0 15px; border: none; background: transparent; outline: none; font-size: 14px; color: #ffffff; min-width: 0; font-family: 'Montserrat', sans-serif; font-weight: 500;
+  flex-grow: 1; padding: 0 15px; border: none; background: transparent; outline: none; font-size: 14px; color: #ffffff; min-width: 0; font-family: 'Montserrat', sans-serif; font-weight: 400;
 }
-.search-box input::placeholder { color: #94a3b8; }
+.search-box input::placeholder { color: #94a3b8; font-weight: 300; }
 .search-btn { background: transparent; border: none; padding: 0 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; height: 100%; }
 .search-btn svg { fill: #38bdf8; width: 20px; height: 20px; }
 
 /* RESULTADOS BÚSQUEDA */
 .search-results{
-  position:absolute; top:100%; left: 0; right: 0; background:#fff; border-radius: 12px; box-shadow:0 10px 30px rgba(0,0,0,.25); display:none; z-index: 1001; max-height: 300px; overflow-y: auto; border: 1px solid #eee; margin-top: 5px;
+  position:absolute; top:100%; left: 0; right: 0; background:#fff; border-radius: 8px; box-shadow:0 10px 30px rgba(0,0,0,.25); display:none; z-index: 1001; max-height: 300px; overflow-y: auto; border: 1px solid #eee; margin-top: 5px;
 }
 .search-item{ display:flex; align-items:center; gap:15px; padding:12px; cursor:pointer; border-bottom: 1px solid #f5f5f5; transition: background 0.2s; }
 .search-item:hover{background:#f9f9f9}
 .search-img { width:40px; height:40px; flex-shrink: 0; }
 .search-item div { color: #333; font-weight: 600; font-size: 13px; }
 
-/* MEDIA QUERY HEADER DESKTOP */
+/* MEDIA QUERY HEADER DESKTOP (GRID SYSTEM PARA CENTRADO PERFECTO) */
 @media (min-width: 768px) {
-  header { flex-wrap: nowrap; padding: 10px 40px; gap: 40px; height: 90px; align-items: center; }
+  header { 
+    display: grid;
+    /* 3 Columnas: Izquierda (Marca), Centro (Buscador), Derecha (Carrito) */
+    /* 260px asegura espacio suficiente para el logo y menú, 1fr centra el buscador, 260px equilibra el lado derecho */
+    grid-template-columns: 260px 1fr 260px; 
+    padding: 10px 40px; 
+    height: 90px; 
+    align-items: center;
+    gap: 20px;
+  }
   
   /* Ocultar menú móvil */
   .menu-mobile-trigger { display: none; }
   
-  /* Columna de Marca (Logo + Menú) */
+  /* Columna de Marca */
   .brand-col { 
     order: 0; 
-    flex: 0 0 auto; /* No estirar */
     margin-left: 0;
-    align-items: flex-start;
-    gap: 2px;
+    align-items: flex-start; /* Alineado a la izquierda */
+    justify-self: start;
+    width: 100%;
   }
-  .store-logo { height: 38px; }
+  .store-logo { height: 34px; } /* Tamaño ajustado */
   
-  /* Mostrar menú desktop debajo del logo */
-  .menu-desktop-trigger { display: flex; }
+  /* Menú desktop */
+  .menu-desktop-trigger { display: flex; margin-top: 4px; padding-left: 0; }
 
-  /* Buscador al centro */
+  /* Buscador al centro absoluto */
   .search-container { 
-    flex: 1; /* Ocupa el espacio central */
-    margin: 0; 
+    margin: 0 auto; 
     order: 0; 
-    max-width: 600px; 
+    width: 100%;
+    max-width: 550px; /* Ancho elegante */
   }
   
-  .header-right { order: 0; margin-left: 0; }
+  /* Carrito a la derecha */
+  .header-right { 
+    order: 0; 
+    margin-left: 0; 
+    justify-self: end; /* Empuja al final de la grilla */
+  }
 }
 
 /* ===== MENÚ LATERAL (CATEGORÍAS) ===== */
@@ -192,24 +207,24 @@ header {
 .menu-overlay.open { display: block; opacity: 1; }
 
 .menu-panel {
-  position: fixed; top: 0; left: 0; width: 85%; max-width: 320px; height: 100%; background: #fff; z-index: 9999; box-shadow: 5px 0 25px rgba(0,0,0,0.15); transform: translateX(-100%); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column;
+  position: fixed; top: 0; left: 0; width: 85%; max-width: 300px; height: 100%; background: #fff; z-index: 9999; box-shadow: 5px 0 25px rgba(0,0,0,0.15); transform: translateX(-100%); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column;
 }
 .menu-panel.open { transform: translateX(0); }
 
 .menu-header {
   padding: 25px 20px; background: #0a1a3a; color: white; display: flex; justify-content: space-between; align-items: center;
 }
-.menu-title { font-size: 18px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; display: flex; align-items: center; gap: 10px; }
+.menu-title { font-size: 16px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; display: flex; align-items: center; gap: 10px; }
 .close-menu { background: none; border: none; color: white; font-size: 28px; cursor: pointer; line-height: 1; opacity: 0.8; }
 .close-menu:hover { opacity: 1; }
 
 .menu-items { flex: 1; overflow-y: auto; padding: 10px 0; }
 .menu-item {
-  padding: 15px 25px; border-bottom: 1px solid #f0f0f0; cursor: pointer; font-size: 14px; font-weight: 600; color: #333; display: flex; align-items: center; justify-content: space-between; transition: background 0.2s;
+  padding: 14px 25px; border-bottom: 1px solid #f5f5f5; cursor: pointer; font-size: 14px; font-weight: 500; color: #444; display: flex; align-items: center; justify-content: space-between; transition: all 0.2s;
 }
-.menu-item:hover { background: #f8f9fa; color: #38bdf8; }
-.menu-item.active { background: #f0f9ff; color: #0a1a3a; border-left: 4px solid #38bdf8; }
-.menu-count { background: #eee; color: #666; font-size: 10px; padding: 2px 6px; border-radius: 10px; font-weight: 700; }
+.menu-item:hover { background: #f8f9fa; color: #38bdf8; padding-left: 30px; }
+.menu-item.active { background: #f0f9ff; color: #0a1a3a; border-left: 4px solid #38bdf8; font-weight: 700; }
+.menu-count { background: #f1f5f9; color: #64748b; font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
 
 /* ===== STORIES SECTION ===== */
 .stories-section {
@@ -454,7 +469,7 @@ header {
       <path d="M7 0 V6 M7 28 V34 M0 7 H6 M28 7 H34" stroke="#38bdf8" stroke-width="2.5"/>
       <path d="M27 0 V6 M27 28 V34 M0 27 H6 M28 27 H34" stroke="#38bdf8" stroke-width="2.5"/>
     </g>
-    <!-- LINEA ELIMINADA Y TEXTO AJUSTADO -->
+    <!-- TEXTO AJUSTADO PARA ALINEACIÓN PERFECTA -->
     <text x="42" y="32" font-family="'Montserrat', sans-serif" font-weight="800" font-size="24" fill="#38bdf8" letter-spacing="0.5">DOMBET</text>
     <text x="155" y="32" font-family="'Montserrat', sans-serif" font-weight="400" font-size="24" fill="#ffffff" letter-spacing="1">MARKET</text>
   </symbol>
@@ -476,7 +491,7 @@ header {
     <!-- MENÚ DESKTOP (Debajo del logo, solo en PC) -->
     <button class="menu-desktop-trigger" id="desktopMenuBtn" onclick="toggleMenu(true)">
       <svg class="icon-hamburger" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
-      <span>TODAS LAS CATEGORÍAS</span>
+      <span>CATEGORÍAS</span>
       <svg class="icon-arrow" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
     </button>
   </div>
@@ -742,6 +757,11 @@ function toggleMenu(show) {
   }
 }
 
+// FUNCIÓN PARA CAPITALIZAR (Natural Case)
+function toTitleCase(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}
+
 function renderMenu() {
   const menuItems = document.getElementById('menuItems');
   const cats = ['TODOS', ...Object.keys(categoryKeywords)];
@@ -749,9 +769,10 @@ function renderMenu() {
   menuItems.innerHTML = cats.map(cat => {
     const count = cat === 'TODOS' ? products.length : products.filter(p => p.category === cat).length;
     const activeClass = currentCategory === cat ? 'active' : '';
+    // Usamos toTitleCase para mostrar "Informática" en lugar de "INFORMATICA"
     return `
       <div class="menu-item ${activeClass}" onclick="filterCategory('${cat}')">
-        <span>${cat}</span>
+        <span>${toTitleCase(cat)}</span>
         <span class="menu-count">${count}</span>
       </div>
     `;
