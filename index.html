@@ -43,7 +43,7 @@ body{
   100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* ===== HEADER OPTIMIZADO ===== */
+/* ===== HEADER ===== */
 header {
   background: #0a1a3a;
   color: #fff;
@@ -53,42 +53,72 @@ header {
   z-index: 1000;
   box-shadow: 0 4px 25px rgba(0,0,0,0.15);
   display: flex;
-  flex-wrap: wrap; /* Permite que el buscador baje */
+  flex-wrap: wrap; 
   align-items: center;
-  justify-content: space-between; /* Distribuye Menú - Logo - Carrito */
+  justify-content: space-between;
   gap: 0; 
   height: auto; 
 }
 
-/* 1. MENÚ HAMBURGUESA (Izquierda) */
-.menu-trigger {
+/* 1. MENÚ MÓVIL (Solo visible en móvil) */
+.menu-mobile-trigger {
   background: none; border: none; cursor: pointer; padding: 5px; display: flex; align-items: center; justify-content: center; color: white; 
-  order: 1; /* Primero en móvil */
-  flex: 0 0 auto;
+  order: 1; flex: 0 0 auto;
 }
-.menu-trigger svg { width: 26px; height: 26px; fill: white; }
+.menu-mobile-trigger svg { width: 26px; height: 26px; fill: white; }
 
-/* 2. LOGO (Centro) */
+/* 2. COLUMNA DE MARCA (Logo + Menú Desktop) */
+.brand-col {
+  display: flex;
+  flex-direction: column; /* En PC se apilan */
+  align-items: flex-start;
+  justify-content: center;
+  order: 2; 
+  flex: 1; /* En móvil ocupa el centro */
+  margin-left: 10px;
+}
+
 .logo-container {
   cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: center;
   text-decoration: none;
-  order: 2; /* Segundo en móvil */
-  flex: 1; /* Ocupa el espacio central */
 }
-.store-logo { height: 28px; width: auto; max-width: 100%; } /* Ajustado para móvil */
+.store-logo { height: 28px; width: auto; max-width: 100%; }
+
+/* MENÚ DESKTOP (Debajo del logo en PC) */
+.menu-desktop-trigger {
+  display: none; /* Oculto en móvil */
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #38bdf8;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 0;
+  margin-top: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: color 0.2s;
+}
+.menu-desktop-trigger:hover { color: #fff; }
+.menu-desktop-trigger svg.icon-hamburger { width: 18px; height: 18px; fill: currentColor; }
+.menu-desktop-trigger svg.icon-arrow { width: 10px; height: 10px; fill: currentColor; transition: transform 0.3s ease; }
+
+/* Rotación de la flecha cuando está activo */
+.menu-desktop-trigger.active svg.icon-arrow { transform: rotate(180deg); }
 
 /* 3. CARRITO (Derecha) */
 .header-right {
   display: flex;
   align-items: center;
   gap: 5px;
-  order: 3; /* Tercero en móvil */
+  order: 3; 
   flex: 0 0 auto;
 }
-
 .cart-trigger {
   position: relative; cursor: pointer; padding: 5px; display: flex; align-items: center; background: none; border: none; outline: none;
 }
@@ -97,14 +127,13 @@ header {
   position: absolute; top: -2px; right: -2px; background: #d32f2f; color: white; font-size: 9px; font-weight: 700; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; pointer-events: none; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
-/* 4. BUSCADOR (Abajo en móvil) */
+/* 4. BUSCADOR */
 .search-container {
   width: 100%;
   position: relative;
-  order: 4; /* Baja a la siguiente línea */
-  margin-top: 10px; /* Separación con la línea de arriba */
+  order: 4; /* En móvil baja a 2da línea */
+  margin-top: 10px;
 }
-
 .search-box {
   display: flex; background: #162a4f; border-radius: 12px; overflow: hidden; border: 1px solid #2d4a86; width: 100%; transition: all 0.3s ease; height: 40px; align-items: center; padding-right: 5px;
 }
@@ -127,11 +156,32 @@ header {
 
 /* MEDIA QUERY HEADER DESKTOP */
 @media (min-width: 768px) {
-  header { flex-wrap: nowrap; padding: 15px 40px; gap: 30px; height: 80px; }
-  .menu-trigger { order: 0; margin-right: 10px; } 
-  .logo-container { order: 0; flex: 0 0 auto; }
-  .store-logo { height: 42px; }
-  .search-container { flex: 1; margin: 0; order: 0; max-width: 600px; }
+  header { flex-wrap: nowrap; padding: 10px 40px; gap: 40px; height: 90px; align-items: center; }
+  
+  /* Ocultar menú móvil */
+  .menu-mobile-trigger { display: none; }
+  
+  /* Columna de Marca (Logo + Menú) */
+  .brand-col { 
+    order: 0; 
+    flex: 0 0 auto; /* No estirar */
+    margin-left: 0;
+    align-items: flex-start;
+    gap: 2px;
+  }
+  .store-logo { height: 38px; }
+  
+  /* Mostrar menú desktop debajo del logo */
+  .menu-desktop-trigger { display: flex; }
+
+  /* Buscador al centro */
+  .search-container { 
+    flex: 1; /* Ocupa el espacio central */
+    margin: 0; 
+    order: 0; 
+    max-width: 600px; 
+  }
+  
   .header-right { order: 0; margin-left: 0; }
 }
 
@@ -197,15 +247,14 @@ header {
   
   .story-item { 
     width: 100%; height: 320px; background: #fff; border-radius: 16px; padding: 0; box-shadow: 0 10px 25px rgba(0,0,0,0.08); 
-    border: 2px solid #38bdf8; /* Borde normal azul claro */
+    border: 2px solid #38bdf8; 
     transition: all 0.3s ease; position: relative; overflow: hidden; align-items: center; display: flex; flex-direction: column; 
   }
   
-  /* HOVER AZUL MARINO (CORREGIDO) */
   .story-item:hover { 
     transform: translateY(-5px); 
     box-shadow: 0 15px 35px rgba(30, 58, 138, 0.2); 
-    border-color: #1e3a8a; /* AZUL MARINO VIBRANTE (NO NEGRO) */
+    border-color: #1e3a8a; 
   }
   
   .story-ring { width: 100%; height: 75%; padding: 15px; background: none; border-radius: 0; margin: 0; position: relative; top: auto; left: auto; }
@@ -232,7 +281,7 @@ header {
 .sort-select { border: none; background: transparent; font-size: 11px; color: #ffffff; font-weight: 500; outline: none; cursor: pointer; font-family: 'Montserrat', sans-serif; appearance: none; -webkit-appearance: none; padding-right: 5px; }
 .sort-select option { background: #fff; color: #333; }
 @media (min-width: 768px) { 
-  .filter-bar { top: 80px; padding: 10px 15px; gap: 12px; } 
+  .filter-bar { top: 90px; padding: 10px 15px; gap: 12px; } 
   .sort-label { font-size: 11px; letter-spacing: 1.5px; margin-right: 5px; }
   .sort-container { padding: 8px 16px; gap: 8px; }
   .sort-select { font-size: 12px; }
@@ -405,22 +454,34 @@ header {
       <path d="M7 0 V6 M7 28 V34 M0 7 H6 M28 7 H34" stroke="#38bdf8" stroke-width="2.5"/>
       <path d="M27 0 V6 M27 28 V34 M0 27 H6 M28 27 H34" stroke="#38bdf8" stroke-width="2.5"/>
     </g>
+    <!-- LINEA ELIMINADA Y TEXTO AJUSTADO -->
     <text x="42" y="32" font-family="'Montserrat', sans-serif" font-weight="800" font-size="24" fill="#38bdf8" letter-spacing="0.5">DOMBET</text>
-    <text x="160" y="30" font-family="'Montserrat', sans-serif" font-weight="300" font-size="24" fill="#ffffff">|</text>
-    <text x="168" y="32" font-family="'Montserrat', sans-serif" font-weight="400" font-size="24" fill="#ffffff" letter-spacing="1">MARKET</text>
+    <text x="155" y="32" font-family="'Montserrat', sans-serif" font-weight="400" font-size="24" fill="#ffffff" letter-spacing="1">MARKET</text>
   </symbol>
 </svg>
 
 <!-- HEADER -->
 <header>
-  <!-- BOTÓN MENÚ HAMBURGUESA -->
-  <button class="menu-trigger" onclick="toggleMenu(true)">
+  <!-- 1. BOTÓN MENÚ MÓVIL (Solo visible en móvil) -->
+  <button class="menu-mobile-trigger" onclick="toggleMenu(true)">
     <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
   </button>
 
-  <div class="logo-container" onclick="goHome()">
-    <svg class="store-logo"><use href="#logo-dombet"></use></svg>
+  <!-- 2. COLUMNA DE MARCA (Logo + Menú Desktop) -->
+  <div class="brand-col">
+    <div class="logo-container" onclick="goHome()">
+      <svg class="store-logo"><use href="#logo-dombet"></use></svg>
+    </div>
+    
+    <!-- MENÚ DESKTOP (Debajo del logo, solo en PC) -->
+    <button class="menu-desktop-trigger" id="desktopMenuBtn" onclick="toggleMenu(true)">
+      <svg class="icon-hamburger" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+      <span>TODAS LAS CATEGORÍAS</span>
+      <svg class="icon-arrow" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+    </button>
   </div>
+
+  <!-- 3. BUSCADOR (Centro en PC, Abajo en Móvil) -->
   <div class="search-container">
     <div class="search-box">
       <input id="searchInput" placeholder="Buscar..." autocomplete="off">
@@ -430,6 +491,8 @@ header {
     </div>
     <div class="search-results" id="searchResults"></div>
   </div>
+
+  <!-- 4. CARRITO (Derecha) -->
   <div class="header-right">
     <button class="cart-trigger" onclick="toggleCart(true)">
       <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
@@ -666,8 +729,17 @@ function formatCurrency(value) { return Number(value).toLocaleString('es-PY'); }
 function toggleMenu(show) {
   const panel = document.getElementById('menuPanel');
   const overlay = document.getElementById('menuOverlay');
-  if(show){ panel.classList.add('open'); overlay.classList.add('open'); } 
-  else { panel.classList.remove('open'); overlay.classList.remove('open'); }
+  const desktopBtn = document.getElementById('desktopMenuBtn');
+  
+  if(show){ 
+    panel.classList.add('open'); 
+    overlay.classList.add('open'); 
+    if(desktopBtn) desktopBtn.classList.add('active'); // Rotar flecha
+  } else { 
+    panel.classList.remove('open'); 
+    overlay.classList.remove('open'); 
+    if(desktopBtn) desktopBtn.classList.remove('active'); // Restaurar flecha
+  }
 }
 
 function renderMenu() {
