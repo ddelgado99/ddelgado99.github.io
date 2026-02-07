@@ -83,7 +83,8 @@ header {
   display: flex;
   align-items: center;
   text-decoration: none;
-  margin-bottom: 2px; /* Pequeño respiro antes del menú */
+  /* Margen inferior para separar del menú en PC */
+  margin-bottom: 0; 
 }
 .store-logo { height: 28px; width: auto; max-width: 100%; }
 
@@ -96,11 +97,12 @@ header {
   color: #38bdf8; /* Azul claro elegante */
   font-family: 'Montserrat', sans-serif;
   font-size: 11px;
-  font-weight: 600; /* Peso medio para elegancia */
+  font-weight: 600; 
   align-items: center;
   gap: 8px;
   padding: 0;
   margin: 0;
+  margin-top: 4px; /* Separación sutil del logo */
   text-transform: uppercase;
   letter-spacing: 0.5px;
   transition: all 0.2s ease;
@@ -136,7 +138,7 @@ header {
   margin-top: 10px;
 }
 .search-box {
-  display: flex; background: #162a4f; border-radius: 8px; /* Bordes más sutiles */ overflow: hidden; border: 1px solid #2d4a86; width: 100%; transition: all 0.3s ease; height: 40px; align-items: center; padding-right: 5px;
+  display: flex; background: #162a4f; border-radius: 8px; overflow: hidden; border: 1px solid #2d4a86; width: 100%; transition: all 0.3s ease; height: 40px; align-items: center; padding-right: 5px;
 }
 .search-box:focus-within { background: #1e3a6e; box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.3); border-color: #38bdf8; }
 .search-box input {
@@ -160,7 +162,6 @@ header {
   header { 
     display: grid;
     /* 3 Columnas: Izquierda (Marca), Centro (Buscador), Derecha (Carrito) */
-    /* 260px asegura espacio suficiente para el logo y menú, 1fr centra el buscador, 260px equilibra el lado derecho */
     grid-template-columns: 260px 1fr 260px; 
     padding: 10px 40px; 
     height: 90px; 
@@ -176,27 +177,28 @@ header {
     order: 0; 
     margin-left: 0;
     align-items: flex-start; /* Alineado a la izquierda */
+    justify-content: center; /* Centrado verticalmente en su celda si sobra espacio */
     justify-self: start;
     width: 100%;
   }
-  .store-logo { height: 34px; } /* Tamaño ajustado */
+  .store-logo { height: 34px; } 
   
   /* Menú desktop */
-  .menu-desktop-trigger { display: flex; margin-top: 4px; padding-left: 0; }
+  .menu-desktop-trigger { display: flex; padding-left: 0; }
 
   /* Buscador al centro absoluto */
   .search-container { 
     margin: 0 auto; 
     order: 0; 
     width: 100%;
-    max-width: 550px; /* Ancho elegante */
+    max-width: 550px; 
   }
   
   /* Carrito a la derecha */
   .header-right { 
     order: 0; 
     margin-left: 0; 
-    justify-self: end; /* Empuja al final de la grilla */
+    justify-self: end; 
   }
 }
 
@@ -471,7 +473,7 @@ header {
     </g>
     <!-- TEXTO AJUSTADO PARA ALINEACIÓN PERFECTA -->
     <text x="42" y="32" font-family="'Montserrat', sans-serif" font-weight="800" font-size="24" fill="#38bdf8" letter-spacing="0.5">DOMBET</text>
-    <text x="155" y="32" font-family="'Montserrat', sans-serif" font-weight="400" font-size="24" fill="#ffffff" letter-spacing="1">MARKET</text>
+    <text x="168" y="32" font-family="'Montserrat', sans-serif" font-weight="400" font-size="24" fill="#ffffff" letter-spacing="1">MARKET</text>
   </symbol>
 </svg>
 
