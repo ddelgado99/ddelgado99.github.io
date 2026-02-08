@@ -47,7 +47,7 @@ header {
   z-index: 1000;
   box-shadow: 0 4px 25px rgba(0,0,0,0.15);
   display: flex;
-  flex-direction: column; /* Apila las filas verticalmente */
+  flex-direction: column;
   width: 100%;
 }
 
@@ -65,15 +65,15 @@ header {
   z-index: 2;
 }
 
-/* LÍNEA 2: Banner de Categorías (Separado) */
+/* LÍNEA 2: Banner de Categorías */
 .header-bottom {
   display: none; /* Oculto en móvil */
   width: 100%;
-  background: #08142e; /* Un tono ligeramente más oscuro para distinguir el banner */
-  padding: 8px 40px; /* Altura del banner */
+  background: #08142e; 
+  padding: 8px 40px; /* Padding lateral igual al top en PC */
   position: relative;
   z-index: 1;
-  border-top: 1px solid rgba(255,255,255,0.05); /* Separador sutil */
+  border-top: 1px solid rgba(255,255,255,0.05);
 }
 
 /* 1. MENÚ MÓVIL */
@@ -144,7 +144,7 @@ header {
   cursor: pointer;
   color: #38bdf8; 
   font-family: 'Montserrat', sans-serif;
-  font-size: 12px; /* Un poco más grande para el banner */
+  font-size: 12px; 
   font-weight: 700; 
   align-items: center;
   gap: 10px;
@@ -183,6 +183,7 @@ header {
   .header-bottom { 
     display: flex; 
     align-items: center;
+    padding-left: 40px; /* Alineación exacta con header-top */
   }
 
   .menu-mobile-trigger { display: none; }
@@ -256,12 +257,11 @@ header {
   
   .story-item { 
     width: 100%; height: 320px; background: #fff; 
-    /* Borde redondeado igual a productos */
     border-radius: 12px; 
     padding: 0; 
     box-shadow: 0 10px 25px rgba(0,0,0,0.08); 
     
-    /* BORDE PERMANENTE ESTILO MÓVIL (GRADIENTE FINO) */
+    /* BORDE PERMANENTE ESTILO MÓVIL */
     background: linear-gradient(#fff, #fff) padding-box,
                 linear-gradient(45deg, #38bdf8 0%, #0a1a3a 100%) border-box;
     border: 2px solid transparent;
@@ -299,7 +299,8 @@ header {
 .sort-select { border: none; background: transparent; font-size: 11px; color: #ffffff; font-weight: 500; outline: none; cursor: pointer; font-family: 'Montserrat', sans-serif; appearance: none; -webkit-appearance: none; padding-right: 5px; }
 .sort-select option { background: #fff; color: #333; }
 @media (min-width: 768px) { 
-  .filter-bar { top: 130px; /* Ajustado por el banner extra */ padding: 10px 40px; gap: 12px; } 
+  /* Ajuste de TOP para que no se solape con el header de 2 pisos */
+  .filter-bar { top: 112px; padding: 10px 40px; gap: 12px; } 
   .sort-label { font-size: 11px; letter-spacing: 1.5px; margin-right: 5px; }
   .sort-container { padding: 8px 16px; gap: 8px; }
   .sort-select { font-size: 12px; }
@@ -319,7 +320,7 @@ header {
 
 .card {
   background: #fff; 
-  border-radius: 12px; /* Igual que las historias */
+  border-radius: 12px; 
   padding: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); cursor: pointer; display: flex; flex-direction: column; border: 1px solid #f0f0f0; position: relative; height: 100%; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease; min-width: 0; overflow: hidden; 
 }
 .card:hover { box-shadow: 0 15px 30px rgba(0,0,0,0.1); transform: translateY(-5px) scale(1.02); z-index: 10; border-color: #e0e0e0; }
@@ -395,7 +396,7 @@ header {
 /* ===== CARRITO ===== */
 .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(2px); z-index: 9998; display: none; opacity: 0; transition: opacity 0.3s; }
 .cart-overlay.open { display: block; opacity: 1; }
-.cart-panel { position: fixed; top: 0; right: 0; width: 90%; max-width: 420px; height: 100%; background: #fff; z-index: 9999; box-shadow: -5px 0 25px rgba(0,0,0,0.15); transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column; visibility: hidden; }
+.cart-panel { position: fixed; top: 0; right: 0; width: 90%; max-width: 300px; /* ANCHO REDUCIDO A 300PX */ height: 100%; background: #fff; z-index: 9999; box-shadow: -5px 0 25px rgba(0,0,0,0.15); transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column; visibility: hidden; }
 .cart-panel.open { transform: translateX(0); visibility: visible; }
 .cart-header { padding: 20px; background: #0a1a3a; color: white; display: flex; justify-content: space-between; align-items: center; }
 .cart-header h3 { margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -0.5px; }
@@ -468,10 +469,10 @@ header {
   <symbol id="logo-dombet" viewBox="0 0 300 50">
     <g transform="translate(0, 8)">
       <rect x="0" y="0" width="34" height="34" rx="4" fill="none" stroke="#38bdf8" stroke-width="2.5"/>
-      <rect x="11" y="11" width="12" height="12" rx="1" fill="%2338bdf8"/>
-      <path d="M17 0 V6 M17 28 V34 M0 17 H6 M28 17 H34" stroke="%2338bdf8" stroke-width="2.5"/>
-      <path d="M7 0 V6 M7 28 V34 M0 7 H6 M28 7 H34" stroke="%2338bdf8" stroke-width="2.5"/>
-      <path d="M27 0 V6 M27 28 V34 M0 27 H6 M28 27 H34" stroke="%2338bdf8" stroke-width="2.5"/>
+      <rect x="11" y="11" width="12" height="12" rx="1" fill="#38bdf8"/>
+      <path d="M17 0 V6 M17 28 V34 M0 17 H6 M28 17 H34" stroke="#38bdf8" stroke-width="2.5"/>
+      <path d="M7 0 V6 M7 28 V34 M0 7 H6 M28 7 H34" stroke="#38bdf8" stroke-width="2.5"/>
+      <path d="M27 0 V6 M27 28 V34 M0 27 H6 M28 27 H34" stroke="#38bdf8" stroke-width="2.5"/>
     </g>
     <!-- TEXTO AJUSTADO PARA ALINEACIÓN PERFECTA (X=170) -->
     <text x="42" y="32" font-family="'Montserrat', sans-serif" font-weight="800" font-size="24" fill="#38bdf8" letter-spacing="0.5">DOMBET</text>
