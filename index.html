@@ -52,7 +52,8 @@ header {
   z-index: 1000;
   box-shadow: 0 4px 25px rgba(0,0,0,0.15);
   display: flex;
-  flex-direction: column; /* Apila las dos líneas en PC */
+  flex-direction: column; /* Apila las líneas verticalmente */
+  width: 100%;
 }
 
 /* LÍNEA SUPERIOR (Logo, Buscador, Carrito) */
@@ -64,14 +65,19 @@ header {
   width: 100%;
   gap: 10px;
   flex-wrap: wrap; /* Para móvil */
+  background: #0a1a3a;
+  position: relative;
+  z-index: 2;
 }
 
 /* LÍNEA INFERIOR (Solo Categorías en PC) */
 .header-bottom {
-  display: none; /* Oculto en móvil por defecto */
-  padding: 0 40px 15px 40px; /* Padding lateral igual al top en PC para alineación */
-  background: #0a1a3a;
+  display: none; /* Oculto en móvil */
   width: 100%;
+  background: #0a1a3a; /* Mismo color para continuidad */
+  padding-bottom: 10px;
+  position: relative;
+  z-index: 1;
 }
 
 /* 1. MENÚ MÓVIL (Hamburguesa sola) */
@@ -160,17 +166,30 @@ header {
 
 /* MEDIA QUERY HEADER DESKTOP */
 @media (min-width: 768px) {
-  /* Estructura de Grilla para la línea superior */
+  /* Header contenedor principal */
+  header {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    padding: 0;
+  }
+
+  /* Línea Superior: Grilla de 3 columnas */
   .header-top { 
     display: grid;
-    grid-template-columns: 260px 1fr 260px; /* Columnas fijas para alineación */
-    padding: 15px 40px 5px 40px; /* Menos padding abajo para conectar con la línea inferior */
+    grid-template-columns: 260px 1fr 260px; /* Columnas fijas */
+    padding: 15px 40px 5px 40px; /* Padding lateral 40px */
     gap: 20px;
     flex-wrap: nowrap;
+    align-items: center;
   }
   
-  /* Mostrar línea inferior */
-  .header-bottom { display: block; }
+  /* Línea Inferior: Bloque flexible */
+  .header-bottom { 
+    display: flex; 
+    padding: 0 40px 15px 40px; /* Padding lateral 40px (Alineado con arriba) */
+    align-items: center;
+  }
 
   /* Ocultar elementos móviles */
   .menu-mobile-trigger { display: none; }
@@ -178,7 +197,7 @@ header {
   /* Logo alineado a la izquierda */
   .logo-container { 
     order: 0; 
-    justify-content: flex-start; /* Alineación izquierda */
+    justify-content: flex-start; 
     width: 100%;
   }
   .store-logo { height: 34px; } 
@@ -248,36 +267,40 @@ header {
   
   .story-item { 
     width: 100%; height: 320px; background: #fff; border-radius: 16px; padding: 0; box-shadow: 0 10px 25px rgba(0,0,0,0.08); 
-    border: 2px solid #38bdf8; 
-    transition: all 0.3s ease; position: relative; overflow: hidden; align-items: center; display: flex; flex-direction: column; 
+    /* Eliminamos el borde sólido para usar el efecto hover */
+    border: none;
+    transition: all 0.3s ease; position: relative; overflow: visible; /* Visible para que el borde salga */
+    align-items: center; display: flex; flex-direction: column; 
+    z-index: 1;
   }
   
-  /* HOVER CON GRADIENTE ELEGANTE (IGUAL QUE MÓVIL) */
+  /* EFECTO HOVER SIN CUADRADOS (USANDO PSEUDO-ELEMENTO DETRÁS) */
+  .story-item::before {
+    content: "";
+    position: absolute;
+    inset: -2px; /* El borde crece hacia afuera */
+    border-radius: 18px; /* Radio ligeramente mayor al padre */
+    background: linear-gradient(45deg, #38bdf8 0%, #0a1a3a 100%);
+    z-index: -1; /* Detrás de la tarjeta */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
   .story-item:hover { 
     transform: translateY(-5px); 
     box-shadow: 0 15px 35px rgba(10, 26, 58, 0.15); 
-    border-image: linear-gradient(45deg, #38bdf8 0%, #0a1a3a 100%) 1;
-    border-width: 2px;
-    border-style: solid;
-    border-radius: 16px; 
   }
-  /* Truco para border-radius con gradiente */
-  .story-item::before {
-    content: ''; position: absolute; inset: 0; border-radius: 16px; padding: 2px; 
-    background: linear-gradient(45deg, #38bdf8 0%, #0a1a3a 100%); 
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); 
-    -webkit-mask-composite: xor; mask-composite: exclude; 
-    opacity: 0; transition: opacity 0.3s; pointer-events: none;
+  
+  .story-item:hover::before {
+    opacity: 1;
   }
-  .story-item:hover { border-color: transparent; }
-  .story-item:hover::before { opacity: 1; }
 
   .story-ring { width: 100%; height: 75%; padding: 15px; background: none; border-radius: 0; margin: 0; position: relative; top: auto; left: auto; }
   .story-img-box { width: 100%; height: 100%; border-radius: 8px; border: none; background: #fff; }
   .story-bg-img { width: 100%; height: 100%; border-radius: 0; background-size: contain; background-position: center; transition: transform 0.6s ease; }
   .story-item:hover .story-bg-img { transform: scale(1.08); }
   .story-desktop-badge { display: block; position: absolute; top: 10px; left: 10px; background: #d32f2f; color: white; font-size: 11px; font-weight: 800; padding: 4px 8px; border-radius: 4px; z-index: 2; }
-  .story-info-container { position: relative; width: 100%; padding: 10px 15px 15px 15px; background: #fff; z-index: 1; text-align: center; display: flex; flex-direction: column; justify-content: center; height: 25%; border-top: 1px solid #f0f0f0; }
+  .story-info-container { position: relative; width: 100%; padding: 10px 15px 15px 15px; background: #fff; z-index: 1; text-align: center; display: flex; flex-direction: column; justify-content: center; height: 25%; border-top: 1px solid #f0f0f0; border-bottom-left-radius: 16px; border-bottom-right-radius: 16px; }
   .story-label { font-size: 13px; font-weight: 700; color: #0a1a3a; white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: auto; line-height: 1.3; }
   .story-desktop-details { display: flex; flex-direction: column; align-items: center; width: 100%; }
   .sd-cta { font-size: 10px; font-weight: 700; color: #38bdf8; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; display: flex; align-items: center; gap: 4px; }
@@ -296,7 +319,7 @@ header {
 .sort-select { border: none; background: transparent; font-size: 11px; color: #ffffff; font-weight: 500; outline: none; cursor: pointer; font-family: 'Montserrat', sans-serif; appearance: none; -webkit-appearance: none; padding-right: 5px; }
 .sort-select option { background: #fff; color: #333; }
 @media (min-width: 768px) { 
-  .filter-bar { top: 110px; padding: 10px 40px; gap: 12px; } /* Padding igualado a header/products */
+  .filter-bar { top: 135px; /* Ajustado por la doble línea del header */ padding: 10px 40px; gap: 12px; } 
   .sort-label { font-size: 11px; letter-spacing: 1.5px; margin-right: 5px; }
   .sort-container { padding: 8px 16px; gap: 8px; }
   .sort-select { font-size: 12px; }
@@ -309,7 +332,7 @@ header {
 }
 /* OPTIMIZACIÓN PC: 5 PRODUCTOS POR FILA */
 @media (min-width: 768px) {
-  .products { gap: 20px; padding: 30px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+  .products { gap: 20px; padding: 30px 40px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
 }
 @media (min-width: 1200px) {
   .products { grid-template-columns: repeat(5, 1fr); gap: 25px; }
@@ -464,14 +487,14 @@ header {
   <symbol id="logo-dombet" viewBox="0 0 300 50">
     <g transform="translate(0, 8)">
       <rect x="0" y="0" width="34" height="34" rx="4" fill="none" stroke="#38bdf8" stroke-width="2.5"/>
-      <rect x="11" y="11" width="12" height="12" rx="1" fill="#38bdf8"/>
+      <rect x="11" y="11" width="12" height="12" rx="1" fill="%2338bdf8"/>
       <path d="M17 0 V6 M17 28 V34 M0 17 H6 M28 17 H34" stroke="#38bdf8" stroke-width="2.5"/>
       <path d="M7 0 V6 M7 28 V34 M0 7 H6 M28 7 H34" stroke="#38bdf8" stroke-width="2.5"/>
       <path d="M27 0 V6 M27 28 V34 M0 27 H6 M28 27 H34" stroke="#38bdf8" stroke-width="2.5"/>
     </g>
     <!-- TEXTO AJUSTADO PARA ALINEACIÓN PERFECTA -->
     <text x="42" y="32" font-family="'Montserrat', sans-serif" font-weight="800" font-size="24" fill="#38bdf8" letter-spacing="0.5">DOMBET</text>
-    <text x="152" y="32" font-family="'Montserrat', sans-serif" font-weight="400" font-size="24" fill="#ffffff" letter-spacing="1">MARKET</text>
+    <text x="158" y="32" font-family="'Montserrat', sans-serif" font-weight="400" font-size="24" fill="#ffffff" letter-spacing="1">MARKET</text>
   </symbol>
 </svg>
 
