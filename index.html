@@ -38,11 +38,6 @@ body{
 .bg-img-contain { background-size: contain; }
 .bg-img-cover { background-size: cover; }
 
-@keyframes softEntrance {
-  0% { opacity: 0; transform: translateY(10px) scale(0.98); }
-  100% { opacity: 1; transform: translateY(0) scale(1); }
-}
-
 /* ===== HEADER ESTRUCTURA ===== */
 header {
   background: #0a1a3a;
@@ -52,11 +47,11 @@ header {
   z-index: 1000;
   box-shadow: 0 4px 25px rgba(0,0,0,0.15);
   display: flex;
-  flex-direction: column; /* Apila las líneas verticalmente */
+  flex-direction: column; /* Apila las filas verticalmente */
   width: 100%;
 }
 
-/* LÍNEA SUPERIOR (Logo, Buscador, Carrito) */
+/* LÍNEA 1: Logo, Buscador, Carrito */
 .header-top {
   display: flex;
   align-items: center;
@@ -64,23 +59,24 @@ header {
   padding: 10px 15px;
   width: 100%;
   gap: 10px;
-  flex-wrap: wrap; /* Para móvil */
+  flex-wrap: wrap; 
   background: #0a1a3a;
   position: relative;
   z-index: 2;
 }
 
-/* LÍNEA INFERIOR (Solo Categorías en PC) */
+/* LÍNEA 2: Banner de Categorías (Separado) */
 .header-bottom {
   display: none; /* Oculto en móvil */
   width: 100%;
-  background: #0a1a3a; /* Mismo color para continuidad */
-  padding-bottom: 10px;
+  background: #08142e; /* Un tono ligeramente más oscuro para distinguir el banner */
+  padding: 8px 40px; /* Altura del banner */
   position: relative;
   z-index: 1;
+  border-top: 1px solid rgba(255,255,255,0.05); /* Separador sutil */
 }
 
-/* 1. MENÚ MÓVIL (Hamburguesa sola) */
+/* 1. MENÚ MÓVIL */
 .menu-mobile-trigger {
   background: none; border: none; cursor: pointer; padding: 5px; display: flex; align-items: center; justify-content: center; color: white; 
   order: 1; flex: 0 0 auto;
@@ -93,7 +89,7 @@ header {
   display: flex;
   align-items: center;
   text-decoration: none;
-  order: 2; flex: 1; justify-content: center; /* Centrado en móvil */
+  order: 2; flex: 1; justify-content: center; 
   padding: 0; margin: 0;
 }
 .store-logo { height: 28px; width: auto; max-width: 100%; display: block; }
@@ -141,32 +137,31 @@ header {
 .search-img { width:40px; height:40px; flex-shrink: 0; }
 .search-item div { color: #333; font-weight: 600; font-size: 13px; }
 
-/* MENÚ DESKTOP (Botón en línea inferior) */
+/* MENÚ DESKTOP (Botón en el banner inferior) */
 .menu-desktop-trigger {
   background: none;
   border: none;
   cursor: pointer;
   color: #38bdf8; 
   font-family: 'Montserrat', sans-serif;
-  font-size: 11px;
-  font-weight: 600; 
+  font-size: 12px; /* Un poco más grande para el banner */
+  font-weight: 700; 
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   padding: 0; 
   margin: 0;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
   transition: all 0.2s ease;
   display: flex;
 }
 .menu-desktop-trigger:hover { color: #fff; transform: translateX(2px); }
-.menu-desktop-trigger svg.icon-hamburger { width: 16px; height: 16px; fill: currentColor; }
+.menu-desktop-trigger svg.icon-hamburger { width: 18px; height: 18px; fill: currentColor; }
 .menu-desktop-trigger svg.icon-arrow { width: 10px; height: 10px; fill: currentColor; transition: transform 0.3s ease; opacity: 0.8; }
 .menu-desktop-trigger.active svg.icon-arrow { transform: rotate(180deg); }
 
 /* MEDIA QUERY HEADER DESKTOP */
 @media (min-width: 768px) {
-  /* Header contenedor principal */
   header {
     display: flex;
     flex-direction: column;
@@ -177,24 +172,21 @@ header {
   /* Línea Superior: Grilla de 3 columnas */
   .header-top { 
     display: grid;
-    grid-template-columns: 260px 1fr 260px; /* Columnas fijas */
-    padding: 15px 40px 5px 40px; /* Padding lateral 40px */
+    grid-template-columns: 260px 1fr 260px; 
+    padding: 15px 40px; 
     gap: 20px;
     flex-wrap: nowrap;
     align-items: center;
   }
   
-  /* Línea Inferior: Bloque flexible */
+  /* Línea Inferior: Visible */
   .header-bottom { 
     display: flex; 
-    padding: 0 40px 15px 40px; /* Padding lateral 40px (Alineado con arriba) */
     align-items: center;
   }
 
-  /* Ocultar elementos móviles */
   .menu-mobile-trigger { display: none; }
   
-  /* Logo alineado a la izquierda */
   .logo-container { 
     order: 0; 
     justify-content: flex-start; 
@@ -202,10 +194,7 @@ header {
   }
   .store-logo { height: 34px; } 
 
-  /* Buscador centrado */
   .search-container { margin: 0 auto; order: 0; width: 100%; max-width: 550px; }
-  
-  /* Carrito a la derecha */
   .header-right { order: 0; justify-self: end; }
 }
 
@@ -266,33 +255,24 @@ header {
   .stories-scroll { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 25px; padding: 10px 0; overflow: visible; }
   
   .story-item { 
-    width: 100%; height: 320px; background: #fff; border-radius: 16px; padding: 0; box-shadow: 0 10px 25px rgba(0,0,0,0.08); 
-    /* Eliminamos el borde sólido para usar el efecto hover */
-    border: none;
-    transition: all 0.3s ease; position: relative; overflow: visible; /* Visible para que el borde salga */
+    width: 100%; height: 320px; background: #fff; 
+    /* Borde redondeado igual a productos */
+    border-radius: 12px; 
+    padding: 0; 
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08); 
+    
+    /* BORDE PERMANENTE ESTILO MÓVIL (GRADIENTE FINO) */
+    background: linear-gradient(#fff, #fff) padding-box,
+                linear-gradient(45deg, #38bdf8 0%, #0a1a3a 100%) border-box;
+    border: 2px solid transparent;
+
+    transition: all 0.3s ease; position: relative; overflow: hidden; 
     align-items: center; display: flex; flex-direction: column; 
-    z-index: 1;
   }
   
-  /* EFECTO HOVER SIN CUADRADOS (USANDO PSEUDO-ELEMENTO DETRÁS) */
-  .story-item::before {
-    content: "";
-    position: absolute;
-    inset: -2px; /* El borde crece hacia afuera */
-    border-radius: 18px; /* Radio ligeramente mayor al padre */
-    background: linear-gradient(45deg, #38bdf8 0%, #0a1a3a 100%);
-    z-index: -1; /* Detrás de la tarjeta */
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
   .story-item:hover { 
     transform: translateY(-5px); 
     box-shadow: 0 15px 35px rgba(10, 26, 58, 0.15); 
-  }
-  
-  .story-item:hover::before {
-    opacity: 1;
   }
 
   .story-ring { width: 100%; height: 75%; padding: 15px; background: none; border-radius: 0; margin: 0; position: relative; top: auto; left: auto; }
@@ -300,7 +280,7 @@ header {
   .story-bg-img { width: 100%; height: 100%; border-radius: 0; background-size: contain; background-position: center; transition: transform 0.6s ease; }
   .story-item:hover .story-bg-img { transform: scale(1.08); }
   .story-desktop-badge { display: block; position: absolute; top: 10px; left: 10px; background: #d32f2f; color: white; font-size: 11px; font-weight: 800; padding: 4px 8px; border-radius: 4px; z-index: 2; }
-  .story-info-container { position: relative; width: 100%; padding: 10px 15px 15px 15px; background: #fff; z-index: 1; text-align: center; display: flex; flex-direction: column; justify-content: center; height: 25%; border-top: 1px solid #f0f0f0; border-bottom-left-radius: 16px; border-bottom-right-radius: 16px; }
+  .story-info-container { position: relative; width: 100%; padding: 10px 15px 15px 15px; background: #fff; z-index: 1; text-align: center; display: flex; flex-direction: column; justify-content: center; height: 25%; border-top: 1px solid #f0f0f0; }
   .story-label { font-size: 13px; font-weight: 700; color: #0a1a3a; white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: auto; line-height: 1.3; }
   .story-desktop-details { display: flex; flex-direction: column; align-items: center; width: 100%; }
   .sd-cta { font-size: 10px; font-weight: 700; color: #38bdf8; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; display: flex; align-items: center; gap: 4px; }
@@ -319,7 +299,7 @@ header {
 .sort-select { border: none; background: transparent; font-size: 11px; color: #ffffff; font-weight: 500; outline: none; cursor: pointer; font-family: 'Montserrat', sans-serif; appearance: none; -webkit-appearance: none; padding-right: 5px; }
 .sort-select option { background: #fff; color: #333; }
 @media (min-width: 768px) { 
-  .filter-bar { top: 135px; /* Ajustado por la doble línea del header */ padding: 10px 40px; gap: 12px; } 
+  .filter-bar { top: 130px; /* Ajustado por el banner extra */ padding: 10px 40px; gap: 12px; } 
   .sort-label { font-size: 11px; letter-spacing: 1.5px; margin-right: 5px; }
   .sort-container { padding: 8px 16px; gap: 8px; }
   .sort-select { font-size: 12px; }
@@ -330,7 +310,6 @@ header {
 .products {
   display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 10px; max-width: 1400px; margin: auto;
 }
-/* OPTIMIZACIÓN PC: 5 PRODUCTOS POR FILA */
 @media (min-width: 768px) {
   .products { gap: 20px; padding: 30px 40px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
 }
@@ -339,7 +318,9 @@ header {
 }
 
 .card {
-  background: #fff; border-radius: 12px; padding: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); cursor: pointer; display: flex; flex-direction: column; border: 1px solid #f0f0f0; position: relative; height: 100%; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease; min-width: 0; overflow: hidden; 
+  background: #fff; 
+  border-radius: 12px; /* Igual que las historias */
+  padding: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); cursor: pointer; display: flex; flex-direction: column; border: 1px solid #f0f0f0; position: relative; height: 100%; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease; min-width: 0; overflow: hidden; 
 }
 .card:hover { box-shadow: 0 15px 30px rgba(0,0,0,0.1); transform: translateY(-5px) scale(1.02); z-index: 10; border-color: #e0e0e0; }
 .card-img { width: 100%; height: 140px; margin-bottom: 10px; mix-blend-mode: multiply; }
@@ -488,13 +469,13 @@ header {
     <g transform="translate(0, 8)">
       <rect x="0" y="0" width="34" height="34" rx="4" fill="none" stroke="#38bdf8" stroke-width="2.5"/>
       <rect x="11" y="11" width="12" height="12" rx="1" fill="%2338bdf8"/>
-      <path d="M17 0 V6 M17 28 V34 M0 17 H6 M28 17 H34" stroke="#38bdf8" stroke-width="2.5"/>
-      <path d="M7 0 V6 M7 28 V34 M0 7 H6 M28 7 H34" stroke="#38bdf8" stroke-width="2.5"/>
-      <path d="M27 0 V6 M27 28 V34 M0 27 H6 M28 27 H34" stroke="#38bdf8" stroke-width="2.5"/>
+      <path d="M17 0 V6 M17 28 V34 M0 17 H6 M28 17 H34" stroke="%2338bdf8" stroke-width="2.5"/>
+      <path d="M7 0 V6 M7 28 V34 M0 7 H6 M28 7 H34" stroke="%2338bdf8" stroke-width="2.5"/>
+      <path d="M27 0 V6 M27 28 V34 M0 27 H6 M28 27 H34" stroke="%2338bdf8" stroke-width="2.5"/>
     </g>
-    <!-- TEXTO AJUSTADO PARA ALINEACIÓN PERFECTA -->
+    <!-- TEXTO AJUSTADO PARA ALINEACIÓN PERFECTA (X=170) -->
     <text x="42" y="32" font-family="'Montserrat', sans-serif" font-weight="800" font-size="24" fill="#38bdf8" letter-spacing="0.5">DOMBET</text>
-    <text x="158" y="32" font-family="'Montserrat', sans-serif" font-weight="400" font-size="24" fill="#ffffff" letter-spacing="1">MARKET</text>
+    <text x="170" y="32" font-family="'Montserrat', sans-serif" font-weight="400" font-size="24" fill="#ffffff" letter-spacing="1">MARKET</text>
   </symbol>
 </svg>
 
@@ -532,7 +513,7 @@ header {
     </div>
   </div>
 
-  <!-- LÍNEA INFERIOR (Solo PC) -->
+  <!-- LÍNEA INFERIOR (BANNER CATEGORÍAS) -->
   <div class="header-bottom">
     <button class="menu-desktop-trigger" id="desktopMenuBtn" onclick="toggleMenu(true)">
       <svg class="icon-hamburger" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
@@ -645,7 +626,7 @@ header {
     <button class="close-cart" onclick="toggleCart(false)">×</button>
   </div>
   <div class="cart-items" id="cartItems">
-    <!-- Contenido dinámico -->
+    <div class="cart-empty-msg">Tu carrito está vacío</div>
   </div>
   <div class="cart-footer">
     <div class="cart-total">
