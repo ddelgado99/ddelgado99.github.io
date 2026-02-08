@@ -83,10 +83,10 @@ header {
   display: flex;
   align-items: center;
   text-decoration: none;
-  /* Margen inferior para separar del menú en PC */
   margin-bottom: 0; 
+  padding: 0;
 }
-.store-logo { height: 28px; width: auto; max-width: 100%; }
+.store-logo { height: 28px; width: auto; max-width: 100%; display: block; }
 
 /* MENÚ DESKTOP (Debajo del logo en PC) */
 .menu-desktop-trigger {
@@ -100,9 +100,9 @@ header {
   font-weight: 600; 
   align-items: center;
   gap: 8px;
-  padding: 0;
+  padding: 0; /* Sin padding para alinear con el logo */
   margin: 0;
-  margin-top: 4px; /* Separación sutil del logo */
+  margin-top: 6px; /* Separación vertical del logo */
   text-transform: uppercase;
   letter-spacing: 0.5px;
   transition: all 0.2s ease;
@@ -177,7 +177,7 @@ header {
     order: 0; 
     margin-left: 0;
     align-items: flex-start; /* Alineado a la izquierda */
-    justify-content: center; /* Centrado verticalmente en su celda si sobra espacio */
+    justify-content: center; 
     justify-self: start;
     width: 100%;
   }
@@ -473,7 +473,7 @@ header {
     </g>
     <!-- TEXTO AJUSTADO PARA ALINEACIÓN PERFECTA -->
     <text x="42" y="32" font-family="'Montserrat', sans-serif" font-weight="800" font-size="24" fill="#38bdf8" letter-spacing="0.5">DOMBET</text>
-    <text x="168" y="32" font-family="'Montserrat', sans-serif" font-weight="400" font-size="24" fill="#ffffff" letter-spacing="1">MARKET</text>
+    <text x="160" y="32" font-family="'Montserrat', sans-serif" font-weight="400" font-size="24" fill="#ffffff" letter-spacing="1">MARKET</text>
   </symbol>
 </svg>
 
@@ -672,6 +672,15 @@ const categoryKeywords = {
   'LUMINARIA': ['luz', 'foco', 'led', 'lampara', 'iluminacion', 'reflector', 'cinta led', 'araña']
 };
 
+// DICCIONARIO PARA NOMBRES CON ACENTOS
+const categoryDisplayNames = {
+  'INFORMATICA': 'Informática',
+  'BAZAR': 'Bazar',
+  'PRENDAS': 'Prendas',
+  'FERRETERIA': 'Ferretería',
+  'LUMINARIA': 'Luminaria'
+};
+
 // Variables Story
 let currentStoryIndex = 0;
 let storyTimer = null;
@@ -771,10 +780,13 @@ function renderMenu() {
   menuItems.innerHTML = cats.map(cat => {
     const count = cat === 'TODOS' ? products.length : products.filter(p => p.category === cat).length;
     const activeClass = currentCategory === cat ? 'active' : '';
-    // Usamos toTitleCase para mostrar "Informática" en lugar de "INFORMATICA"
+    
+    // Usar el nombre con acento si existe, sino usar toTitleCase
+    let displayName = cat === 'TODOS' ? 'Todos' : (categoryDisplayNames[cat] || toTitleCase(cat));
+
     return `
       <div class="menu-item ${activeClass}" onclick="filterCategory('${cat}')">
-        <span>${toTitleCase(cat)}</span>
+        <span>${displayName}</span>
         <span class="menu-count">${count}</span>
       </div>
     `;
