@@ -70,7 +70,7 @@ header {
   display: none; /* Oculto en móvil */
   width: 100%;
   background: #08142e; 
-  padding: 8px 40px; /* Padding lateral igual al top en PC */
+  padding: 8px 30px; /* Padding ajustado para alineación */
   position: relative;
   z-index: 1;
   border-top: 1px solid rgba(255,255,255,0.05);
@@ -173,7 +173,7 @@ header {
   .header-top { 
     display: grid;
     grid-template-columns: 260px 1fr 260px; 
-    padding: 15px 40px; 
+    padding: 15px 30px; /* 30px para mover logo a la izquierda */
     gap: 20px;
     flex-wrap: nowrap;
     align-items: center;
@@ -183,7 +183,7 @@ header {
   .header-bottom { 
     display: flex; 
     align-items: center;
-    padding-left: 40px; /* Alineación exacta con header-top */
+    padding-left: 30px; /* 30px para alinear con logo */
   }
 
   .menu-mobile-trigger { display: none; }
@@ -299,8 +299,8 @@ header {
 .sort-select { border: none; background: transparent; font-size: 11px; color: #ffffff; font-weight: 500; outline: none; cursor: pointer; font-family: 'Montserrat', sans-serif; appearance: none; -webkit-appearance: none; padding-right: 5px; }
 .sort-select option { background: #fff; color: #333; }
 @media (min-width: 768px) { 
-  /* Ajuste de TOP para que no se solape con el header de 2 pisos */
-  .filter-bar { top: 112px; padding: 10px 40px; gap: 12px; } 
+  /* Ajuste de TOP para que se quede FIJO debajo del header de 2 pisos */
+  .filter-bar { top: 98px; padding: 10px 40px; gap: 12px; } 
   .sort-label { font-size: 11px; letter-spacing: 1.5px; margin-right: 5px; }
   .sort-container { padding: 8px 16px; gap: 8px; }
   .sort-select { font-size: 12px; }
@@ -469,14 +469,14 @@ header {
   <symbol id="logo-dombet" viewBox="0 0 300 50">
     <g transform="translate(0, 8)">
       <rect x="0" y="0" width="34" height="34" rx="4" fill="none" stroke="#38bdf8" stroke-width="2.5"/>
-      <rect x="11" y="11" width="12" height="12" rx="1" fill="#38bdf8"/>
-      <path d="M17 0 V6 M17 28 V34 M0 17 H6 M28 17 H34" stroke="#38bdf8" stroke-width="2.5"/>
-      <path d="M7 0 V6 M7 28 V34 M0 7 H6 M28 7 H34" stroke="#38bdf8" stroke-width="2.5"/>
-      <path d="M27 0 V6 M27 28 V34 M0 27 H6 M28 27 H34" stroke="#38bdf8" stroke-width="2.5"/>
+      <rect x="11" y="11" width="12" height="12" rx="1" fill="%2338bdf8"/>
+      <path d="M17 0 V6 M17 28 V34 M0 17 H6 M28 17 H34" stroke="%2338bdf8" stroke-width="2.5"/>
+      <path d="M7 0 V6 M7 28 V34 M0 7 H6 M28 7 H34" stroke="%2338bdf8" stroke-width="2.5"/>
+      <path d="M27 0 V6 M27 28 V34 M0 27 H6 M28 27 H34" stroke="%2338bdf8" stroke-width="2.5"/>
     </g>
-    <!-- TEXTO AJUSTADO PARA ALINEACIÓN PERFECTA (X=170) -->
+    <!-- TEXTO AJUSTADO PARA ALINEACIÓN PERFECTA (X=154) -->
     <text x="42" y="32" font-family="'Montserrat', sans-serif" font-weight="800" font-size="24" fill="#38bdf8" letter-spacing="0.5">DOMBET</text>
-    <text x="170" y="32" font-family="'Montserrat', sans-serif" font-weight="400" font-size="24" fill="#ffffff" letter-spacing="1">MARKET</text>
+    <text x="154" y="32" font-family="'Montserrat', sans-serif" font-weight="400" font-size="24" fill="#ffffff" letter-spacing="1">MARKET</text>
   </symbol>
 </svg>
 
